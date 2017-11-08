@@ -33,13 +33,13 @@
 		</div>
 		
 	</body>
-	<script src="jquery-2.1.0.js"></script>
-	<script src="fontsize.js"></script>
+		<script src="jquery-2.1.0.js"></script>
+		<script src="vue.min.js"></script>
+		<script src="mui.min.js"></script>
+		<script src="common.js"></script>
+		<script src="fontsize.js"></script>
 	<script type="text/javascript">
-		function changeHead(){
-			$(".header li").on("click",function(){
-				$(this).addClass("cur").siblings().removeClass("cur");
-			})
-		}
+		myobj.changeHead();
+		vm.getAjax("/getInfo");
 	</script>
 </html>
