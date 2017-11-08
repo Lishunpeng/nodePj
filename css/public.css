@@ -1,0 +1,10 @@
+*{list-style: none;margin: 0;padding: 0;border: 0;font-size: .4rem;color: #333333;box-sizing: border-box;padding: 0;}
+/*公用头部*/
+.Gamecontant{width: 100%;}
+.header{width: 100%;height: 1rem;background: #f1f1f1;margin: 0 auto;display: flex;}
+.header li{flex: 1;height: 1rem;text-align: center;line-height: 1rem;float: left;cursor: pointer;}
+.header li:active{background: #e1e1e1;}
+.header li.cur{border-bottom: .1rem solid #ff0000;background: #e1e1e1;}
+/*index主页面信息*/
+.info{width: 100%;padding: 0 .2rem;margin-top: 1rem;}
+.info div{width: 100%;height: .6rem;line-height: .6rem;text-align: left;}
