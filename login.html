@@ -6,37 +6,25 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 	</head>
+	<link rel="stylesheet" type="text/css" href="mui.css" />
+	<link rel="stylesheet" type="text/css" href="public.css" />
 
 	<body>
-		<div id="div1" style="width: 350px;">
+		<div id="firstLogin" style="width: 350px;">
 			<h1 style="color: red;">这是注册页面</h1> 账号：
-			<input type="text" id="acco" value="" placeholder="请输入账号" /><br/> 密码：
-			<input type="password" id="password" value="" placeholder="请输入密码" /><br/>
-			<input type="button" value="注册" id="first" />
-			<p class="test" style="color: red;"></p>
+			<input type="text" placeholder="请输入账号" v-model="acco" /><br/> 密码：
+			<input type="password" placeholder="请输入密码" v-model="opassword" /><br/>再次输入密码：
+			<input type="password" placeholder="请输入密码" v-model="opasswordag" /><br/>
+			<input type="button" value="注册" class="firstSubm" @click="loginSmb('0')"/>
 		</div>
-		<script src="jquery-2.1.0.js" type="text/javascript"></script>
+		<script src="jquery-2.1.0.js"></script>
+		<script src="vue.min.js"></script>
+		<script src="mui.min.js"></script>
+		<script src="common.js"></script>
+		<script src="fontsize.js"></script>
 		<script>
-			$("#first").on("click", function() {
-				var acco = $("#acco").val();
-				var opassword = $("#password").val();
-				var data = {
-					myacco: acco,
-					mypassword: opassword
-				}
-				console.log(data)
-				postajax("/firstlogin", data);
-			})
-			function postajax(path, mydata) {
-				$.ajax({
-					type: "post",
-					url: path,
-					data: mydata,
-					success: function(data) {
-						$(".test").text(data);
-					}
-				});
-			}
+			
+
 		</script>
 	</body>
 
