@@ -23,6 +23,16 @@ http.createServer(function(req, res) {
 					if(result.length) {
 						if(result[0].mypassword == myattr.mypassword) {
 							res.end("登录成功");
+							var initData = {
+								name : "hello",
+								ATK:"10",
+								DEF:"10",
+								HP:"100"
+							}
+							insertData(db, initData, function(result) {
+								console.log(result);
+								db.close();
+							}, 'personInfo');
 						} else {
 							res.end("密码错误");
 						}
@@ -30,7 +40,7 @@ http.createServer(function(req, res) {
 						res.end("用户不存在")
 					}
 					db.close();
-				});
+				}, 'site');
 			});
 		});
 	} else if(req.url == "/firstlogin") {
@@ -51,42 +61,59 @@ http.createServer(function(req, res) {
 						insertData(db, myattr, function(result) {
 							console.log(result);
 							db.close();
-						});
+						}, 'site');
 						res.end("注册成功");
 					}
-				});
-
+				}, 'site');
 			});
 		});
 
 		console.log("我在注册")
-	} else if(req.url.indexOf(".js")>0) {
-		console.log(req.url)
-		fs.readFile('../js'+req.url, function(err, data) {
-			res.writeHead(200, {"Content-type": "text/javascript"})
+	}else if(req.url == "/getInfo") {
+		req.on('data', function(attr) {
+			MongoClient.connect(DB_CONN_STR, function(err, db) {
+				selectData(db,'{"name":"hello"}', function(result) {
+					console.log(result,"result")
+					res.end(result)
+					db.close();
+				}, 'personInfo');
+			});
+		});
+	} else if(req.url.indexOf(".js") > 0) {
+		fs.readFile('../js' + req.url, function(err, data) {
+			res.writeHead(200, {
+				"Content-type": "text/javascript"
+			})
 			res.end(data)
 		});
-	} else if(req.url.indexOf(".css")>0) {
-		fs.readFile('../css'+req.url, function(err, data) {
-			res.writeHead(200, {"Content-type": "text/css"})
+	} else if(req.url.indexOf(".css") > 0) {
+		fs.readFile('../css' + req.url, function(err, data) {
+			res.writeHead(200, {
+				"Content-type": "text/css"
+			})
 			res.end(data)
 		});
-	}else if(req.url == "/") {
+	} else if(req.url == "/") {
 		fs.readFile('../index.html', 'utf8', function(err, data) {
-			res.writeHead(200, {"Content-type": "text/html"})
+			res.writeHead(200, {
+				"Content-type": "text/html"
+			})
 			res.end(data)
 		});
-	} else if(req.url.indexOf(".html")>0) {
-		fs.readFile('..'+req.url, 'utf8', function(err, data) {
-			res.writeHead(200, {"Content-type": "text/html"})
+	} else if(req.url.indexOf(".html") > 0) {
+		fs.readFile('..' + req.url, 'utf8', function(err, data) {
+			res.writeHead(200, {
+				"Content-type": "text/html"
+			})
 			res.end(data)
 		});
 	}
 	console.log(req.url)
 }).listen(3000);
-var insertData = function(db, mydata, callback) {
-	//连接到表 site
-	var collection = db.collection('site');
+var insertData = function(db, mydata, callback, table) {
+	console.log(table)
+
+	var collection = db.collection(table);
 	collection.insert(mydata, function(err, result) {
 		if(err) {
 			console.log('Error:' + err);
@@ -95,17 +122,17 @@ var insertData = function(db, mydata, callback) {
 		callback(result);
 	});
 }
-var selectData = function(db, mydata, callback) {
-	//连接到表  
-	var collection = db.collection('site');
-	//查询数据
-	collection.find(mydata).toArray(function(err, result) {
-		if(err) {
-			console.log('Error:' + err);
-			return;
-		}
-		callback(result);
-	});
-}
-// 控制台会输出以下信息
+var selectData = function(db, mydata, callback, table) {
+		console.log(table)
+		var collection = db.collection(table);
+		//查询数据
+		collection.find(mydata).toArray(function(err, result) {
+			if(err) {
+				console.log('Error:' + err);
+				return;
+			}
+			callback(result);
+		});
+	}
+	// 控制台会输出以下信息
 console.log('Server running at http://127.0.0.1:8081/');
