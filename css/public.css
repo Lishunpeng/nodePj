@@ -8,3 +8,9 @@
 /*index主页面信息*/
 .info{width: 100%;padding: 0 .2rem;margin-top: 1rem;}
 .info div{width: 100%;height: .6rem;line-height: .6rem;text-align: left;}
+
+/*注册与登录页面*/
+.login{width: 90%;margin: 0 auto;}
+.login .smbtn{width: 60%;margin: 0 auto;height: .8rem;text-align: center;line-height: .8rem;display: block;padding:0 ;}
+.loginhead{height: .8rem;line-height: .8rem;text-align: center;background: #ccc;font-size: .4rem;margin: 0 0 .5rem 0;}
+

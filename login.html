@@ -10,12 +10,14 @@
 	<link rel="stylesheet" type="text/css" href="public.css" />
 
 	<body>
-		<div id="firstLogin" style="width: 350px;">
-			<h1 style="color: red;">这是注册页面</h1> 账号：
-			<input type="text" placeholder="请输入账号" v-model="acco" /><br/> 密码：
-			<input type="password" placeholder="请输入密码" v-model="opassword" /><br/>再次输入密码：
-			<input type="password" placeholder="请输入密码" v-model="opasswordag" /><br/>
-			<input type="button" value="注册" class="firstSubm" @click="loginSmb('0')"/>
+		<h1 class="loginhead">注册</h1>
+		<div id="firstLogin" class="login">
+			
+			 账号：<input type="text" placeholder="请输入账号" v-model="acco" /><br/> 
+			 角色名：<input type="text" placeholder="请输入角色名" v-model="name" /><br/> 
+			 密码：<input type="password" placeholder="请输入密码" v-model="opassword" /><br/>
+			 再次输入密码：<input type="password" placeholder="请输入密码" v-model="opasswordag" /><br/>
+			<input type="button" value="注册" class="firstSubm smbtn" @click="loginSmb('0')" />
 		</div>
 		<script src="jquery-2.1.0.js"></script>
 		<script src="vue.min.js"></script>
@@ -23,8 +25,6 @@
 		<script src="common.js"></script>
 		<script src="fontsize.js"></script>
 		<script>
-			
-
 		</script>
 	</body>
 

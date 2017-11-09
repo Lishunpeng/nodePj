@@ -17,7 +17,7 @@
 			
 		
 		<ul class="header">
-		<li class="cur">1</li>
+		<li class="cur">首页信息</li>
 		<li>2</li>
 		<li>3</li>
 		<li>4</li>
@@ -25,11 +25,11 @@
 		</ul>
 		</div>
 		
-		<div class="info">
-			<div class="name">角色名:Spuar</div>
-			<div class="ATK">ATK:10</div>
-			<div class="DEF">DEF:10</div>
-			<div class="HP">HP:100</div>
+		<div class="info" id="info">
+			<div class="name">角色名:{{myData.name}}</div>
+			<div class="ATK">ATK:{{myData.ATK}}</div>
+			<div class="DEF">DEF:{{myData.DEF}}</div>
+			<div class="HP">HP:{{myData.HP}}</div>
 		</div>
 		
 	</body>
@@ -40,6 +40,6 @@
 		<script src="fontsize.js"></script>
 	<script type="text/javascript">
 		myobj.changeHead();
-		vm.getAjax("/getInfo");
+		myobj.getajax("/getInfo?name="+hash);
 	</script>
 </html>

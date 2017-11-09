@@ -1,6 +1,7 @@
 var numAl = /^[0-9a-zA_Z]+$/;
 var search = window.location.pathname;
-
+var hash = window.location.hash.replace("#", "");
+console.log(hash)
 var myFun = function() {}
 myFun.prototype = {
 	//post 提交ajax
@@ -10,15 +11,39 @@ myFun.prototype = {
 			url: path,
 			data: mydata,
 			success: function(data) {
+				console.log(data)
 				if(search == "/login.html") {
-					return mui.alert(data, function() {
-						window.location.href = "/index.html";
-					});
+					if(data == "注册成功") {
+						return mui.alert(data, function() {
+							window.location.href = "/index.html";
+						});
+					}
+					return	mui.alert(data);
+				}else if(search == "/index.html" || search == "/"){
+					var data = JSON.parse(data)
+					if (data.msg == "登录成功") {
+						return	mui.alert(data.msg,function(){window.location.href = "/GameTest.html#"+data.name;});
+					}else{
+						return	mui.alert(data.msg);
+					}
+					
 				}
-				mui.alert(data);
+				
 
 			}
 		});
+	},
+	//get 提交ajax
+	getajax: function(path) {
+		console.log(path);
+		mui.ajax({
+			type: "get",
+			url: path,
+			success: function(data) {
+				vm.myData = JSON.parse(data)
+				console.log(vm.myData);
+			}
+		})
 	},
 	//信息页面的头部变化
 	changeHead: function() {
@@ -29,11 +54,13 @@ myFun.prototype = {
 }
 var myobj = new myFun();
 var vm = new Vue({
-	el: '#login,#firstLogin',
+	el: '#login,#firstLogin,#info',
 	data: {
 		opassword: "",
 		opasswordag: "",
-		acco: ""
+		acco: "",
+		name: "",
+		myData: []
 	},
 	methods: {
 		//登录页面
@@ -57,20 +84,11 @@ var vm = new Vue({
 			if(obj == 1) {
 				myobj.postajax("/mylogin", data);
 			} else {
+				data.name = this.name;
+				console.log(data)
 				myobj.postajax("/firstlogin", data);
 			}
 
-		},
-
-		//getAjaxVue
-		getAjax: function(path) {
-			mui.ajax({
-				type: "get",
-				url: path,
-				success: function(data) {
-					console.log(data);
-				}
-			})
 		},
 	},
 });

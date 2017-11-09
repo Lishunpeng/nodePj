@@ -10,12 +10,12 @@
 	<link rel="stylesheet" type="text/css" href="public.css" />
 
 	<body>
-		<div id="login">
-			<h1 style="color: red;">这是登录页面</h1> 
+		<h1 class="loginhead">登录</h1> 
+		<div id="login" class="login">
 			账号：<input type="text"  placeholder="请输入账号" v-model="acco" /><br/> 
 			密码：<input type="password" placeholder="请输入密码" v-model="opassword" /><br/>
-			<input type="button" class="loginSubm" value="登录" @click="loginSmb('1')"/>
-			<a href="login.html">去注册</a>
+			<input type="button" class="loginSubm smbtn" value="登录" @click="loginSmb('1')"/>
+			<a href="login.html" class="smbtn" style="margin-top: .2rem;">去注册</a>
 		</div>
 		<script src="jquery-2.1.0.js"></script>
 		<script src="vue.min.js"></script>
@@ -26,5 +26,4 @@
 		</script>
 
 	</body>
-		v
 </html>
