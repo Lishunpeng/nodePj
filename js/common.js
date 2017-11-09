@@ -40,8 +40,22 @@ myFun.prototype = {
 			type: "get",
 			url: path,
 			success: function(data) {
-				vm.myData = JSON.parse(data)
-				console.log(vm.myData);
+				console.log(myWeapon);
+				
+				vm.myData = JSON.parse(data);
+				vm.myInfo = vm.myData.myinfo;
+				vm.myEqui = vm.myData.myequi;
+				for (var i = 0 ; i< myEqui.length;i++) {
+					if (vm.myEqui.equiType == myEqui[i].equiType) {
+						vm.myCloth = myEqui[i];
+					}
+				}
+				for (var i = 0 ; i< myWeapon.length;i++) {
+					if (vm.myEqui.equiType == myWeapon[i].weaponType) {
+						vm.myWeapon = myWeapon[i];
+					}
+				}
+				console.log(vm.myCloth);
 			}
 		})
 	},
@@ -60,7 +74,11 @@ var vm = new Vue({
 		opasswordag: "",
 		acco: "",
 		name: "",
-		myData: []
+		myData: [],
+		myInfo:[],
+		myEqui:[],
+		myCloth:[],
+		myWeapon:[]
 	},
 	methods: {
 		//登录页面

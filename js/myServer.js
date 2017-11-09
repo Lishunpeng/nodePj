@@ -109,12 +109,10 @@ http.createServer(function(req, res) {
 			myattr = qs.parse(decodeURI(attr));
 			var whereAttr = {
 				$or: [{
-						myacco: myattr.myacco
-					},
-					{
-						name: myattr.name
-					}
-				]
+					myacco: myattr.myacco
+				}, {
+					name: myattr.name
+				}]
 			}
 			MongoClient.connect(DB_CONN_STR, function(err, db) {
 				console.log("连接成功！");
@@ -142,18 +140,25 @@ http.createServer(function(req, res) {
 		MongoClient.connect(DB_CONN_STR, function(err, db) {
 			console.log("连接成功！");
 			selectData(db, params, function(result) {
-				console.log(result.length);				
+				console.log(result.length);
 				if(result.length) {
 					mydata = result[0];
 					res.end(JSON.stringify(mydata))
 					db.close();
 				} else {
 					var initData = {
-						name: params.name,
-						ATK: "10",
-						DEF: "10",
-						HP: "100"
-					}
+						myinfo: {
+							name: params.name,
+							ATK: "10",
+							DEF: "10",
+							HP: "100"
+						},
+						myequi:{
+							weaponType:"00",
+							equiType:"00"
+						}
+
+					};
 					insertData(db, initData, function(result) {
 						console.log(result.ops[0]);
 						res.end(JSON.stringify(result.ops[0]))
@@ -178,16 +183,16 @@ var insertData = function(db, mydata, callback, table) {
 	});
 }
 var selectData = function(db, mydata, callback, table) {
-	console.log(table)
-	var collection = db.collection(table);
-	//查询数据
-	collection.find(mydata).toArray(function(err, result) {
-		if(err) {
-			console.log('Error:' + err);
-			return;
-		}
-		callback(result);
-	});
-}
-// 控制台会输出以下信息
+		console.log(table)
+		var collection = db.collection(table);
+		//查询数据
+		collection.find(mydata).toArray(function(err, result) {
+			if(err) {
+				console.log('Error:' + err);
+				return;
+			}
+			callback(result);
+		});
+	}
+	// 控制台会输出以下信息
 console.log('Server running at http://127.0.0.1:8081/');
