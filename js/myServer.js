@@ -30,28 +30,6 @@ http.createServer(function(req, res) {
 							}
 							console.log(data)
 							res.end(JSON.stringify(data));
-							/*selectData(db, {
-								name: result[0].name
-							}, function(seleData) {
-								console.log(seleData)
-								if(seleData.length) {
-									console.log("存在数据");
-								} else {
-									var initData = {
-										name: result[0].name,
-										ATK: "10",
-										DEF: "10",
-										HP: "100"
-									}
-									console.log(initData)
-									db.close();
-									insertData(db, initData, function(inserData) {
-										console.log(inserData);
-										db.close();
-									}, 'personInfo');
-									res.end("登录成功");
-								}
-							}, 'personInfo');*/
 						} else {
 							var data = {
 								msg: "密码错误"
@@ -140,22 +118,23 @@ http.createServer(function(req, res) {
 		MongoClient.connect(DB_CONN_STR, function(err, db) {
 			console.log("连接成功！");
 			selectData(db, params, function(result) {
-				console.log(result.length);
+				console.log(params);
 				if(result.length) {
 					mydata = result[0];
 					res.end(JSON.stringify(mydata))
 					db.close();
 				} else {
 					var initData = {
+						name: params.name,
 						myinfo: {
-							name: params.name,
 							ATK: "10",
 							DEF: "10",
 							HP: "100"
 						},
 						myequi:{
 							weaponType:"00",
-							equiType:"00"
+							equiType:"00",
+							amuletType:"00"
 						}
 
 					};

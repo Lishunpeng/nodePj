@@ -17,8 +17,8 @@
 		<div class="Gamecontant">
 
 			<ul class="header">
-				<li class="cur">信息</li>
-				<li>2</li>
+				<li class="cur"><a href="GameTest.html">信息</a></li>
+				<li><a href="mybag.html">背包</a></li>
 				<li>3</li>
 				<li>4</li>
 				<li>5</li>
@@ -26,13 +26,33 @@
 		</div>
 
 		<div class="info" id="info">
-			<div class="name">角色名:{{myInfo.name}}</div>
-			<div class="ATK">ATK:{{myInfo.ATK}}</div>
-			<div class="DEF">DEF:{{myInfo.DEF}}</div>
-			<div class="HP">HP:{{myInfo.HP}}</div>
+			<div class="name">角色名:{{myData.name}}</div>
+			<div class="ATK">ATK:{{myInfo.ATK}}<span class="addAttr" v-text="'(+'+myWeapon.addAttr+')'"></span></div>
+			<div class="DEF">DEF:{{myInfo.DEF}} <span class="addAttr" v-text="'(+'+myCloth.addAttr+')'"></span></div>
+			<div class="HP">HP:{{myInfo.HP}} <span class="addAttr" v-text="'(+'+myAmulet.addAttr+')'"></span></div>
 			<div class="myCloth">
-				<div class="weapon">武器：{{myWeapon.weaponName}}</div>
-				<div class="equi">装备：{{myCloth.equiName}}</div>
+				<div class="weapon myEqui">
+					<p>武器：<span :class="myWeapon.myclass" data-sea="0" v-text="myWeapon.name"></span></p>
+					<ul class="myDetail">
+						<li v-text="'ATK+'+myWeapon.addAttr"></li>
+						<li v-text="'阐述：'+myWeapon.detail"></li>
+					</ul>
+				</div>
+
+				<div class="equi myEqui">
+					<p>装备：<span :class="myCloth.myclass" data-sea="0" v-text="myCloth.name"></span></p>
+					<ul class="myDetail">
+						<li v-text="'DEF+'+myCloth.addAttr"></li>
+						<li v-text="'阐述：'+myCloth.detail"></li>
+					</ul>
+				</div>
+				<div class="amulet myEqui">
+					<p>首饰：<span :class="myAmulet.myclass" data-sea="0" v-text="myAmulet.name"></span></p>
+					<ul class="myDetail">
+						<li v-text="'HP+'+myAmulet.addAttr"></li>
+						<li v-text="'阐述：'+myAmulet.detail"></li>
+					</ul>
+				</div>
 			</div>
 		</div>
 
@@ -44,7 +64,8 @@
 	<script src="common.js"></script>
 	<script src="fontsize.js"></script>
 	<script type="text/javascript">
-		myobj.changeHead();
+//		myobj.changeHead();
+		myobj.searchEqui();
 		myobj.getajax("/getInfo?name=" + hash);
 	</script>
 
