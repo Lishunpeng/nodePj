@@ -27,17 +27,29 @@
 		
 		<ul class="bagClass">
 			<li class="cur">装备</li>
-			<li>装备</li>
-			<li>装备</li>
+			<li>药水</li>
+			<li>其他</li>
 			<li>装备</li>
 			<li>装备</li>
 		</ul>
-		<ol class="bagDetail">
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
+		<ol class="bagDetail" id="bagData">
+			<li class="cur">
+				<ul class="bagCont">
+					<li v-for="data in myEqui"><span class="name" v-text="data.name"></span><span class="useState" v-text="data.useState?'使用中':'未使用'"></span></li>
+				</ul>
+			</li>
+			<li>
+				<ul class="bagCont">
+					<li v-for="data in mymedicine"><span class="name" v-text="data.name"></span><span class="number" v-text="'×'+data.num"></span></li>
+				</ul>
+			</li>
+			<li>
+				<ul class="bagCont">
+					<li v-for="data in mymaterial"><span class="name" v-text="data.name"></span><span class="number" v-text="'×'+data.num"></span></li>
+				</ul>
+			</li>
+			<li>4</li>
+			<li>5</li>
 		</ol>
 
 	</body>
@@ -49,6 +61,7 @@
 	<script src="fontsize.js"></script>
 	<script>
 		myobj.changeBag();
+		myobj.getajax("/getbagInfo?myacco=" + localStorage.acco);
 	</script>
 
 </html>

@@ -23,7 +23,8 @@ myFun.prototype = {
 					var data = JSON.parse(data)
 					if(data.msg == "登录成功") {
 						return mui.alert(data.msg, function() {
-							window.location.href = "/GameTest.html#" + data.name;
+							localStorage.acco = data.myacco;
+							window.location.href = "/GameTest.html";
 						});
 					} else {
 						return mui.alert(data.msg);
@@ -41,57 +42,100 @@ myFun.prototype = {
 			type: "get",
 			url: path,
 			success: function(data) {
+				console.log(data)
 				vm.myData = JSON.parse(data);
-				vm.myInfo = vm.myData.myinfo;
-				vm.myEqui = vm.myData.myequi;
-				myobj.getData(myEqui,vm.myEqui.equiType,'equi');
-				myobj.getData(myWeapon,vm.myEqui.weaponType,'weapon');
-				myobj.getData(myAmulet,vm.myEqui.amuletType,'amulet');
-				console.log(vm.myCloth)
-				console.log(vm.myWeapon)
-				console.log(vm.myAmulet)
+				if(search == "/GameTest.html") {
+					vm.myInfo = vm.myData.myinfo;
+					vm.myEqui = vm.myData.myequi;
+					vm.myCloth = myobj.getData(myEqui, vm.myEqui.equiType);
+					vm.myWeapon = myobj.getData(myWeapon, vm.myEqui.weaponType);
+					vm.myAmulet = myobj.getData(myAmulet, vm.myEqui.amuletType);
+				} else if(search == "/mybag.html") {
+					console.log(vm.myData);
+					vm.mymedicine=myobj.bagData(mymedicine,vm.myData.mymedicine);
+					vm.mymaterial=myobj.bagData(mymaterial,vm.myData.mymaterial);
+					vm.myEqui = myobj.bagEqui(vm.myData.myequi);
+					console.log(vm.mymedicine)
+				}
+
 			}
 		})
 	},
 	//装备类型转换
-	getData: function(dataBase, obj,newName) {
+	getData: function(dataBase, obj) {
+		var data = null;
 		for(var i = 0; i < dataBase.length; i++) {
 			if(obj == dataBase[i].type) {
-				if (newName=='equi') {
-					return	vm.myCloth = dataBase[i];
-				} else if(newName=='weapon'){
-					return vm.myWeapon = dataBase[i];
-				}else if(newName=='amulet'){
-					return vm.myAmulet = dataBase[i];
-				}
-				
+				return data = dataBase[i];
 			}
 		}
 	},
-	
 	//背包信息变化
+	bagData: function(dataBase,obj) {
+		var data = [];
+		for(var i = 0; i < dataBase.length; i++) {
+			for(var j = 0; j < obj.length; j++) {
+				if(obj[j].type == dataBase[i].type) {
+					dataBase[i].num = obj[j].num;
+					data.push(dataBase[i])
+				}
+			}
+		}
+		return data;
+	},
+	//背包信息中的装备栏
+	bagEqui:function(obj){
+		var data = [];
+		for (var i = 0 ; i<obj.length;i++) {
+			if (obj[i].equiClass == "weapon") {
+				for (var j = 0 ; j<myWeapon.length ;j++) {
+					if (obj[i].type==myWeapon[j].type) {
+						myWeapon[j].useState = obj[i].useState;
+						data.push(myWeapon[j]);
+					}
+				}
+			} else if(obj[i].equiClass == "cloth"){
+				for (var j = 0 ; j<myEqui.length ;j++) {
+					if (obj[i].type==myEqui[j].type) {
+						myEqui[j].useState = obj[i].useState;
+						data.push(myEqui[j]);
+					}
+				}
+			}else if(obj[i].equiClass == "amulet"){
+				for (var j = 0 ; j<myAmulet.length ;j++) {
+					if (obj[i].type==myAmulet[j].type) {
+						myAmulet[j].useState = obj[i].useState;
+						data.push(myAmulet[j]);
+					}
+				}
+			}
+		}
+		return data;
+	},
 	changeBag: function() {
 		$(".bagClass li").on("click", function() {
+			console.log($(this).index());
 			$(this).addClass("cur").siblings().removeClass("cur");
+			$(".bagDetail>li").eq($(this).index()).addClass("cur").siblings("li").removeClass("cur");
 		})
 	},
 	//装备查看详细
-	searchEqui:function(){
-		$(".myEqui p").on("click",function(){
-			if ($(this).attr("data-sea") == "0") {
-				$(this).attr("data-sea",1);
+	searchEqui: function() {
+		$(".myEqui p").on("click", function() {
+			if($(this).attr("data-sea") == "0") {
+				$(this).attr("data-sea", 1);
 				$(this).siblings("ul").show();
-			}else{
-				$(this).attr("data-sea",0);
+			} else {
+				$(this).attr("data-sea", 0);
 				$(this).siblings("ul").hide();
 			}
-			
+
 		})
 	}
 }
 var myobj = new myFun();
 var vm = new Vue({
-	el: '#login,#firstLogin,#info',
+	el: '#login,#firstLogin,#info,#bagData',
 	data: {
 		opassword: "",
 		opasswordag: "",
@@ -102,7 +146,9 @@ var vm = new Vue({
 		myEqui: [],
 		myCloth: [],
 		myWeapon: [],
-		myAmulet: []
+		myAmulet: [],
+		mymedicine: [],
+		mymaterial: []
 	},
 	methods: {
 		//登录页面

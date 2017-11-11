@@ -20,13 +20,12 @@ http.createServer(function(req, res) {
 				console.log("连接成功！");
 
 				selectData(db, whereAttr, function(result) {
-					console.log(result)
 					if(result.length) {
 						if(result[0].mypassword == myattr.mypassword) {
-							console.log(result[0].name);
+
 							var data = {
 								msg: "登录成功",
-								name: result[0].name
+								myacco: result[0].myacco
 							}
 							console.log(data)
 							res.end(JSON.stringify(data));
@@ -43,7 +42,7 @@ http.createServer(function(req, res) {
 						res.end(JSON.stringify(data));
 					}
 					db.close();
-				}, 'site');
+				}, 'user');
 			});
 		});
 
@@ -103,56 +102,75 @@ http.createServer(function(req, res) {
 							return res.end("用户已存在，请换个用户");
 						}
 					} else {
-						insertData(db, myattr, function(result) {
-							console.log(result);
-							db.close();
-						}, 'site');
+						//初始化所有数据
+						var initData = {
+							myacco: myattr.myacco,
+							myinfo: {
+								name:myattr.name,
+								ATK: "10",
+								DEF: "10",
+								HP: "100"
+							},
+							myequi: {
+								weaponType: "00",
+								equiType: "00",
+								amuletType: "00"
+							}
+						};
+						var bagData = {
+							myacco: myattr.myacco,
+							myequi: [
+								{type: "00",useState:1,equiClass:"weapon"},
+								{type: "00",useState:1,equiClass:"cloth"},
+								{type: "00",useState:1,equiClass:"amulet"},
+								{type: "01",useState:0,equiClass:"amulet"},
+								{type: "01",useState:0,equiClass:"cloth"}
+							],
+							mymedicine: [
+								{type:"00",num:2},
+								{type:"01",num:5}
+							],
+							mymaterial:[
+								{type:"00",num:2},
+								{type:"01",num:5}
+							]
+						};
+						insertData(db, initData, function(result) {db.close();}, 'personInfo');
+						insertData(db, bagData, function(result) {db.close();}, 'bagData');
+						insertData(db, myattr, function(result) {db.close();}, 'user');
 						res.end("注册成功");
 					}
-				}, 'site');
+				}, 'user');
 			});
 		});
 		/*首页获取ajax数据*/
 	} else if(pathname == "/getInfo") {
+		var mydata = null;
 		var params = url.parse(req.url, true).query;
 		MongoClient.connect(DB_CONN_STR, function(err, db) {
 			console.log("连接成功！");
 			selectData(db, params, function(result) {
-				console.log(params);
-				if(result.length) {
-					mydata = result[0];
-					res.end(JSON.stringify(mydata))
-					db.close();
-				} else {
-					var initData = {
-						name: params.name,
-						myinfo: {
-							ATK: "10",
-							DEF: "10",
-							HP: "100"
-						},
-						myequi:{
-							weaponType:"00",
-							equiType:"00",
-							amuletType:"00"
-						}
-
-					};
-					insertData(db, initData, function(result) {
-						console.log(result.ops[0]);
-						res.end(JSON.stringify(result.ops[0]))
-						db.close();
-					}, 'personInfo');
-				}
-
+				console.log(result[0])
+				mydata = result[0];
+				res.end(JSON.stringify(mydata))
+				db.close();
 			}, 'personInfo');
+		});
+	} else if(pathname == "/getbagInfo") {
+		var mydata = null;
+		var params = url.parse(req.url, true).query;
+		MongoClient.connect(DB_CONN_STR, function(err, db) {
+			selectData(db, params, function(result) {
+				mydata = result[0];
+				res.end(JSON.stringify(mydata))
+				db.close();
+			}, 'bagData');
 		});
 	}
 }).listen(3000);
 var insertData = function(db, mydata, callback, table) {
-	console.log(table)
-
 	var collection = db.collection(table);
+	//插入数据
 	collection.insert(mydata, function(err, result) {
 		if(err) {
 			console.log('Error:' + err);
@@ -162,16 +180,28 @@ var insertData = function(db, mydata, callback, table) {
 	});
 }
 var selectData = function(db, mydata, callback, table) {
-		console.log(table)
-		var collection = db.collection(table);
-		//查询数据
-		collection.find(mydata).toArray(function(err, result) {
-			if(err) {
-				console.log('Error:' + err);
-				return;
-			}
-			callback(result);
-		});
-	}
-	// 控制台会输出以下信息
+	var collection = db.collection(table);
+	//查询数据
+	collection.find(mydata).toArray(function(err, result) {
+		if(err) {
+			console.log('Error:' + err);
+			return;
+		}
+		callback(result);
+	});
+}
+//修改数据
+var updateData = function(db, whereData, mydata, callback, table) {
+	var collection = db.collection(table);
+	//更新数据
+	collection.update(whereData, mydata, function(err, result) {
+		if(err) {
+			console.log('Error:' + err);
+			return;
+		}
+		callback(result);
+	});
+}
+
+// 控制台会输出以下信息
 console.log('Server running at http://127.0.0.1:8081/');

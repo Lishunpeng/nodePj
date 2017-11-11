@@ -18,6 +18,12 @@
 .bagClass{height: .6rem;width: 100%;display: flex;margin-top: .5rem;}
 .bagClass li{height: .8rem;flex: 1;font-size: .35rem;text-align: center;line-height: .8rem;}
 .bagClass li.cur{border-bottom: .05rem solid brown;}
+.bagDetail{height: auto;width: 96%;margin: .5rem auto;overflow: hidden;}
+.bagDetail>li{height: auto;width: 100%;display: none;}
+.bagDetail>li.cur{display: block;}
+.bagDetail li li{border-bottom: 1px solid #ccc;height: .6rem;line-height: .6rem;}
+.bagDetail li .name{float: left;}
+.bagDetail li .number,.bagDetail li .useState{float: right;}
 /*注册与登录页面*/
 .login{width: 90%;margin: 0 auto;}
 .login .smbtn{width: 60%;margin: 0 auto;height: .8rem;text-align: center;line-height: .8rem;display: block;padding:0 ;}

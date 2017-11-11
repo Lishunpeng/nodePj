@@ -23,10 +23,13 @@
 				<li>4</li>
 				<li>5</li>
 			</ul>
+			
+			
 		</div>
 
 		<div class="info" id="info">
-			<div class="name">角色名:{{myData.name}}</div>
+			<div class="name">用户名:{{myData.myacco}}</div>
+			<div class="name">角色名:{{myInfo.name}}</div>
 			<div class="ATK">ATK:{{myInfo.ATK}}<span class="addAttr" v-text="'(+'+myWeapon.addAttr+')'"></span></div>
 			<div class="DEF">DEF:{{myInfo.DEF}} <span class="addAttr" v-text="'(+'+myCloth.addAttr+')'"></span></div>
 			<div class="HP">HP:{{myInfo.HP}} <span class="addAttr" v-text="'(+'+myAmulet.addAttr+')'"></span></div>
@@ -66,7 +69,7 @@
 	<script type="text/javascript">
 //		myobj.changeHead();
 		myobj.searchEqui();
-		myobj.getajax("/getInfo?name=" + hash);
+		myobj.getajax("/getInfo?myacco=" + localStorage.acco);
 	</script>
 
 </html>
