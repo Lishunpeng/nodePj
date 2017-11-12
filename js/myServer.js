@@ -156,6 +156,7 @@ http.createServer(function(req, res) {
 				db.close();
 			}, 'personInfo');
 		});
+		//获取背包信息
 	} else if(pathname == "/getbagInfo") {
 		var mydata = null;
 		var params = url.parse(req.url, true).query;
@@ -166,6 +167,24 @@ http.createServer(function(req, res) {
 				db.close();
 			}, 'bagData');
 		});
+		//装备的使用
+	} else if(pathname == "/useEqui") {
+		var myattr = null;
+		
+		req.on('data',function(attr){
+			myattr = qs.parse(decodeURI(attr));
+			var whereAttr = {
+					myacco: myattr.myacco,
+			}
+			
+			MongoClient.connect(DB_CONN_STR, function(err, db) {
+				
+			selectData(db, whereAttr, function(result) {
+				console.log(whereAttr);
+				console.log(JSON.stringify(result))
+			}, 'bagData');
+		});
+		})
 	}
 }).listen(3000);
 var insertData = function(db, mydata, callback, table) {

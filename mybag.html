@@ -10,21 +10,25 @@
 		<title></title>
 	</head>
 	<style>
-
+		.mui-popup-text{text-align: left!important;}
 	</style>
 
 	<body>
 		<div class="Gamecontant">
 
 			<ul class="header">
-				<li><a href="GameTest.html">信息</a></li>
-				<li class="cur"><a href="mybag.html">背包</a></li>
+				<li>
+					<a href="GameTest.html">信息</a>
+				</li>
+				<li class="cur">
+					<a href="mybag.html">背包</a>
+				</li>
 				<li>3</li>
 				<li>4</li>
 				<li>5</li>
 			</ul>
 		</div>
-		
+
 		<ul class="bagClass">
 			<li class="cur">装备</li>
 			<li>药水</li>
@@ -34,24 +38,34 @@
 		</ul>
 		<ol class="bagDetail" id="bagData">
 			<li class="cur">
-				<ul class="bagCont">
-					<li v-for="data in myEqui"><span class="name" v-text="data.name"></span><span class="useState" v-text="data.useState?'使用中':'未使用'"></span></li>
+				<ul class="bagCont mui-table-view">
+					<li v-for="data in myEqui" class="mui-table-view-cell" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)">
+						<span :class="data.myclass" v-text="data.name" ></span>
+						<span class="useState" v-text="data.useState?'使用中':'未使用'"></span>
+					</li>
 				</ul>
 			</li>
 			<li>
-				<ul class="bagCont">
-					<li v-for="data in mymedicine"><span class="name" v-text="data.name"></span><span class="number" v-text="'×'+data.num"></span></li>
+				<ul class="bagCont mui-table-view">
+					<li v-for="data in mymedicine" class="mui-table-view-cell" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)"><span :class="data.myclass" v-text="data.name"></span><span class="number" v-text="'×'+data.num"></span></li>
 				</ul>
 			</li>
 			<li>
-				<ul class="bagCont">
-					<li v-for="data in mymaterial"><span class="name" v-text="data.name"></span><span class="number" v-text="'×'+data.num"></span></li>
+				<ul class="bagCont mui-table-view">
+					<li v-for="data in mymaterial" class="mui-table-view-cell" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)"><span :class="data.myclass" v-text="data.name"></span><span class="number" v-text="'×'+data.num"></span></li>
 				</ul>
 			</li>
 			<li>4</li>
 			<li>5</li>
 		</ol>
-
+		<div class="clickBox" onclick="myobj.stopClickEqui()">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" onclick="myobj.clickBox_use()">使用</li>
+				<li class="mui-table-view-cell" onclick="myobj.clickBox_detail()">详情</li>
+				<li class="mui-table-view-cell">出售</li>
+				<li class="mui-table-view-cell">丢弃</li>
+			</ul>
+		</div>
 	</body>
 	<script src="jquery-2.1.0.js"></script>
 	<script src="vue.min.js"></script>
@@ -61,6 +75,7 @@
 	<script src="fontsize.js"></script>
 	<script>
 		myobj.changeBag();
+		myobj.clickBoxhide();
 		myobj.getajax("/getbagInfo?myacco=" + localStorage.acco);
 	</script>
 

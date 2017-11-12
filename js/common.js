@@ -42,7 +42,7 @@ myFun.prototype = {
 			type: "get",
 			url: path,
 			success: function(data) {
-				console.log(data)
+
 				vm.myData = JSON.parse(data);
 				if(search == "/GameTest.html") {
 					vm.myInfo = vm.myData.myinfo;
@@ -51,11 +51,10 @@ myFun.prototype = {
 					vm.myWeapon = myobj.getData(myWeapon, vm.myEqui.weaponType);
 					vm.myAmulet = myobj.getData(myAmulet, vm.myEqui.amuletType);
 				} else if(search == "/mybag.html") {
-					console.log(vm.myData);
-					vm.mymedicine=myobj.bagData(mymedicine,vm.myData.mymedicine);
-					vm.mymaterial=myobj.bagData(mymaterial,vm.myData.mymaterial);
+
+					vm.mymedicine = myobj.bagData(mymedicine, vm.myData.mymedicine,'medi');
+					vm.mymaterial = myobj.bagData(mymaterial, vm.myData.mymaterial,'mate');
 					vm.myEqui = myobj.bagEqui(vm.myData.myequi);
-					console.log(vm.mymedicine)
 				}
 
 			}
@@ -71,11 +70,16 @@ myFun.prototype = {
 		}
 	},
 	//背包信息变化
-	bagData: function(dataBase,obj) {
+	bagData: function(dataBase, obj,val) {
 		var data = [];
+		console.log(obj);
 		for(var i = 0; i < dataBase.length; i++) {
 			for(var j = 0; j < obj.length; j++) {
 				if(obj[j].type == dataBase[i].type) {
+
+					if(val == "medi") {
+						dataBase[i].equiType = "HP"
+					}
 					dataBase[i].num = obj[j].num;
 					data.push(dataBase[i])
 				}
@@ -84,33 +88,92 @@ myFun.prototype = {
 		return data;
 	},
 	//背包信息中的装备栏
-	bagEqui:function(obj){
+	bagEqui: function(obj) {
 		var data = [];
-		for (var i = 0 ; i<obj.length;i++) {
-			if (obj[i].equiClass == "weapon") {
-				for (var j = 0 ; j<myWeapon.length ;j++) {
-					if (obj[i].type==myWeapon[j].type) {
+		for(var i = 0; i < obj.length; i++) {
+			if(obj[i].equiClass == "weapon") {
+				for(var j = 0; j < myWeapon.length; j++) {
+					if(obj[i].type == myWeapon[j].type) {
+						myWeapon[j].equiClass = obj[i].equiClass;
+						myWeapon[j].equiType = "ATK"
 						myWeapon[j].useState = obj[i].useState;
 						data.push(myWeapon[j]);
 					}
 				}
-			} else if(obj[i].equiClass == "cloth"){
-				for (var j = 0 ; j<myEqui.length ;j++) {
-					if (obj[i].type==myEqui[j].type) {
+			} else if(obj[i].equiClass == "cloth") {
+				for(var j = 0; j < myEqui.length; j++) {
+					if(obj[i].type == myEqui[j].type) {
+						myEqui[j].equiClass = obj[i].equiClass;
+						myEqui[j].equiType = "DEF"
 						myEqui[j].useState = obj[i].useState;
 						data.push(myEqui[j]);
 					}
 				}
-			}else if(obj[i].equiClass == "amulet"){
-				for (var j = 0 ; j<myAmulet.length ;j++) {
-					if (obj[i].type==myAmulet[j].type) {
+			} else if(obj[i].equiClass == "amulet") {
+				for(var j = 0; j < myAmulet.length; j++) {
+					if(obj[i].type == myAmulet[j].type) {
+						myAmulet[j].equiClass = obj[i].equiClass;
+						myAmulet[j].equiType = "HP"
 						myAmulet[j].useState = obj[i].useState;
 						data.push(myAmulet[j]);
 					}
 				}
 			}
 		}
+		console.log(data)
 		return data;
+	},
+	//EquiList点击显示框
+	equiListClick: function(obj, ev) {
+		console.log(obj)
+		localStorage.myData = $(obj).attr("data-mydata");
+		var oev = ev || event;
+		oev.cancelBubble = true;
+		$(".clickBox").css({
+			top: oev.clientY,
+			left: oev.clientX,
+			display: "block"
+		});
+	},
+	//阻止盒子点击消失
+	stopClickEqui: function(ev) {
+		var oev = ev || event;
+		oev.cancelBubble = true;
+	},
+	//背包物品详情
+	clickBox_detail: function() {
+		var data = JSON.parse(localStorage.myData);
+		if(data.equiType) {
+			var str = data.equiType + '：+' + data.addAttr + '\n' + '阐述：' + data.detail;
+		} else {
+			var str = '阐述：' + data.detail;
+		}
+		mui.alert(str, "详情");
+	},
+	//物品使用功能
+	clickBox_use: function() {
+		var data = JSON.parse(localStorage.myData);
+		myobj.clickBox_cgequi(data);
+	},
+	//装备切换功能
+	clickBox_cgequi:function(data){
+		if (data.useState) {
+			return	mui.alert("装备使用中");
+		}
+		
+		var equiData = {
+			myacco:localStorage.acco,
+			'equiClass':data.equiClass,
+			type:data.type
+		}
+		myobj.postajax("/useEqui",equiData);
+	},
+	//隐藏clickBox框
+	clickBoxhide: function() {
+		$(window.document).on("click", function() {
+			$(".clickBox").hide();
+		});
+
 	},
 	changeBag: function() {
 		$(".bagClass li").on("click", function() {
