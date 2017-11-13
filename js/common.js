@@ -42,14 +42,15 @@ myFun.prototype = {
 			type: "get",
 			url: path,
 			success: function(data) {
-				vm.myData = JSON.parse(data);
+				
 				if(search == "/GameTest.html") {
-					console.log(data)
-					/*vm.myInfo = vm.myData.myinfo;
-					vm.myEqui = vm.myData.myequi;
-					vm.myCloth = myobj.getData(myEqui, vm.myEqui.equiType);
-					vm.myWeapon = myobj.getData(myWeapon, vm.myEqui.weaponType);
-					vm.myAmulet = myobj.getData(myAmulet, vm.myEqui.amuletType);*/
+					vm.myData = JSON.parse(data);
+					vm.myWeapon = myobj.getData(myWeapon,vm.myData.weaponUse);
+					vm.myCloth = myobj.getData(myEqui, vm.myData.clothUse);
+					vm.myAmulet = myobj.getData(myAmulet, vm.myData.amuletUse);
+					console.log(vm.myWeapon)
+					console.log(vm.myCloth)
+					console.log(vm.myAmulet)
 				} else if(search == "/mybag.html") {
 					console.log(vm.myData);
 					vm.mymedicine=myobj.bagData(mymedicine,vm.myData.mymedicine);
@@ -142,13 +143,9 @@ var vm = new Vue({
 		acco: "",
 		name: "",
 		myData: [],
-		myInfo: [],
-		myEqui: [],
-		myCloth: [],
 		myWeapon: [],
-		myAmulet: [],
-		mymedicine: [],
-		mymaterial: []
+		myCloth: [],
+		myAmulet: []
 	},
 	methods: {
 		//登录页面

@@ -109,7 +109,10 @@ http.createServer(function(req, res) {
 							ATK: "10",
 							DEF: "10",
 							HP: "100",
-							money:"1000"
+							money:"1000",
+							weaponUse:"00",
+							clothUse:"00",
+							amuletUse:"00"
 						};
 						//初始化武器数据
 						/*装备代码1000：第一位1表示是否使用中,第二位0表示武器，1表示防具，2表示护符,最后两位00代表装备代码**/
@@ -141,17 +144,15 @@ http.createServer(function(req, res) {
 	} else if(pathname == "/getInfo") {
 		var mydata = null;
 		var params = url.parse(req.url, true).query;
-		var 
 		console.log(params)
-		/*MongoClient.connect(DB_CONN_STR, function(err, db) {
-			
+		MongoClient.connect(DB_CONN_STR, function(err, db) {
 			selectData(db, params, function(result) {
 				console.log(result[0])
 				mydata = result[0];
 				res.end(JSON.stringify(mydata))
 				db.close();
 			}, 'personInfo');
-		});*/
+		});
 	} else if(pathname == "/getbagInfo") {
 		var mydata = null;
 		var params = url.parse(req.url, true).query;

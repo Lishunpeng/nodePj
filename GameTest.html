@@ -29,13 +29,16 @@
 
 		<div class="info" id="info">
 			<div class="name">用户名:{{myData.myacco}}</div>
-			<div class="name">角色名:{{myInfo.name}}</div>
-			<div class="ATK">ATK:{{myInfo.ATK}}<span class="addAttr" v-text="'(+'+myWeapon.addAttr+')'"></span></div>
-			<div class="DEF">DEF:{{myInfo.DEF}} <span class="addAttr" v-text="'(+'+myCloth.addAttr+')'"></span></div>
-			<div class="HP">HP:{{myInfo.HP}} <span class="addAttr" v-text="'(+'+myAmulet.addAttr+')'"></span></div>
+			<div class="name">角色名:{{myData.name}}</div>
+			<div class="ATK">ATK:{{myData.ATK}}<span class="addAttr" v-text="'(+'+myWeapon.addAttr+')'"></span></div>
+			<div class="DEF">DEF:{{myData.DEF}} <span class="addAttr" v-text="'(+'+myCloth.addAttr+')'"></span></div>
+			<div class="HP">HP:{{myData.HP}} <span class="addAttr" v-text="'(+'+myAmulet.addAttr+')'"></span></div>
+			<div class="myMonye">金币：{{myData.money}}元</div>
+			{{myWeapon.myclass}}
+			
 			<div class="myCloth">
 				<div class="weapon myEqui">
-					<p>武器：<span :class="myWeapon.myclass" data-sea="0" v-text="myWeapon.name"></span></p>
+					<p>武器：<span :class="myWeapon.myclass" data-sea="0" v-text="myData.myWeapon.name"></span></p>
 					<ul class="myDetail">
 						<li v-text="'ATK+'+myWeapon.addAttr"></li>
 						<li v-text="'阐述：'+myWeapon.detail"></li>
@@ -57,6 +60,7 @@
 					</ul>
 				</div>
 			</div>
+		
 		</div>
 
 	</body>
