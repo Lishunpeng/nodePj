@@ -1,4 +1,9 @@
 *{list-style: none;margin: 0;padding: 0;border: 0;font-size: .4rem;color: #333333;box-sizing: border-box;padding: 0;}
+div,p,a,h1,h2,h3,h4,h5,h6,i,span,input,ul,li,dd,dl,dt,ol{font-size: .32rem;color: #333333;font-family: "微软雅黑";}
+.mui-table-view:before{background: transparent!important;}
+.mui-table-view-cell:after{background: transparent!important;}
+.broke{color: #999999!important;}/*损坏的字体颜色*/
+.ordin{color: #000!important;}/*损坏的字体颜色*/
 /*公用头部*/
 .Gamecontant{width: 100%;}
 .header{width: 100%;height: 1rem;background: #f1f1f1;margin: 0 auto;display: flex;}
@@ -18,12 +23,14 @@
 .bagClass{height: .6rem;width: 100%;display: flex;margin-top: .5rem;}
 .bagClass li{height: .8rem;flex: 1;font-size: .35rem;text-align: center;line-height: .8rem;}
 .bagClass li.cur{border-bottom: .05rem solid brown;}
-.bagDetail{height: auto;width: 96%;margin: .5rem auto;overflow: hidden;}
+.bagDetail{height: auto;width: 100%;margin: .5rem auto;overflow: hidden;}
 .bagDetail>li{height: auto;width: 100%;display: none;}
 .bagDetail>li.cur{display: block;}
-.bagDetail li li{border-bottom: 1px solid #ccc;height: .6rem;line-height: .6rem;}
+.bagDetail li li{border-bottom: 1px solid #c8c7cc;height: .8rem;line-height: .8rem;padding: 0 .3rem;}
 .bagDetail li .name{float: left;}
 .bagDetail li .number,.bagDetail li .useState{float: right;}
+.clickBox{position: fixed;width: 1rem;display: none;}
+.clickBox li{padding: 0;height: .6rem;line-height: .6rem;border: 1px solid #c8c7cc;border-bottom:0 ;text-align: center;}
 /*注册与登录页面*/
 .login{width: 90%;margin: 0 auto;}
 .login .smbtn{width: 60%;margin: 0 auto;height: .8rem;text-align: center;line-height: .8rem;display: block;padding:0 ;}
