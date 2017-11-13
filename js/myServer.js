@@ -105,38 +105,32 @@ http.createServer(function(req, res) {
 						//初始化所有数据
 						var initData = {
 							myacco: myattr.myacco,
-							myinfo: {
-								name:myattr.name,
-								ATK: "10",
-								DEF: "10",
-								HP: "100"
-							},
-							myequi: {
-								weaponType: "00",
-								equiType: "00",
-								amuletType: "00"
-							}
+							name:myattr.name,
+							ATK: "10",
+							DEF: "10",
+							HP: "100",
+							money:"1000"
 						};
-						var bagData = {
+						//初始化武器数据
+						/*装备代码1000：第一位1表示是否使用中,第二位0表示武器，1表示防具，2表示护符,最后两位00代表装备代码**/
+						var equi = {
 							myacco: myattr.myacco,
-							myequi: [
-								{type: "00",useState:1,equiClass:"weapon"},
-								{type: "00",useState:1,equiClass:"cloth"},
-								{type: "00",useState:1,equiClass:"amulet"},
-								{type: "01",useState:0,equiClass:"amulet"},
-								{type: "01",useState:0,equiClass:"cloth"}
-							],
-							mymedicine: [
-								{type:"00",num:2},
-								{type:"01",num:5}
-							],
-							mymaterial:[
-								{type:"00",num:2},
-								{type:"01",num:5}
-							]
+							code: "1000,0001,1100,0101,1200,0201"
+						};
+						//初始化药水数据
+						var mymedicine = {
+							myacco: myattr.myacco,
+							code:"00,01",
+						};
+						//初始化材料数据
+						var mymaterial = {
+							myacco: myattr.myacco,
+							code:"00,01",
 						};
 						insertData(db, initData, function(result) {db.close();}, 'personInfo');
-						insertData(db, bagData, function(result) {db.close();}, 'bagData');
+						insertData(db, equi, function(result){db.close();}, 'equi');
+						insertData(db, mymedicine, function(result) {db.close();}, 'mymedicine');
+						insertData(db, mymaterial, function(result) {db.close();}, 'mymaterial');
 						insertData(db, myattr, function(result) {db.close();}, 'user');
 						res.end("注册成功");
 					}
@@ -147,15 +141,17 @@ http.createServer(function(req, res) {
 	} else if(pathname == "/getInfo") {
 		var mydata = null;
 		var params = url.parse(req.url, true).query;
-		MongoClient.connect(DB_CONN_STR, function(err, db) {
-			console.log("连接成功！");
+		var 
+		console.log(params)
+		/*MongoClient.connect(DB_CONN_STR, function(err, db) {
+			
 			selectData(db, params, function(result) {
 				console.log(result[0])
 				mydata = result[0];
 				res.end(JSON.stringify(mydata))
 				db.close();
 			}, 'personInfo');
-		});
+		});*/
 	} else if(pathname == "/getbagInfo") {
 		var mydata = null;
 		var params = url.parse(req.url, true).query;

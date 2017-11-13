@@ -42,14 +42,14 @@ myFun.prototype = {
 			type: "get",
 			url: path,
 			success: function(data) {
-				console.log(data)
 				vm.myData = JSON.parse(data);
 				if(search == "/GameTest.html") {
-					vm.myInfo = vm.myData.myinfo;
+					console.log(data)
+					/*vm.myInfo = vm.myData.myinfo;
 					vm.myEqui = vm.myData.myequi;
 					vm.myCloth = myobj.getData(myEqui, vm.myEqui.equiType);
 					vm.myWeapon = myobj.getData(myWeapon, vm.myEqui.weaponType);
-					vm.myAmulet = myobj.getData(myAmulet, vm.myEqui.amuletType);
+					vm.myAmulet = myobj.getData(myAmulet, vm.myEqui.amuletType);*/
 				} else if(search == "/mybag.html") {
 					console.log(vm.myData);
 					vm.mymedicine=myobj.bagData(mymedicine,vm.myData.mymedicine);
