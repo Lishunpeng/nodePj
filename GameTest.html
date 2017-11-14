@@ -34,11 +34,10 @@
 			<div class="DEF">DEF:{{myData.DEF}} <span class="addAttr" v-text="'(+'+myCloth.addAttr+')'"></span></div>
 			<div class="HP">HP:{{myData.HP}} <span class="addAttr" v-text="'(+'+myAmulet.addAttr+')'"></span></div>
 			<div class="myMonye">金币：{{myData.money}}元</div>
-			{{myWeapon.myclass}}
 			
 			<div class="myCloth">
 				<div class="weapon myEqui">
-					<p>武器：<span :class="myWeapon.myclass" data-sea="0" v-text="myData.myWeapon.name"></span></p>
+					<p>武器：<span :class="myWeapon.myclass" data-sea="0" v-text="myWeapon.name"></span></p>
 					<ul class="myDetail">
 						<li v-text="'ATK+'+myWeapon.addAttr"></li>
 						<li v-text="'阐述：'+myWeapon.detail"></li>
@@ -72,7 +71,7 @@
 	<script src="fontsize.js"></script>
 	<script type="text/javascript">
 //		myobj.changeHead();
-		myobj.searchEqui();
+		myobj.equiUseinfo();
 		myobj.getajax("/getInfo?myacco=" + localStorage.acco);
 	</script>
 

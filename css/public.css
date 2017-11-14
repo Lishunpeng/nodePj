@@ -28,7 +28,9 @@ div,p,a,h1,h2,h3,h4,h5,h6,i,span,input,ul,li,dd,dl,dt,ol{font-size: .32rem;color
 .bagDetail>li.cur{display: block;}
 .bagDetail li li{border-bottom: 1px solid #c8c7cc;height: .8rem;line-height: .8rem;padding: 0 .3rem;}
 .bagDetail li .name{float: left;}
-.bagDetail li .number,.bagDetail li .useState{float: right;}
+.bagDetail li .number{float: right;}
+.bagDetail li .use{float: right;color: #ff0000;}
+.bagDetail li .unuse{float: right;color: #999999;}
 .clickBox{position: fixed;width: 1rem;display: none;}
 .clickBox li{padding: 0;height: .6rem;line-height: .6rem;border: 1px solid #c8c7cc;border-bottom:0 ;text-align: center;}
 /*注册与登录页面*/

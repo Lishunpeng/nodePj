@@ -105,44 +105,46 @@ http.createServer(function(req, res) {
 						//初始化所有数据
 						var initData = {
 							myacco: myattr.myacco,
-							name:myattr.name,
+							name: myattr.name,
 							ATK: "10",
 							DEF: "10",
 							HP: "100",
-							money:"1000",
-							weaponUse:"00",
-							clothUse:"00",
-							amuletUse:"00"
+							money: "1000",
+							weaponUse: "00",
+							clothUse: "00",
+							amuletUse: "00"
 						};
 						//初始化武器数据
 						/*装备代码1000：第一位1表示是否使用中,第二位0表示武器，1表示防具，2表示护符,最后两位00代表装备代码**/
-						var equi = {
+						/*其他物品代码1000：前两位代表数量,最后两位00代表物品代码**/
+						var goods = {
 							myacco: myattr.myacco,
-							code: "1000,0001,1100,0101,1200,0201"
+							equiCode: "1000,0001,1100,0101,1200,0201", //装备
+							medicineCode: "55#01", //药水
+							materialCode: "10#01" //材料
 						};
-						//初始化药水数据
-						var mymedicine = {
-							myacco: myattr.myacco,
-							code:"00,01",
-						};
-						//初始化材料数据
-						var mymaterial = {
-							myacco: myattr.myacco,
-							code:"00,01",
-						};
-						insertData(db, initData, function(result) {db.close();}, 'personInfo');
-						insertData(db, equi, function(result){db.close();}, 'equi');
-						insertData(db, mymedicine, function(result) {db.close();}, 'mymedicine');
-						insertData(db, mymaterial, function(result) {db.close();}, 'mymaterial');
-						insertData(db, myattr, function(result) {db.close();}, 'user');
+						insertData(db, initData, function(result) {
+							db.close();
+						}, 'personInfo');
+						insertData(db, goods, function(result) {
+							db.close();
+						}, 'goods');
+						insertData(db, myattr, function(result) {
+							db.close();
+						}, 'user');
 						res.end("注册成功");
 					}
 				}, 'user');
 			});
 		});
 		/*首页获取ajax数据*/
-	} else if(pathname == "/getInfo") {
+	} else if(pathname == "/getInfo" || pathname == "/getGoods") {
 		var mydata = null;
+		if(pathname == "/getInfo") {
+			linkBase = 'personInfo'
+		} else if(pathname == "/getGoods") {
+			linkBase = 'goods'
+		}
 		var params = url.parse(req.url, true).query;
 		console.log(params)
 		MongoClient.connect(DB_CONN_STR, function(err, db) {
@@ -151,17 +153,30 @@ http.createServer(function(req, res) {
 				mydata = result[0];
 				res.end(JSON.stringify(mydata))
 				db.close();
-			}, 'personInfo');
+			}, linkBase);
 		});
-	} else if(pathname == "/getbagInfo") {
-		var mydata = null;
-		var params = url.parse(req.url, true).query;
-		MongoClient.connect(DB_CONN_STR, function(err, db) {
-			selectData(db, params, function(result) {
-				mydata = result[0];
-				res.end(JSON.stringify(mydata))
-				db.close();
-			}, 'bagData');
+	} else if(pathname == "/useEqui") {
+		req.on('data', function(attr) {
+			myattr = qs.parse(decodeURI(attr));
+			console.log(myattr);
+			var whereData = {myacco:myattr.myacco}
+			if (myattr.equiClass=="weapon") {
+				var udInfo = {$set:{weaponUse:myattr.weaponUse}}
+			}else if(myattr.equiClass=="cloth"){
+				var udInfo = {$set:{clothUse:myattr.clothUse}}
+			}else if(myattr.equiClass=="amulet"){
+				var udInfo = {$set:{amuletUse:myattr.amuletUse}}
+			}
+			if (myattr.typeCode=="equiCode") {
+				var udBag = {$set:{equiCode:myattr.code}}
+				console.log(udBag)
+			}
+			console.log(udInfo)
+			MongoClient.connect(DB_CONN_STR, function(err, db) {
+				updateData(db,whereData,udBag,function(result) {db.close();},'goods');
+				updateData(db,whereData,udInfo,function(result) {db.close();},'personInfo');
+				res.end('使用成功')
+			});
 		});
 	}
 }).listen(3000);

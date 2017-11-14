@@ -10,7 +10,7 @@
 		<title></title>
 	</head>
 	<style>
-		.mui-popup-text{text-align: left!important;}
+		.alertLeft{text-align: left!important;}
 	</style>
 
 	<body>
@@ -39,20 +39,20 @@
 		<ol class="bagDetail" id="bagData">
 			<li class="cur">
 				<ul class="bagCont mui-table-view">
-					<li v-for="data in myEqui" class="mui-table-view-cell" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)">
-						<span :class="data.myclass" v-text="data.name" ></span>
-						<span class="useState" v-text="data.useState?'使用中':'未使用'"></span>
+					<li v-for="data in equi" class="mui-table-view-cell" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)">
+						<span :class="data.goodsInfo.myclass" v-text="data.goodsInfo.name" ></span>
+						<span :class="data.useState==1?'use':'unuse'" v-text="data.useState==1?'使用中':'未使用'"></span>
 					</li>
 				</ul>
 			</li>
 			<li>
 				<ul class="bagCont mui-table-view">
-					<li v-for="data in mymedicine" class="mui-table-view-cell" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)"><span :class="data.myclass" v-text="data.name"></span><span class="number" v-text="'×'+data.num"></span></li>
+					<li v-for="data in medicine" class="mui-table-view-cell" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)"><span :class="data.goodsInfo.myclass" v-text="data.goodsInfo.name"></span><span class="number" v-text="'×'+data.num"></span></li>
 				</ul>
 			</li>
 			<li>
 				<ul class="bagCont mui-table-view">
-					<li v-for="data in mymaterial" class="mui-table-view-cell" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)"><span :class="data.myclass" v-text="data.name"></span><span class="number" v-text="'×'+data.num"></span></li>
+					<li v-for="data in material" class="mui-table-view-cell" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)"><span :class="data.goodsInfo.myclass" v-text="data.goodsInfo.name"></span><span class="number" v-text="'×'+data.num"></span></li>
 				</ul>
 			</li>
 			<li>4</li>
@@ -76,7 +76,7 @@
 	<script>
 		myobj.changeBag();
 		myobj.clickBoxhide();
-		myobj.getajax("/getbagInfo?myacco=" + localStorage.acco);
+		myobj.getajax("/getGoods?myacco=" + localStorage.acco);
 	</script>
 
 </html>
