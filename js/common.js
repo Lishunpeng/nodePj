@@ -1,4 +1,5 @@
-var numAl = /^[0-9a-zA_Z]+$/;
+var numAl = /^[0-9a-zA_Z]+$/; //允许数字和英文
+var re = /^[1-9]+\d*$/; //允许数字
 var equiTypecount = 1; //定义装备判断数字位置
 var search = window.location.pathname;
 var hash = window.location.hash.replace("#", "");
@@ -30,8 +31,8 @@ myFun.prototype = {
 						return mui.alert(data.msg);
 					}
 
-				}else if(search == "/mybag.html") {
-					mui.alert(data,function(){
+				} else if(search == "/mybag.html") {
+					mui.alert(data, function() {
 						location.reload();
 					});
 
@@ -85,8 +86,11 @@ myFun.prototype = {
 		var str = "";
 		for(i in obj) {
 			var mydata = {};
+			mydata.name = 'mat'
+			mydata.code = obj[i];
 			if(val == "medicine") {
-				mydata.type = "HP"
+				mydata.type = "HP";
+				mydata.name = 'med'
 			}
 			str = obj[i].split("#");
 			mydata.num = str[0];
@@ -102,6 +106,7 @@ myFun.prototype = {
 		var strL = "";
 		for(i in obj) {
 			var mydata = {};
+			mydata.name = 'equi'
 			strF = obj[i].substr(0, 2);
 			strL = obj[i].substr(2);
 			mydata.useState = strF[0];
@@ -187,39 +192,100 @@ myFun.prototype = {
 		var strL = "";
 		strL = equiData.code.substr(2);
 		if(equiData.code[equiTypecount] == 0) {
-			postData.code = myobj.searchEqui(0,equiData.code);
+			postData.code = myobj.searchEqui(0, equiData.code);
 			postData.weaponUse = strL;
 			postData.equiClass = 'weapon'
 		} else if(equiData.code[equiTypecount] == 1) {
-			postData.code = myobj.searchEqui(1,equiData.code);
+			postData.code = myobj.searchEqui(1, equiData.code);
 			postData.clothUse = strL;
 			postData.equiClass = 'cloth'
 		} else if(equiData.code[equiTypecount] == 2) {
-			postData.code = myobj.searchEqui(2,equiData.code);
+			postData.code = myobj.searchEqui(2, equiData.code);
 			postData.amuletUse = strL;
 			postData.equiClass = 'amulet'
 		}
 		postData.typeCode = "equiCode";
 		postData.myacco = localStorage.acco;
-		myobj.postajax('/useEqui',postData);
+		myobj.postajax('/useEqui', postData);
 		console.log(postData)
 	},
 	//查询装备类型并转化
-	searchEqui:function(val,code){
-		var	myCode = localStorage.equi.split(",");
+	searchEqui: function(val, code) {
+		var myCode = localStorage.equi.split(",");
 		var str = "";
 		for(i in myCode) {
-				if(myCode[i][equiTypecount] == val && myCode[i][0] == 1) {
-					myCode[i] ='0'+myCode[i].substr(1);
-				}
-				if (myCode[i]==code) {
-					myCode[i] ='1'+myCode[i].substr(1);
-				}
-				str+=','+myCode[i];
+			if(myCode[i][equiTypecount] == val && myCode[i][0] == 1) {
+				myCode[i] = '0' + myCode[i].substr(1);
 			}
+			if(myCode[i] == code) {
+				myCode[i] = '1' + myCode[i].substr(1);
+			}
+			str += ',' + myCode[i];
+		}
 		return str.substr(1);
 	},
+	//物品出售
+	clickBox_sale: function() {
+		var mydata = JSON.parse(localStorage.mydata);
+		if(mydata.goodsInfo.getMoney) {
+			if(mydata.useState == 1) {
+				return mui.alert("装备使用中");
+			} else if(mydata.name == 'equi') {
+				var myCode = localStorage.equi;
+				mui.confirm('是否确定出售？', function(e) {
+					if(e.index == 1) {
+						myobj.saleCode(myCode);
+					} else {
+						return mui.alert('出售失败')
+					}
+				})
+			} else if(mydata.name == 'mat' || mydata.name == 'med') {
+				var myCode = "";
+				mydata.name == 'mat' ? myCode = localStorage.material : myCode = localStorage.medicine;
+				console.log(myCode)
+				var num = parseInt(mydata.num);
+				mui.prompt('请输入丢弃数量', '请输入数量', function(e) {
+					if(e.index == 0) {
+						return mui.alert('出售失败')
+					} else if(!re.test(e.value)) {
+						return mui.alert('请输入正确正整数数量')
+					} else if(e.value > num) {
+						return mui.alert('请确定你有没有这么多物品在进行出售');
+					} else if(e.index == 1) {
+						myobj.saleCode(myCode, e.value);
+					}
+				})
 
+			}
+			//			myobj.saleCode(myCode);
+		} else {
+			return mui.alert("该物品无法出售");
+		}
+	},
+	//生成物品代码串
+	saleCode: function(code, val) {
+		var mydata = JSON.parse(localStorage.mydata);
+		var data = code.split(",");
+		var codeString = "";
+		for(i in data) {
+			var str = data[i].split("#");
+			if(mydata.code == data[i]) {
+				str[0] -= val;
+				str = str[0] + '#' + str[1];
+				console.log(str)
+				if(str[0] == 0) {
+					str = "";
+				}
+				codeString += ',' + str;
+			} else {
+				codeString += ',' + data[i];
+			}
+		}
+		codeString = codeString.substr(1);
+		var postData = {};
+		postData.myacco = localStorage.acco;
+		postData.money = localStorage.acco;
+	}
 }
 var myobj = new myFun();
 var vm = new Vue({

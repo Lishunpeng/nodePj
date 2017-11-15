@@ -27,6 +27,14 @@ http.createServer(function(req, res) {
 								msg: "登录成功",
 								myacco: result[0].myacco
 							}
+							var mymoney = {
+							myacco: myattr.myacco,
+							money: "1000",
+							goods:{$ref:"goods",$id:myattr.myacco}
+						};
+						insertData(db, mymoney, function(result) {
+							db.close();
+						}, 'mymoney');	
 							console.log(data)
 							res.end(JSON.stringify(data));
 						} else {
@@ -79,7 +87,19 @@ http.createServer(function(req, res) {
 			res.end(data)
 		});
 		/*注册页面*/
-	} else if(pathname == "/firstlogin") {
+	}
+	else if(pathname.indexOf(".png") > 0) {
+		console.log(req.url)
+		fs.readFile('../img' + req.url, 'binary', function(err, data) {
+			res.writeHead(200, {
+				"Content-type": "'image/jpeg"
+			})
+			res.write(data,'binary')
+			res.end()
+			return;
+		});
+		/*注册页面*/
+	}else if(pathname == "/firstlogin") {
 		var myattr = null;
 		req.on('data', function(attr) {
 
@@ -112,16 +132,18 @@ http.createServer(function(req, res) {
 							money: "1000",
 							weaponUse: "00",
 							clothUse: "00",
-							amuletUse: "00"
+							amuletUse: "00",
+							goods:{$ref:"goods",$id:myattr.myacco}
 						};
 						//初始化武器数据
 						/*装备代码1000：第一位1表示是否使用中,第二位0表示武器，1表示防具，2表示护符,最后两位00代表装备代码**/
 						/*其他物品代码1000：前两位代表数量,最后两位00代表物品代码**/
 						var goods = {
-							myacco: myattr.myacco,
+							_id: myattr.myacco,
 							equiCode: "1000,0001,1100,0101,1200,0201", //装备
-							medicineCode: "55#01", //药水
-							materialCode: "10#01" //材料
+							medicineCode: "55#01,52#01,5#00", //药水
+							materialCode: "10#01", //材料
+							money:'1000'
 						};
 						insertData(db, initData, function(result) {
 							db.close();
