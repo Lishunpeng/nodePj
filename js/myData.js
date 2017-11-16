@@ -30,28 +30,40 @@ var mymaterial = [
 //怪物
 /*掉落装备代码：#号前表示*/
 var easyMonster = [
-	{type:"00",name:"花蘑菇",detail:"漂亮的蘑菇",ATK:"15",DEF:'5',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'1',
+	{type:"00",name:"花蘑菇",detail:"漂亮的蘑菇",ATK:"15",DEF:'5',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'1',
 	 drop:[{type:'wea',code:'00',odds:'10'},{type:'clo',code:'00',odds:'10'},{type:'mat',code:'02',odds:'50'},{type:'med',code:'01',odds:'30'}]},
 	{type:"01",name:"毒蘑菇",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
 	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
-	 {type:"02",name:"毒蘑菇2",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
+	 {type:"02",name:"毒蘑菇2",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"pink",level:'1',dropMoney:"500",dropGoods:'3',
 	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
-	 {type:"03",name:"毒蘑菇3",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
+	 {type:"03",name:"毒蘑菇3",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"pink",level:'1',dropMoney:"500",dropGoods:'3',
 	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
-	 {type:"04",name:"毒蘑菇4",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
+	 {type:"04",name:"毒蘑菇4",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'3',
 	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
-	 {type:"05",name:"毒蘑菇5",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
+	 {type:"05",name:"毒蘑菇5",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'3',
 	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
-	 {type:"06",name:"毒蘑菇6",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
+	 {type:"06",name:"毒蘑菇6",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'3',
 	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
 	 {type:"07",name:"毒蘑菇7",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
 	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
-	 {type:"08",name:"毒蘑菇8",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
+	 {type:"08",name:"毒蘑菇8",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'3',
 	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
 	 {type:"09",name:"毒蘑菇9",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
 	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]}
-	 
 ];
+// 简单模式的关卡
+var grid = [
+	{},
+	{},
+	{},
+	{},
+	{},
+	{}
+]
+var NPC ={
+	
+}
+
 
 
 

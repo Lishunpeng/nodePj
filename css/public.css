@@ -42,4 +42,8 @@ a:active{background: #ccc;}
 .login{width: 90%;margin: 0 auto;}
 .login .smbtn{width: 60%;margin: 0 auto;height: .8rem;text-align: center;line-height: .8rem;display: block;padding:0 ;}
 .loginhead{height: .8rem;line-height: .8rem;text-align: center;background: #ccc;font-size: .4rem;margin: 0 0 .5rem 0;}
-
+/*冒险模式*/
+.monsterInfo{padding: .1rem .3rem;}
+.monsterInfo p{text-align: left;}
+.myOperation{display: flex;}
+.myOperation li{flex: 1;text-align: center;height: 1rem;line-height: 1rem;background: #fff;color: #FF5053;}

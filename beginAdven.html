@@ -10,6 +10,20 @@
 		<title></title>
 	</head>
 	<body>
+		<div class="monsterInfo" id="monsterInfo">
+			<p>你遇到了：</p>
+			<p class="name" v-text="'名字：'+monster.name"></p>
+			<p class="ATK" v-text="'攻击力：'+monster.ATK"></p>
+			<p class="DEF" v-text="'防御力：'+monster.DEF"></p>
+			<p class="HP" v-text="'血量：'+monster.HP"></p>
+			<p class="detail" v-text="'怪物详情：'+monster.detail"></p>
+			<p class="level" v-text="'难度系数：'+monster.level"></p>
+		</div>
+		<ul class="myOperation">
+			<li>攻击</li>
+			<li>背包</li>
+			<li>一键攻击</li>
+		</ul>
 		<p class="backIndex" onclick="myobj.back()">返回首页</p>
 	</body>
 	<script src="jquery-2.1.0.js"></script>
@@ -19,7 +33,7 @@
 	<script src="common.js"></script>
 	<script src="fontsize.js"></script>
 	<script>
-		console.log(hash)
+		myobj.getMonster();
 	</script>
 
 </html>
