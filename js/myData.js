@@ -17,16 +17,41 @@ var myAmulet =[
 ];
 //药水
 var mymedicine = [
-	{type:"00",name:"劣质的红药水",detail:"快坏掉的药水",addAttr:"30",myclass:"broke",getMoney:"100"},
+	{type:"00",name:"神奇的药水",detail:"敬请期待",addAttr:"",myclass:"pink"},
 	{type:"01",name:"红药水",detail:"用于治疗的药水。",addAttr:"50",myclass:"ordin",getMoney:"300"}
 ];
 //材料
 var mymaterial = [
-	{type:"00",name:"材料1",detail:"我的材料1,。",addAttr:"",myclass:"broke",getMoney:"100"},
-	{type:"01",name:"材料2",detail:"我的材料2。",addAttr:"",myclass:"ordin",getMoney:"100"}
+	{type:"00",name:"神奇的石头",detail:"一颗会发光的石头，还不知道有什么用",addAttr:"",myclass:"pink"},
+	{type:"01",name:"材料2",detail:"我的材料2。",addAttr:"",myclass:"ordin",getMoney:"100"},
+	{type:"02",name:"死去的蘑菇",detail:"花蘑菇尸体。",addAttr:"",myclass:"ordin",getMoney:"300"},
+	{type:"03",name:"有毒的蘑菇盖",detail:"毒蘑菇头盖。",addAttr:"",myclass:"ordin",getMoney:"500"}
 ];
 //怪物
-
+/*掉落装备代码：#号前表示*/
+var easyMonster = [
+	{type:"00",name:"花蘑菇",detail:"漂亮的蘑菇",ATK:"15",DEF:'5',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'1',
+	 drop:[{type:'wea',code:'00',odds:'10'},{type:'clo',code:'00',odds:'10'},{type:'mat',code:'02',odds:'50'},{type:'med',code:'01',odds:'30'}]},
+	{type:"01",name:"毒蘑菇",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
+	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
+	 {type:"02",name:"毒蘑菇2",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
+	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
+	 {type:"03",name:"毒蘑菇3",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
+	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
+	 {type:"04",name:"毒蘑菇4",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
+	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
+	 {type:"05",name:"毒蘑菇5",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
+	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
+	 {type:"06",name:"毒蘑菇6",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
+	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
+	 {type:"07",name:"毒蘑菇7",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
+	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
+	 {type:"08",name:"毒蘑菇8",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
+	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
+	 {type:"09",name:"毒蘑菇9",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
+	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]}
+	 
+];
 
 
 

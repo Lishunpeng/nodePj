@@ -6,6 +6,7 @@ var MongoClient = require('mongodb').MongoClient;
 var DB_CONN_STR = 'mongodb://localhost:27017/mytest'; //数据库为 mytest
 http.createServer(function(req, res) {
 	var pathname = url.parse(req.url, true).pathname;
+	var backData = {};
 	/*登录页面*/
 	if(pathname == "/mylogin") {
 		var myattr = null;
@@ -22,32 +23,16 @@ http.createServer(function(req, res) {
 				selectData(db, whereAttr, function(result) {
 					if(result.length) {
 						if(result[0].mypassword == myattr.mypassword) {
-
-							var data = {
-								msg: "登录成功",
-								myacco: result[0].myacco
-							}
-							var mymoney = {
-							myacco: myattr.myacco,
-							money: "1000",
-							goods:{$ref:"goods",$id:myattr.myacco}
-						};
-						insertData(db, mymoney, function(result) {
-							db.close();
-						}, 'mymoney');	
-							console.log(data)
-							res.end(JSON.stringify(data));
+							backData.msg="登录成功";
+							backData.myacco=result[0].myacco;
+							res.end(JSON.stringify(backData));
 						} else {
-							var data = {
-								msg: "密码错误"
-							}
-							res.end(JSON.stringify(data));
+							backData.msg="密码错误";
+							res.end(JSON.stringify(backData));
 						}
 					} else {
-						var data = {
-							msg: "用户名不存在"
-						}
-						res.end(JSON.stringify(data));
+							backData.msg="用户名不存在";
+						res.end(JSON.stringify(backData));
 					}
 					db.close();
 				}, 'user');
@@ -87,22 +72,20 @@ http.createServer(function(req, res) {
 			res.end(data)
 		});
 		/*注册页面*/
-	}
-	else if(pathname.indexOf(".png") > 0) {
+	} else if(pathname.indexOf(".png") > 0) {
 		console.log(req.url)
 		fs.readFile('../img' + req.url, 'binary', function(err, data) {
 			res.writeHead(200, {
 				"Content-type": "'image/jpeg"
 			})
-			res.write(data,'binary')
+			res.write(data, 'binary')
 			res.end()
 			return;
 		});
 		/*注册页面*/
-	}else if(pathname == "/firstlogin") {
+	} else if(pathname == "/firstlogin") {
 		var myattr = null;
 		req.on('data', function(attr) {
-
 			myattr = qs.parse(decodeURI(attr));
 			var whereAttr = {
 				$or: [{
@@ -112,14 +95,14 @@ http.createServer(function(req, res) {
 				}]
 			}
 			MongoClient.connect(DB_CONN_STR, function(err, db) {
-				console.log("连接成功！");
 				selectData(db, whereAttr, function(result) {
-					console.log(result)
 					if(result.length) {
 						if(result[0].name == myattr.name) {
-							return res.end("角色名已存在，请换一个角色名");
+							backData.msg = "角色名已存在，请换一个角色名";
+							return res.end(JSON.stringify(backData));
 						} else if(result[0].myacco == myattr.myacco) {
-							return res.end("用户已存在，请换个用户");
+							backData.msg = "用户已存在，请换个用户";
+							return res.end(JSON.stringify(backData));
 						}
 					} else {
 						//初始化所有数据
@@ -129,21 +112,19 @@ http.createServer(function(req, res) {
 							ATK: "10",
 							DEF: "10",
 							HP: "100",
-							money: "1000",
 							weaponUse: "00",
 							clothUse: "00",
 							amuletUse: "00",
-							goods:{$ref:"goods",$id:myattr.myacco}
 						};
 						//初始化武器数据
 						/*装备代码1000：第一位1表示是否使用中,第二位0表示武器，1表示防具，2表示护符,最后两位00代表装备代码**/
 						/*其他物品代码1000：前两位代表数量,最后两位00代表物品代码**/
 						var goods = {
-							_id: myattr.myacco,
+							myacco: myattr.myacco,
 							equiCode: "1000,0001,1100,0101,1200,0201", //装备
-							medicineCode: "55#01,52#01,5#00", //药水
-							materialCode: "10#01", //材料
-							money:'1000'
+							medicineCode: "55#01,1#00", //药水
+							materialCode: "10#01,1#00", //材料
+							money: '1000'
 						};
 						insertData(db, initData, function(result) {
 							db.close();
@@ -154,50 +135,114 @@ http.createServer(function(req, res) {
 						insertData(db, myattr, function(result) {
 							db.close();
 						}, 'user');
-						res.end("注册成功");
+						backData.msg = "注册成功"
+						res.end(JSON.stringify(backData));
 					}
 				}, 'user');
 			});
 		});
 		/*首页获取ajax数据*/
 	} else if(pathname == "/getInfo" || pathname == "/getGoods") {
-		var mydata = null;
-		if(pathname == "/getInfo") {
-			linkBase = 'personInfo'
-		} else if(pathname == "/getGoods") {
-			linkBase = 'goods'
-		}
 		var params = url.parse(req.url, true).query;
-		console.log(params)
 		MongoClient.connect(DB_CONN_STR, function(err, db) {
-			selectData(db, params, function(result) {
-				console.log(result[0])
-				mydata = result[0];
-				res.end(JSON.stringify(mydata))
-				db.close();
-			}, linkBase);
+			if(pathname == "/getInfo") {
+				selectData(db, params, function(result) {
+					backData = result[0];
+					db.close();
+				}, 'personInfo');
+				selectData(db, params, function(result) {
+					backData.money = result[0].money
+					res.end(JSON.stringify(backData));
+					db.close();
+				}, 'goods');
+			} else if(pathname == "/getGoods") {
+				selectData(db, params, function(result) {
+					res.end(JSON.stringify(result[0]))
+					db.close();
+				}, 'goods');
+			}
+
 		});
 	} else if(pathname == "/useEqui") {
 		req.on('data', function(attr) {
 			myattr = qs.parse(decodeURI(attr));
-			console.log(myattr);
-			var whereData = {myacco:myattr.myacco}
-			if (myattr.equiClass=="weapon") {
-				var udInfo = {$set:{weaponUse:myattr.weaponUse}}
-			}else if(myattr.equiClass=="cloth"){
-				var udInfo = {$set:{clothUse:myattr.clothUse}}
-			}else if(myattr.equiClass=="amulet"){
-				var udInfo = {$set:{amuletUse:myattr.amuletUse}}
+			var whereData = {
+				myacco: myattr.myacco
 			}
-			if (myattr.typeCode=="equiCode") {
-				var udBag = {$set:{equiCode:myattr.code}}
-				console.log(udBag)
+			if(myattr.equiClass == "weapon") {
+				var udInfo = {
+					$set: {
+						weaponUse: myattr.weaponUse
+					}
+				}
+			} else if(myattr.equiClass == "cloth") {
+				var udInfo = {
+					$set: {
+						clothUse: myattr.clothUse
+					}
+				}
+			} else if(myattr.equiClass == "amulet") {
+				var udInfo = {
+					$set: {
+						amuletUse: myattr.amuletUse
+					}
+				}
 			}
-			console.log(udInfo)
+			if(myattr.typeCode == "equiCode") {
+				var udBag = {
+					$set: {
+						equiCode: myattr.code
+					}
+				}
+			}
 			MongoClient.connect(DB_CONN_STR, function(err, db) {
-				updateData(db,whereData,udBag,function(result) {db.close();},'goods');
-				updateData(db,whereData,udInfo,function(result) {db.close();},'personInfo');
-				res.end('使用成功')
+				updateData(db, whereData, udBag, function(result) {
+					db.close();
+				}, 'goods');
+				updateData(db, whereData, udInfo, function(result) {
+					db.close();
+				}, 'personInfo');
+				backData.msg = '使用成功';
+				res.end(JSON.stringify(backData));
+			});
+		});
+	} else if(pathname == "/saleGoods") {
+		req.on('data', function(attr) {
+			myattr = qs.parse(decodeURI(attr));
+			
+			console.log(myattr);
+			var whereData = {
+				myacco: myattr.myacco
+			}
+			if(myattr.name == "med") {
+				var udBag = {
+					$set: {
+						medicineCode: myattr.code,
+						money:myattr.money
+					}
+				}
+			}else if(myattr.name == "mat") {
+				var udBag = {
+					$set: {
+						materialCode: myattr.code,
+						money:myattr.money
+					}
+				}
+			}else if(myattr.name == "equi") {
+				var udBag = {
+					$set: {
+						equiCode: myattr.code,
+						money:myattr.money
+					}
+				}
+			}
+			
+			MongoClient.connect(DB_CONN_STR, function(err, db) {
+				updateData(db, whereData, udBag, function(result) {
+					backData.msg = '出售成功';
+					res.end(JSON.stringify(backData))
+					db.close();
+				}, 'goods');
 			});
 		});
 	}
@@ -238,4 +283,4 @@ var updateData = function(db, whereData, mydata, callback, table) {
 }
 
 // 控制台会输出以下信息
-console.log('Server running at http://127.0.0.1:8081/');
+console.log('Server running at http://127.0.0.1:3000/');

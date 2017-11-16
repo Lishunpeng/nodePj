@@ -16,8 +16,8 @@
 	<body>
 		<div class="Gamecontant">
 			<ul class="header">
-				<li class="cur"><a href="GameTest.html">信息</a></li>
-				<li><a href="mybag.html">背包</a></li>
+				<li><a href="GameTest.html">信息</a></li>
+				<li class="cur"><a href="mybag.html">背包</a></li>
 				<li><a href="adventure.html">冒险</a></li>
 				<li>4</li>
 				<li>5</li>
@@ -31,6 +31,7 @@
 			<li>装备</li>
 		</ul>
 		<ol class="bagDetail" id="bagData">
+			<div class="myMoney">我的金币<span v-text="myData.money+'元'" style="float: right;"></span></div>
 			<li class="cur">
 				<ul class="bagCont mui-table-view">
 					<li v-for="data in equi" class="mui-table-view-cell" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)">
@@ -57,7 +58,6 @@
 				<li class="mui-table-view-cell" onclick="myobj.clickBox_use()">使用</li>
 				<li class="mui-table-view-cell" onclick="myobj.clickBox_detail()">详情</li>
 				<li class="mui-table-view-cell" onclick="myobj.clickBox_sale()">出售</li>
-				<li class="mui-table-view-cell">丢弃</li>
 			</ul>
 		</div>
 	</body>
@@ -71,6 +71,10 @@
 		myobj.changeBag();
 		myobj.clickBoxhide();
 		myobj.getajax("/getGoods?myacco=" + localStorage.acco);
+		if (localStorage.cur) {
+			$('.bagClass li').eq(localStorage.cur).addClass("cur").siblings().removeClass("cur");
+			$(".bagDetail>li").eq(localStorage.cur).addClass("cur").siblings("li").removeClass("cur");
+		}
 	</script>
 
 </html>
