@@ -58,15 +58,13 @@ myFun.prototype = {
 			type: "get",
 			url: path,
 			success: function(data) {
+				
 				vm.myData = JSON.parse(data);
-				if(search == "/GameTest.html") {
+				if(search == "/GameTest.html" || "/beginAdven.html") {
 					vm.myWeapon = myobj.getData(myWeapon, vm.myData.weaponUse);
 					vm.myCloth = myobj.getData(myEqui, vm.myData.clothUse);
 					vm.myAmulet = myobj.getData(myAmulet, vm.myData.amuletUse);
-					console.log(vm.myData);
-
 				} else if(search == "/mybag.html") {
-					console.log(vm.myData);
 					localStorage.equi = vm.myData.equiCode;
 					localStorage.medicine = vm.myData.medicineCode;
 					localStorage.material = vm.myData.materialCode;
@@ -309,16 +307,77 @@ myFun.prototype = {
 		myobj.postajax('/saleGoods', postData)
 	},
 	//冒险模式随机产生怪物
-	getMonster:function(){
-		var myCount =Math.ceil(Math.random()*easyMonster.length);
-		vm.monster = easyMonster[myCount-1];
-	}
+	getMonster: function() {
+		var mydata = {};
+		if(hash == 0) {
+			for(var i = 0; i < vm.allPlace; i++) {
+				var myCount = Math.ceil(Math.random() * 2);
+				if(myCount == 1) {
+					var monsterCount = Math.ceil(Math.random() * easyMonster.length);
+					mydata = easyMonster[monsterCount - 1];
+					mydata.ismon = true;
+				} else {
+					var npcCount = Math.ceil(Math.random() * NPC.length);
+					mydata = NPC[npcCount - 1];
+					mydata.ismon = false;
+				}
+				vm.advent.push(mydata);
+			}
+			console.log(vm.advent);
+		}
+	},
+	//移动
+	moveGrid: function(obj) {
+
+		$(obj).attr("disabled", 'disabled');
+		$('.diceIcon').attr('src', 'dice.gif');
+		$('.diceIcon').show();
+		setTimeout(function() {
+			vm.myCount = Math.ceil(Math.random() * 6);
+			$('.diceIcon').attr('src', 'dice' + vm.myCount + '.png');
+			//点击按钮是否开启
+			$(obj).attr("disabled", false);
+			vm.myPlace += vm.myCount;
+			if(vm.myPlace >= vm.allPlace) {
+				vm.myPlace = vm.allPlace;
+				return mui.alert('闯关完成')
+			}
+			myobj.creatHtml(vm.advent[vm.myPlace-1]);
+		}, 1000);
+	},
+	searchMap: function() {
+		$('.advenBox').slideToggle(300);
+	},
+	//闯关页面的HTML
+	creatHtml: function(obj) {
+		$('.advenShow').empty();
+		if (obj.ismon) {
+			var str = '<div class="monsterInfo">你遇到了：<br/>名字：' +
+			obj.name+'<br/>' +
+			'攻击力：'+obj.ATK+'<br/>' +
+			'血量：'+obj.HP+'<br/>'+
+			'防御力：'+obj.DEF+'<br/>' +
+			'怪物详情：'+obj.detail+'<br/>'+
+			'难度系数：'+obj.level+'<br/>'+
+			'<ul class = "myOperation" >'+
+			'<li>一键攻击</li><li>背包</li>' +
+			'</ul></div>';
+		}else{
+			var str = '<div class="monsterInfo">你遇到了：'+
+			obj.name+'<br/>' +
+			'npc详情：'+obj.detail+'</div>'
+		}
+		$('.advenShow').append(str);
+	},
 }
 var myobj = new myFun();
 var vm = new Vue({
-	el: '#login,#firstLogin,#info,#bagData,#monsterInfo',
+	el: '#login,#firstLogin,#info,#bagData,#advenContent',
 	data: {
-		monster:{},
+		allPlace: 30, //定义总数
+		myPlace: 0,
+		isMonster: true,
+		advent: [],
 		opassword: "",
 		opasswordag: "",
 		acco: "",
@@ -329,7 +388,8 @@ var vm = new Vue({
 		myAmulet: {},
 		equi: [],
 		medicine: [],
-		material: []
+		material: [],
+		myCount:0
 	},
 	methods: {
 		//登录页面

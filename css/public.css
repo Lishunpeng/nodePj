@@ -1,5 +1,5 @@
-*{list-style: none;margin: 0;padding: 0;border: 0;font-size: .4rem;color: #333333;box-sizing: border-box;padding: 0;}
-div,p,a,h1,h2,h3,h4,h5,h6,i,span,input,ul,li,dd,dl,dt,ol{font-size: .32rem;color: #333333;font-family: "微软雅黑";margin: 0;}
+*{list-style: none;margin: 0;padding: 0;border: 0;font-size: .4rem;color: #333333;box-sizing: border-box;padding: 0;font-size: .32rem;color: #333333;}
+div,p,a,h1,h2,h3,h4,h5,h6,i,span,input,ul,li,dd,dl,dt,ol,button{font-size: .32rem;color: #333333;font-family: "微软雅黑";margin: 0;}
 a:active{background: #ccc;}
 .mui-table-view:before{background: transparent!important;}
 .mui-table-view-cell:after{background: transparent!important;}
@@ -7,7 +7,7 @@ a:active{background: #ccc;}
 .ordin{color: #000!important;}/*损坏的字体颜色*/
 .pink{color: pink!important;}/*损坏的字体颜色*/
 .backIndex:active{background: #f1f1f1;}
-.backIndex{height: .8rem;background: #fff;color: #666;display: block;position: absolute;bottom: 0;width: 100%;text-align: center;line-height: .8rem;}
+.backIndex{z-index: 100;height: .8rem;background: #fff;color: #666;display: block;position: fixed;bottom: 0;width: 100%;text-align: center;line-height: .8rem;}
 /*公用头部*/
 .Gamecontant{width: 100%;position: fixed;bottom: 0;left: 0;}
 .header{width: 100%;height: 1rem;background: #f1f1f1;margin: 0 auto;display: flex;}
@@ -47,3 +47,13 @@ a:active{background: #ccc;}
 .monsterInfo p{text-align: left;}
 .myOperation{display: flex;}
 .myOperation li{flex: 1;text-align: center;height: 1rem;line-height: 1rem;background: #fff;color: #FF5053;}
+.advenBox{background: rgba(0,0,0,.6);width: 100%;padding: 0 2% 1rem 2%;overflow: hidden;display: none;z-index: 10;position: absolute;left: 0;top: .6rem;}
+.advenBox li{height: .5rem;width:49%;text-align: center;line-height: .5rem;background: #fff;font-size: .25rem;float: left;border-radius:.1rem;margin-top: 2%;}
+.advenBox li:nth-child(2n){margin-left:2%;}
+.searchMap{text-align: center;width: 100%;background: #fff;height: .6rem;line-height: .6rem;}
+.searchMap:active{background: #ccc;}
+.showAdven{width: 100%;padding: .1rem .2rem;}
+.countGrid{float: right;margin-left: .2rem;background: #fff;width: 3rem;height: .6rem;line-height: .6rem;padding: 0;}
+.btnDice{height: .6rem;line-height: .6rem;padding: 0;width: 1.5rem;font-size: .3rem;}
+.diceIcon{display: none;}
+.myPlace{height: .4rem!important;line-height: .4rem!important;width: 1rem!important;border: 0!important;margin: 0!important;padding: 0!important;text-align: right!important;}

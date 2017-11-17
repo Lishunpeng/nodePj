@@ -51,18 +51,12 @@ var easyMonster = [
 	 {type:"09",name:"毒蘑菇9",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
 	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]}
 ];
-// 简单模式的关卡
-var grid = [
-	{},
-	{},
-	{},
-	{},
-	{},
-	{}
-]
-var NPC ={
-	
-}
+//一些npc内容
+var NPC =[
+	{name:'黄大仙',myclass:'broke',detail:"1111"},{name:'黄大仙1',myclass:'ordin',detail:"2222"},{name:'黄大仙2',myclass:'broke',detail:"333"},
+	{name:'黄大仙3',myclass:'broke',detail:"444"},{name:'黄大仙4',myclass:'ordin',detail:"555"},{name:'黄大仙5',myclass:'pink',detail:"666"},
+	{name:'黄大仙6',myclass:'broke',detail:"777"},{name:'黄大仙7',myclass:'broke',detail:"888"}
+];
 
 
 
