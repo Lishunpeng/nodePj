@@ -60,7 +60,7 @@ myFun.prototype = {
 			success: function(data) {
 				
 				vm.myData = JSON.parse(data);
-				if(search == "/GameTest.html" || "/beginAdven.html") {
+				if(search == "/GameTest.html" || search=="/beginAdven.html") {
 					vm.myWeapon = myobj.getData(myWeapon, vm.myData.weaponUse);
 					vm.myCloth = myobj.getData(myEqui, vm.myData.clothUse);
 					vm.myAmulet = myobj.getData(myAmulet, vm.myData.amuletUse);
@@ -342,7 +342,8 @@ myFun.prototype = {
 				vm.myPlace = vm.allPlace;
 				return mui.alert('闯关完成')
 			}
-			myobj.creatHtml(vm.advent[vm.myPlace-1]);
+			vm.adventData = vm.advent[vm.myPlace-1]
+			myobj.creatHtml(vm.adventData);
 		}, 1000);
 	},
 	searchMap: function() {
@@ -360,7 +361,7 @@ myFun.prototype = {
 			'怪物详情：'+obj.detail+'<br/>'+
 			'难度系数：'+obj.level+'<br/>'+
 			'<ul class = "myOperation" >'+
-			'<li>一键攻击</li><li>背包</li>' +
+			'<li onclick="myobj.attack()">一键攻击</li><li>使用药水</li>' +
 			'</ul></div>';
 		}else{
 			var str = '<div class="monsterInfo">你遇到了：'+
@@ -369,6 +370,18 @@ myFun.prototype = {
 		}
 		$('.advenShow').append(str);
 	},
+	//一键攻击
+	attack:function(){
+		var eneny = vm.adventData;
+		console.log(eneny.DEF+1)
+		var myAtk =  $('.allATK').text();
+		var myDef =  $('.allDEF').text();
+		var myHp =  $('.allHP').text();
+		console.log(myAtk+1)
+		if (myAtk<eneny.DEF) {
+			console.log(5454)
+		}
+	}
 }
 var myobj = new myFun();
 var vm = new Vue({
@@ -389,7 +402,8 @@ var vm = new Vue({
 		equi: [],
 		medicine: [],
 		material: [],
-		myCount:0
+		myCount:0,
+		adventData:{}
 	},
 	methods: {
 		//登录页面
