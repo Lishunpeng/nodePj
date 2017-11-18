@@ -26,11 +26,11 @@
 				
 			</div>
 			<div class="advenShow"></div>
-			<div class="info" style="border-top:1px solid #ccc ;border-bottom:1px solid #ccc ;">
+			<div class="info" style="border-top:1px solid #ccc ;margin-top: .1rem;overflow: hidden;">
 				<p class="name">角色名:{{myData.name}}</p>
-				<p class="ATK">总:<span class="allATK" v-text="parseInt(myData.ATK) + parseInt(myWeapon.addAttr)"></span> ATK:{{myData.ATK}}<span class="addAttr" v-text="'(+'+myWeapon.addAttr+')'"></span></p>
-				<p class="DEF">总:<span class="allDEF" v-text="parseInt(myData.DEF) + parseInt(myCloth.addAttr)"></span>DEF:{{myData.DEF}} <span class="addAttr" v-text="'(+'+myCloth.addAttr+')'"></span></p>
-				<p class="HP">总:<span class="allHP" v-text="parseInt(myData.HP) + parseInt(myAmulet.addAttr)"></span>HP:{{myData.HP}} <span class="addAttr" v-text="'(+'+myAmulet.addAttr+')'"></span></p>
+				<p class="ATK">总:<span class="allATK" v-text="parseInt(myData.ATK) + parseInt(myWeapon.addAttr)"></span>&nbsp;&nbsp;<span class="addAttr nowATK" v-text="'当前('+adventInfo.myATK+')'"></span></p>
+				<p class="DEF">总:<span class="allDEF" v-text="parseInt(myData.DEF) + parseInt(myCloth.addAttr)"></span>&nbsp;&nbsp;<span class="addAttr nowDEF" v-text="'当前('+adventInfo.myDEF+')'"></span></p>
+				<p class="HP">总:<span class="allHP" v-text="parseInt(myData.HP) + parseInt(myAmulet.addAttr)"></span>&nbsp;&nbsp;<span class="addAttr  nowHP" v-text="'当前('+adventInfo.myHP+')'"></span></p>
 				<p>武器：<span :class="myWeapon.myclass" data-sea="0" v-text="myWeapon.name"></span></p>
 				<p>装备：<span :class="myCloth.myclass" data-sea="0" v-text="myCloth.name"></span></p>
 				<p>首饰：<span :class="myAmulet.myclass" data-sea="0" v-text="myAmulet.name"></span></p>

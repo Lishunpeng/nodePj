@@ -9,7 +9,9 @@ myFun.prototype = {
 	back: function() {
 		mui.confirm('是否退出冒险并自动保存', function(e) {
 			if(e.index) {
-				return window.location.href = "GameTest.html"
+				myobj.saveData();
+				return
+//				return window.location.href = "GameTest.html"
 			}
 			return mui.alert('请继续冒险')
 		})
@@ -58,12 +60,18 @@ myFun.prototype = {
 			type: "get",
 			url: path,
 			success: function(data) {
-				
+
 				vm.myData = JSON.parse(data);
-				if(search == "/GameTest.html" || search=="/beginAdven.html") {
+				if(search == "/GameTest.html" || search == "/beginAdven.html") {
 					vm.myWeapon = myobj.getData(myWeapon, vm.myData.weaponUse);
 					vm.myCloth = myobj.getData(myEqui, vm.myData.clothUse);
 					vm.myAmulet = myobj.getData(myAmulet, vm.myData.amuletUse);
+					if(search == "/beginAdven.html") {
+						vm.adventInfo.myATK = parseInt(vm.myData.ATK) + parseInt(vm.myWeapon.addAttr);
+						vm.adventInfo.myDEF = parseInt(vm.myData.DEF) + parseInt(vm.myCloth.addAttr);
+						vm.adventInfo.myHP = parseInt(vm.myData.HP) + parseInt(vm.myAmulet.addAttr);
+					}
+
 				} else if(search == "/mybag.html") {
 					localStorage.equi = vm.myData.equiCode;
 					localStorage.medicine = vm.myData.medicineCode;
@@ -342,7 +350,7 @@ myFun.prototype = {
 				vm.myPlace = vm.allPlace;
 				return mui.alert('闯关完成')
 			}
-			vm.adventData = vm.advent[vm.myPlace-1]
+			vm.adventData = vm.advent[vm.myPlace - 1]
 			myobj.creatHtml(vm.adventData);
 		}, 1000);
 	},
@@ -352,41 +360,124 @@ myFun.prototype = {
 	//闯关页面的HTML
 	creatHtml: function(obj) {
 		$('.advenShow').empty();
-		if (obj.ismon) {
+		if(obj.ismon) {
 			var str = '<div class="monsterInfo">你遇到了：<br/>名字：' +
-			obj.name+'<br/>' +
-			'攻击力：'+obj.ATK+'<br/>' +
-			'血量：'+obj.HP+'<br/>'+
-			'防御力：'+obj.DEF+'<br/>' +
-			'怪物详情：'+obj.detail+'<br/>'+
-			'难度系数：'+obj.level+'<br/>'+
-			'<ul class = "myOperation" >'+
-			'<li onclick="myobj.attack()">一键攻击</li><li>使用药水</li>' +
-			'</ul></div>';
-		}else{
-			var str = '<div class="monsterInfo">你遇到了：'+
-			obj.name+'<br/>' +
-			'npc详情：'+obj.detail+'</div>'
+				obj.name + '<br/>' +
+				'攻击力：' + obj.ATK + '<br/>' +
+				'血量：' + '<span class="monHP">' + obj.HP + '</span>' + '<br/>' +
+				'防御力：' + obj.DEF + '<br/>' +
+				'怪物详情：' + obj.detail + '<br/>' +
+				'难度系数：' + obj.level + '<br/>' +
+				'<ul class = "myOperation" >' +
+				'<li onclick="myobj.attack()">攻击</li><li>使用药水</li><li onclick="myobj.attack()">一键攻击</li>' +
+				'</ul><p class="fightInfo"></p></div>';
+		} else {
+			var str = '<div class="monsterInfo">你遇到了：' +
+				obj.name + '<br/>' +
+				'npc详情：' + obj.detail + '</div>'
 		}
 		$('.advenShow').append(str);
 	},
 	//一键攻击
-	attack:function(){
-		var eneny = vm.adventData;
-		console.log(eneny.DEF+1)
-		var myAtk =  $('.allATK').text();
-		var myDef =  $('.allDEF').text();
-		var myHp =  $('.allHP').text();
-		console.log(myAtk+1)
-		if (myAtk<eneny.DEF) {
-			console.log(5454)
+	attack: function() {
+		//敌方信息
+		vm.adventData.ATK = parseInt(vm.adventData.ATK);
+		vm.adventData.DEF = parseInt(vm.adventData.DEF);
+		vm.adventData.HP = parseInt(vm.adventData.HP);
+		//我放信息
+		vm.adventInfo.myATK = parseInt(vm.adventInfo.myATK);
+		vm.adventInfo.myDEF = parseInt(vm.adventInfo.myDEF);
+		vm.adventInfo.myHP = parseInt(vm.adventInfo.myHP);
+		if(vm.adventInfo.myATK < vm.adventData.DEF) {
+			mui.alert('你打不过的，放弃吧。');
+		} else {
+			var eneLosehp = vm.adventInfo.myATK - vm.adventData.DEF;
+			vm.adventData.HP -= eneLosehp;
+			var myLosehp = vm.adventData.ATK - vm.adventInfo.myDEF;
+			vm.adventInfo.myHP -= myLosehp;
+			myobj.adventInfo(vm.adventInfo.myHP, vm.adventData.HP, myLosehp, eneLosehp);
 		}
+	},
+	//冒险模式显示信息
+	adventInfo: function(myhp, enenyhp, mylose, enlose) {
+		if(myhp <= 0) {
+			myhp = 0;
+			mui.alert('你死了，闯关失败！', function() {
+				window.location.href = "GameTest.html"
+			})
+		} else if(enenyhp <= 0) {
+			enenyhp = 0;
+			var str = ''
+			vm.addMoney += parseInt(vm.adventData.dropMoney);
+			$('.monHP').text(enenyhp);
+			for(var i = 0; i < parseInt(vm.adventData.dropGoods); i++) {
+				var myEqui = null;
+				var ramDom = Math.ceil(Math.random() * vm.adventData.drop.length);
+				console.log();
+				var myDrop = myobj.oddsCount(vm.adventData.drop[ramDom - 1].odds);
+				console.log(myDrop)
+				if(myDrop) {
+					myEqui = myobj.chgetData(vm.adventData.drop[ramDom - 1].type, vm.adventData.drop[ramDom - 1].code);
+					vm.myDrop.push(myEqui);
+				}
+				console.log(myEqui)
+				if(myEqui) {
+					str += '<br>获得了：<span class=' + myEqui.myclass + '>' + myEqui.name + '</span>'
+				}
+			}
+			$('.fightInfo').html('你杀死了' + vm.adventData.name + ',获得了' + vm.adventData.dropMoney + '元' + str)
+			console.log(vm.myDrop,vm.addMoney)
+		} else {
+			$('.monHP').text(enenyhp);
+			$('.nowHP').text('当前(' + myhp + ')');
+			$('.fightInfo').html('你对' + vm.adventData.name + '发起了攻击<br>' + vm.adventData.name + '失去了(' + enlose + ')血量<br>你失去了(' + mylose + ')的血量')
+		}
+	},
+	//概率计算
+	oddsCount: function(val) {
+		console.log(val)
+		var ramDom = Math.ceil(Math.random() * 100);
+		if(ramDom <= val) {
+			return true;
+		} else {
+			return false;
+		}
+	},
+	//数据代码判断加以转化
+	chgetData: function(judey, code) {
+		var data = {};
+		switch(judey) {
+			case 'wea':
+				data = myobj.getData(myWeapon, code);
+				break;
+			case 'clo':
+				data = myobj.getData(myEqui, code);
+				break;
+			case 'amu':
+				data = myobj.getData(myAmulet, code);
+				break;
+			case 'mat':
+				data = myobj.getData(mymaterial, code);
+				break;
+			case 'med':
+				data = myobj.getData(mymedicine, code);
+				break;
+		}
+		return data;
+	},
+	//保存
+	saveData:function(){
+		console.log(vm.myDrop);
+		console.log(vm.addMoney);
 	}
+
 }
 var myobj = new myFun();
 var vm = new Vue({
 	el: '#login,#firstLogin,#info,#bagData,#advenContent',
 	data: {
+		addMoney: 0, //获取的金币
+		myDrop: [], //掉落物品
 		allPlace: 30, //定义总数
 		myPlace: 0,
 		isMonster: true,
@@ -402,8 +493,9 @@ var vm = new Vue({
 		equi: [],
 		medicine: [],
 		material: [],
-		myCount:0,
-		adventData:{}
+		myCount: 0,
+		adventData: {},
+		adventInfo: {},
 	},
 	methods: {
 		//登录页面

@@ -46,15 +46,16 @@ a:active{background: #ccc;}
 .monsterInfo{padding: .1rem .3rem;}
 .monsterInfo p{text-align: left;}
 .myOperation{display: flex;}
-.myOperation li{flex: 1;text-align: center;height: 1rem;line-height: 1rem;background: #fff;color: #FF5053;}
+.myOperation li{flex: 1;text-align: center;height: .6rem;line-height: .6rem;background: #fff;color: #FF5053;}
 .advenBox{background: rgba(0,0,0,.6);width: 100%;padding: 0 2% 1rem 2%;overflow: hidden;display: none;z-index: 10;position: absolute;left: 0;top: .6rem;}
 .advenBox li{height: .5rem;width:49%;text-align: center;line-height: .5rem;background: #fff;font-size: .25rem;float: left;border-radius:.1rem;margin-top: 2%;}
 .advenBox li:nth-child(2n){margin-left:2%;}
 .searchMap{text-align: center;width: 100%;background: #fff;height: .6rem;line-height: .6rem;}
 .searchMap:active{background: #ccc;}
-.showAdven{width: 100%;padding: .1rem .2rem;}
+.showAdven{width: 100%;padding: .1rem .2rem;overflow: hidden;}
 .countGrid{float: right;margin-left: .2rem;background: #fff;width: 3rem;height: .6rem;line-height: .6rem;padding: 0;}
 .btnDice{height: .6rem;line-height: .6rem;padding: 0;width: 1.5rem;font-size: .3rem;}
 .diceIcon{display: none;}
 .myPlace{height: .4rem!important;line-height: .4rem!important;width: 1rem!important;border: 0!important;margin: 0!important;padding: 0!important;text-align: right!important;}
 .myOperation li:active{background: #E1E1E1;}
+.fightInfo{color: #CF2D28;}
