@@ -1,5 +1,7 @@
-*{list-style: none;margin: 0;padding: 0;border: 0;font-size: .4rem;color: #333333;box-sizing: border-box;padding: 0;font-size: .32rem;color: #333333;}
-div,p,a,h1,h2,h3,h4,h5,h6,i,span,input,ul,li,dd,dl,dt,ol,button{font-size: .32rem;color: #333333;font-family: "微软雅黑";margin: 0;}
+*{list-style: none;margin: 0;padding: 0;border: 0;font-size: .4rem;color: #333333;box-sizing: border-box;padding: 0;font-size: .32rem;color: #e1e1e1;}
+div,p,a,h1,h2,h3,h4,h5,h6,i,span,input,ul,li,dd,dl,dt,ol,button{font-size: .32rem;color: #e1e1e1;font-family: "微软雅黑";margin: 0;}
+body,html{width: 100%;height: 100%;background: url(background.jpg); background-size:100% 100%;}
+img{width: 100%;}
 a:active{background: #ccc;}
 .mui-table-view:before{background: transparent!important;}
 .mui-table-view-cell:after{background: transparent!important;}
@@ -10,19 +12,31 @@ a:active{background: #ccc;}
 .backIndex{z-index: 100;height: .8rem;background: #fff;color: #666;display: block;position: fixed;bottom: 0;width: 100%;text-align: center;line-height: .8rem;}
 /*公用头部*/
 .Gamecontant{width: 100%;position: fixed;bottom: 0;left: 0;}
-.header{width: 100%;height: 1rem;background: #f1f1f1;margin: 0 auto;display: flex;}
-.header li{flex: 1;height: 1rem;text-align: center;line-height: 1rem;float: left;cursor: pointer;}
-.header li:active{background: #e1e1e1;}
-.header li.cur{border-bottom: .1rem solid #ff0000;background: #e1e1e1;}
+.header{width: 100%;height: .8rem;margin: 0 auto;display: flex;}
+.header li{flex: 1;height: .8rem;text-align: center;line-height: .8rem;float: left;cursor: pointer;}
+.header li.cur span,.header li span:active{background-image: url(_btn.png);}
+.header li span{display: block;height: .8rem;background: url(on_btn.png) no-repeat;background-size:100% 100%;color: #f1f1f1;font-size: .4rem;}
 /*index主页面信息*/
-.info{width: 100%;padding: 0 .2rem;margin-top: 1rem;}
-.info div p span.ordin{color: #333333;}
-.info div p span.broke{color: #999999;}
-.info div p{width: 100%;height: .6rem;line-height: .6rem;text-align: left;margin: 0;font-size: .4rem;color: #000000;background: #fff;margin-top: .2rem;}
-.addAttr{color: #ff9c00;}
+.info{width: 100%;padding:.2rem;}
+.info .infoTop{height: 1.5rem;margin-bottom: .1rem;}
+.info .headerimg{float: left;background: url(headerBorder.png) no-repeat;height: 1.5rem;width: 1.5rem;background-size:100% 100%;box-sizing: border-box;padding: .1rem;margin:0 .25rem;}
+.info .name{margin-top: .4rem;float: left;background: url(nameBorder.jpg) no-repeat;height: .6rem;background-size:100% 100%;line-height: .6rem;padding: 0 .5rem;}
+.cent_nav{background-image: url(nameBorder.jpg);height: .6rem;background-size:100% 100%;line-height: .6rem;width: 3rem;text-align: center;margin: 1rem auto;margin-bottom: .3rem;}
+.infoCent ul{width: 7rem;height: 1rem;margin: 0 auto;}
+.infoCent ul li{width: 2.2rem;height: 2.9rem;border-radius:.1rem ;border: .1rem solid #777777;margin-left: .2rem;float: left;margin-top: .2rem;background: #333333;}
+.infoCent ul li:active{background: #666666;}
+.infoCent ul li:nth-child(3n+1){margin-left: 0;}
+.infoCent ul li p{text-align: center;}
+
+/*角色页面*/
+.roleBorder{height: 7rem;width: 100%;background: url(myRole.png);background-size:100% 100%;}
+.roleBorder li{height: 1.2rem;margin: .1rem;}
+.roleBorder li p{height: 1.2rem;width: 1.2rem;border: .1rem solid #777777;background: #242424;float: left;}
+.roleBorder li p.right{float: right;}
+/*.addAttr{color: #ff9c00;}
 .myEqui{overflow: hidden;height: auto;}
 .myEqui ul{display: none;border: 1px solid #ccc;padding: .2rem;margin-top: .2rem;}
-.myEqui ul>li{font-size: .25rem;}
+.myEqui ul>li{font-size: .25rem;}*/
 /*我的背包页面信息*/
 .bagClass{height: .6rem;width: 100%;display: flex;margin-top: .2rem;}
 .bagClass li{height: .8rem;flex: 1;font-size: .35rem;text-align: center;line-height: .8rem;}
@@ -59,3 +73,4 @@ a:active{background: #ccc;}
 .myPlace{height: .4rem!important;line-height: .4rem!important;width: 1rem!important;border: 0!important;margin: 0!important;padding: 0!important;text-align: right!important;}
 .myOperation li:active{background: #E1E1E1;}
 .fightInfo{color: #CF2D28;}
+

@@ -72,7 +72,7 @@ http.createServer(function(req, res) {
 			res.end(data)
 		});
 		/*注册页面*/
-	} else if(pathname.indexOf(".png") > 0 || pathname.indexOf(".gif") > 0) {
+	} else if( pathname.indexOf(".png") > 0 || pathname.indexOf(".gif") > 0 || pathname.indexOf(".jpg") > 0) {
 		console.log(req.url)
 		fs.readFile('../img' + req.url, 'binary', function(err, data) {
 			res.writeHead(200, {
