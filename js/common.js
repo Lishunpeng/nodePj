@@ -60,7 +60,6 @@ myFun.prototype = {
 			type: "get",
 			url: path,
 			success: function(data) {
-
 				vm.myData = JSON.parse(data);
 				if(search == "/GameTest.html" || search == "/beginAdven.html") {
 					vm.myWeapon = myobj.getData(myWeapon, vm.myData.weaponUse);
@@ -73,15 +72,25 @@ myFun.prototype = {
 					}
 
 				} else if(search == "/mybag.html") {
-					localStorage.equi = vm.myData.equiCode;
-					localStorage.medicine = vm.myData.medicineCode;
-					localStorage.material = vm.myData.materialCode;
-					vm.equi = vm.myData.equiCode.split(",");
-					vm.medicine = vm.myData.medicineCode.split(",");
-					vm.material = vm.myData.materialCode.split(",");
-					vm.equi = myobj.bagEqui(vm.equi);
-					vm.medicine = myobj.bagData(mymedicine, vm.medicine, "medicine");
-					vm.material = myobj.bagData(mymaterial, vm.material);
+					
+					
+					vm.equiData = myobj.bagEqui(vm.myData.equiCode);
+					console.log(vm.equiData)
+					
+				}else if(search == "/gameRole.html"){
+					vm.equiData = myobj.bagEqui(vm.myData.EquiCode);
+					for (i in vm.equiData) {
+						if (vm.equiData[i].useState=='1') {
+							if (vm.equiData[i].goodsInfo.judey=='wea') {
+								vm.useWea =  vm.equiData[i].goodsInfo;
+							}else if(vm.equiData[i].goodsInfo.judey=='clo'){
+								vm.useClo =  vm.equiData[i].goodsInfo;
+							}else if(vm.equiData[i].goodsInfo.judey=='amu'){
+								vm.useAmu =  vm.equiData[i].goodsInfo;
+							}
+						}
+					}
+					console.log(vm.useClo)
 				}
 
 			}
@@ -117,26 +126,20 @@ myFun.prototype = {
 	},
 	//背包信息中的装备栏
 	bagEqui: function(obj) {
+		obj = obj.split(',');
+		console.log(obj)
 		var data = [];
 		var strF = "";
 		var strL = "";
 		for(i in obj) {
 			var mydata = {};
 			mydata.name = 'equi'
-			strF = obj[i].substr(0, 2);
-			strL = obj[i].substr(2);
-			mydata.useState = strF[0];
+			strF = obj[i].substr(0, 1);
+			strL = obj[i].substr(1);
+			console.log(strF,strL)
+			mydata.useState = strF;
 			mydata.code = obj[i];
-			if(strF[equiTypecount] == 0) {
-				mydata.goodsInfo = myobj.getData(myWeapon, strL);
-				mydata.type = "ATK"
-			} else if(strF[equiTypecount] == 1) {
-				mydata.type = "DEF"
-				mydata.goodsInfo = myobj.getData(myEqui, strL);
-			} else if(strF[equiTypecount] == 2) {
-				mydata.type = "HP"
-				mydata.goodsInfo = myobj.getData(myAmulet, strL);
-			}
+			mydata.goodsInfo = myobj.getData(myEqui, strL);
 			data.push(mydata);
 		}
 		return data;
@@ -151,15 +154,14 @@ myFun.prototype = {
 	},
 	//装备查看详细
 	equiUseinfo: function() {
-		$(".myEqui p").on("click", function() {
-			if($(this).attr("data-sea") == "0") {
-				$(this).attr("data-sea", 1);
-				$(this).siblings("ul").show();
-			} else {
-				$(this).attr("data-sea", 0);
-				$(this).siblings("ul").hide();
-			}
-
+		$(".roleBorder p").on("click", function() {
+			var data = JSON.parse($(this).attr('data-data')) 
+			console.log(data)
+			var str = '<span class='+data.myclass+'>'+data.name+'</span><br>'+
+			data.belone+':+'+data.addAttr+'<br>'+
+			'详情:'+data.detail;
+			mui.alert(str,'装备信息');
+			$('.mui-popup').addClass('mui-popup-left')
 		})
 	},
 	//背包使用显示框
@@ -474,7 +476,7 @@ myFun.prototype = {
 }
 var myobj = new myFun();
 var vm = new Vue({
-	el: '#login,#firstLogin,#info,#bagData,#advenContent',
+	el: '#login,#firstLogin,#info,#bagData,#advenContent,#bagInfo',
 	data: {
 		addMoney: 0, //获取的金币
 		myDrop: [], //掉落物品
@@ -487,12 +489,10 @@ var vm = new Vue({
 		acco: "",
 		name: "",
 		myData: [],
-		myWeapon: {},
-		myCloth: {},
-		myAmulet: {},
-		equi: [],
-		medicine: [],
-		material: [],
+		equiData:[],
+		useWea:{},
+		useClo:{},
+		useAmu:{},
 		myCount: 0,
 		adventData: {},
 		adventInfo: {},

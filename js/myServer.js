@@ -112,10 +112,7 @@ http.createServer(function(req, res) {
 							name: myattr.name,
 							ATK: "10",
 							DEF: "10",
-							HP: "100",
-							weaponUse: "00",
-							clothUse: "00",
-							amuletUse: "00",
+							HP: "100"
 						};
 						//初始化武器数据
 						/*装备代码1000：第一位1表示是否使用中,第二位0表示武器，1表示防具，2表示护符,最后两位00代表装备代码**/
@@ -123,7 +120,7 @@ http.createServer(function(req, res) {
 						var goods = {
 							myacco: myattr.myacco,
 							equiCode: "1000,0001,1100,0101,1200,0201", //装备
-							medicineCode: "55#01,1#00", //药水
+//							medicineCode: "55#01,1#00", //药水
 							materialCode: "10#01,1#00", //材料
 							money: '1000'
 						};
@@ -152,15 +149,22 @@ http.createServer(function(req, res) {
 					db.close();
 				}, 'personInfo');
 				selectData(db, params, function(result) {
-					backData.money = result[0].money
+					backData.money = result[0].money;
+					backData.EquiCode = result[0].equiCode;
 					res.end(JSON.stringify(backData));
 					db.close();
 				}, 'goods');
 			} else if(pathname == "/getGoods") {
 				selectData(db, params, function(result) {
-					res.end(JSON.stringify(result[0]))
+					
+					backData = result[0];
 					db.close();
 				}, 'goods');
+				selectData(db, params, function(result) {
+					backData.name = result[0].name;
+					res.end(JSON.stringify(backData));
+					db.close();
+				}, 'personInfo');
 			}
 
 		});

@@ -1,6 +1,7 @@
 
 /*损坏的：broke，普通的:ordin,*/
 //武器
+/*
 var myWeapon =[
 	{type:"00",name:"生锈的铁剑",detail:"一把生锈了许久的铁剑。",addAttr:"3",myclass:"broke",getMoney:"300",judey:'wea'},
 	{type:"01",name:"铁剑",detail:"一把铁剑，比较新。",addAttr:"5",myclass:"ordin",getMoney:"500",judey:'wea'}
@@ -26,7 +27,20 @@ var mymaterial = [
 	{type:"01",name:"材料2",detail:"我的材料2。",addAttr:"",myclass:"ordin",getMoney:"100",judey:'mat'},
 	{type:"02",name:"死去的蘑菇",detail:"花蘑菇尸体。",addAttr:"",myclass:"ordin",getMoney:"300",judey:'mat'},
 	{type:"03",name:"有毒的蘑菇盖",detail:"毒蘑菇头盖。",addAttr:"",myclass:"ordin",getMoney:"500",judey:'mat'}
+];*/
+//合并装备
+var myEqui =[
+	{type:"000",belone:'ATK',name:"生锈的铁剑",detail:"一把生锈了许久的铁剑。",addAttr:"3",myclass:"broke",getMoney:"300",judey:'wea',imgPath:"bag_wea_000.png"},
+	{type:"001",belone:'ATK',name:"铁剑",detail:"一把铁剑，比较新。",addAttr:"5",myclass:"ordin",getMoney:"500",judey:'wea',imgPath:"bag_wea_000.png"},
+	{type:"100",belone:'DEF',name:"破损的布衣",detail:"一个穷逼穿的衣服。",addAttr:"3",myclass:"broke",getMoney:"300",judey:'clo',imgPath:"bag_wea_000.png"},
+	{type:"101",belone:'DEF',name:"普通的布衣",detail:"普通草民衣服。",addAttr:"5",myclass:"ordin",getMoney:"500",judey:'clo',imgPath:"bag_wea_000.png"},
+	{type:"200",belone:'HP',name:"破损的护符",detail:"一个损坏的护身符。",addAttr:"30",myclass:"broke",getMoney:"300",judey:'amu',imgPath:"bag_wea_000.png"},
+	{type:"201",belone:'HP',name:"普通的护符",detail:"普通家庭的传家符。",addAttr:"50",myclass:"ordin",getMoney:"500",judey:'amu',imgPath:"bag_wea_000.png"}
 ];
+
+
+
+
 //怪物
 /*掉落装备代码：#号前表示*/
 var easyMonster = [

@@ -20,7 +20,7 @@
 				</li>
 				<li class="cur"><a href="gameRole.html"><span>角色</span></a>
 				</li>
-				<li><span>背包</span>
+				<li><a href="mybag.html"><span>背包</span></a>
 				</li>
 			</ul>
 		</div>
@@ -34,54 +34,17 @@
 			
 		<div class="roleCont">
 				<div class="cent_nav">角色</div>
+				<div class="roleInfo">
+					<div class="ATK" v-text="'ATK:'+myData.ATK"></div>
+					<div class="DEF" v-text="'DEF:'+myData.DEF"></div>
+					<div class="HP" v-text="'HP:'+myData.HP"></div>
+				</div>
 				<div class="roleBorder">
-					<ul>
-						<li><p></p><p class="right"></p></li>
-						<li><p></p><p class="right"></p></li>
-						<li><p></p><p class="right"></p></li>
-						<li><p></p><p class="right"></p></li>
-						<li><p></p><p class="right"></p></li>
-						<li><p></p><p class="right"></p></li>
-					</ul>
-					
+					<div><p class="role_clo" :style="{backgroundImage:'url('+useClo.imgPath+')'}" :data-data="JSON.stringify(useClo)"></p></div>
+					<div><p class="role_wea" :style="{backgroundImage:'url('+useWea.imgPath+')'}" :data-data="JSON.stringify(useWea)"></p></div>
+					<div><p class="role_amu" :style="{backgroundImage:'url('+useAmu.imgPath+')'}" :data-data="JSON.stringify(useAmu)"></p></div>
 				</div>
-			</div>
-			<!--<div class="name">用户名:{{myData.myacco}}</div>-->
-
-			<!--<div class="ATK">ATK:{{myData.ATK}}<span class="addAttr" v-text="'(+'+myWeapon.addAttr+')'"></span></div>-->
-			<!--<div class="DEF">DEF:{{myData.DEF}} <span class="addAttr" v-text="'(+'+myCloth.addAttr+')'"></span></div>-->
-			<!--<div class="HP">HP:{{myData.HP}} <span class="addAttr" v-text="'(+'+myAmulet.addAttr+')'"></span></div>-->
-			<!--<div class="myMonye">金币：{{myData.money}}元</div>-->
-
-			<!--<div class="myCloth">
-				<div class="weapon myEqui">
-					<p>武器：<span :class="myWeapon.myclass" data-sea="0" v-text="myWeapon.name"></span></p>
-					<ul class="myDetail">
-						<li v-text="'ATK+'+myWeapon.addAttr"></li>
-						<li v-text="'阐述：'+myWeapon.detail"></li>
-					</ul>
-				</div>
-
-				<div class="equi myEqui">
-					<p>装备：<span :class="myCloth.myclass" data-sea="0" v-text="myCloth.name"></span></p>
-					<ul class="myDetail">
-						<li v-text="'DEF+'+myCloth.addAttr"></li>
-						<li v-text="'阐述：'+myCloth.detail"></li>
-					</ul>
-				</div>
-				<div class="amulet myEqui">
-					<p>首饰：<span :class="myAmulet.myclass" data-sea="0" v-text="myAmulet.name"></span></p>
-					<ul class="myDetail">
-						<li v-text="'HP+'+myAmulet.addAttr"></li>
-						<li v-text="'阐述：'+myAmulet.detail"></li>
-					</ul>
-				</div>
-			</div>
-		-->
-
-			<!--<div class="indexContent">
-			
-		</div>-->
+		</div>
 		</div>
 
 	</body>
