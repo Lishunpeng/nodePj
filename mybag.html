@@ -9,12 +9,6 @@
 		<link rel="stylesheet" type="text/css" href="public.css" />
 		<title></title>
 	</head>
-	<style>
-		.alertLeft {
-			text-align: left!important;
-		}
-	</style>
-
 	<body>
 		<div class="Gamecontant">
 			<ul class="header">
@@ -31,12 +25,13 @@
 		</div>
 		<div class="bagInfo" id="bagInfo">
 			<div class="info">
-			<div class="infoTop">
-				<div class="headerimg">
-					<img src="head2.jpg" />
+				<div class="infoTop">
+					<div class="headerimg">
+						<img src="head2.jpg" />
+					</div>
+					<div class="name" v-text="'角色名：'+myData.name"></div>
+					<div class="name" v-text="'金币：'+myData.money"></div>
 				</div>
-				<div class="name" v-text="myData.name"></div>
-			</div>
 			</div>
 			<ul class="bagClass">
 				<li class="cur"><span></span>装备</li>
@@ -47,30 +42,32 @@
 			<ol class="bagDetail" id="bagData">
 				<!--<div class="myMoney">我的金币<span v-text="myData.money+'元'" style="float: right;"></span></div>-->
 				<li class="cur">
-				<ul class="bagCont">
-					<li v-for="data in equiData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goodsInfo.imgPath+')'}">
-						<!--<span :class="data.goodsInfo.myclass" v-text="data.goodsInfo.name" ></span>-->
-						<span :class="data.useState==1?'use':'unuse'"></span>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<!--<ul class="bagCont mui-table-view">
-					<li v-for="data in medicine" class="mui-table-view-cell" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)"><span :class="data.goodsInfo.myclass" v-text="data.goodsInfo.name"></span><span class="number" v-text="'×'+data.num"></span></li>
-				</ul>-->
-			</li>
-			<li>
-				<!--<ul class="bagCont mui-table-view">
+					<ul class="bagCont">
+						<li :class="data.goodsInfo.myclass" v-for="data in equiData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goodsInfo.imgPath+')'}">
+							<span :class="data.useState==1?'use':'unuse'"></span>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<ul class="bagCont">
+						<li :class="data.goodsInfo.myclass" v-for="data in materialData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goodsInfo.imgPath+')'}">
+							<!--<span :class="data.goodsInfo.myclass" v-text="data.goodsInfo.name" ></span>-->
+							<span style="float: right;margin-top: .7rem;color: #fff;font-size: .5rem;" v-text="data.num"></span>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<!--<ul class="bagCont mui-table-view">
 					<li v-for="data in material" class="mui-table-view-cell" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)"><span :class="data.goodsInfo.myclass" v-text="data.goodsInfo.name"></span><span class="number" v-text="'×'+data.num"></span></li>
 				</ul>-->
-			</li>
-			<li>4</li>
+				</li>
+				<li>4</li>
 			</ol>
 			<div class="clickBox" onclick="myobj.stopClickEqui()">
-				<ul class="mui-table-view">
-					<li class="mui-table-view-cell" onclick="myobj.clickBox_use()">使用</li>
-					<li class="mui-table-view-cell" onclick="myobj.clickBox_detail()">详情</li>
-					<li class="mui-table-view-cell" onclick="myobj.clickBox_sale()">出售</li>
+				<ul>
+					<li onclick="myobj.clickBox_use()">使用</li>
+					<li onclick="myobj.clickBox_detail()">详情</li>
+					<li onclick="myobj.clickBox_sale()">出售</li>
 				</ul>
 			</div>
 		</div>

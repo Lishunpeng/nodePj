@@ -20,14 +20,14 @@ var myAmulet =[
 var mymedicine = [
 	{type:"00",name:"神奇的药水",detail:"敬请期待",addAttr:"",myclass:"pink",judey:'med'},
 	{type:"01",name:"红药水",detail:"用于治疗的药水。",addAttr:"50",myclass:"ordin",getMoney:"300",judey:'med'}
-];
+];*/
 //材料
 var mymaterial = [
-	{type:"00",name:"神奇的石头",detail:"一颗会发光的石头，还不知道有什么用",addAttr:"",myclass:"pink",judey:'mat'},
-	{type:"01",name:"材料2",detail:"我的材料2。",addAttr:"",myclass:"ordin",getMoney:"100",judey:'mat'},
-	{type:"02",name:"死去的蘑菇",detail:"花蘑菇尸体。",addAttr:"",myclass:"ordin",getMoney:"300",judey:'mat'},
-	{type:"03",name:"有毒的蘑菇盖",detail:"毒蘑菇头盖。",addAttr:"",myclass:"ordin",getMoney:"500",judey:'mat'}
-];*/
+	{type:"00",name:"神奇的石头",detail:"一颗会发光的石头，还不知道有什么用",addAttr:"",myclass:"pink",judey:'mat',imgPath:"bag_mat_00.png"},
+	{type:"01",name:"材料2",detail:"我的材料2。",addAttr:"",myclass:"ordin",getMoney:"100",judey:'mat',imgPath:"bag_mat_00.png"},
+	{type:"02",name:"死去的蘑菇",detail:"花蘑菇尸体。",addAttr:"",myclass:"ordin",getMoney:"300",judey:'mat',imgPath:"bag_mat_00.png"},
+	{type:"03",name:"有毒的蘑菇盖",detail:"毒蘑菇头盖。",addAttr:"",myclass:"ordin",getMoney:"500",judey:'mat',imgPath:"bag_mat_00.png"}
+];
 //合并装备
 var myEqui =[
 	{type:"000",belone:'ATK',name:"生锈的铁剑",detail:"一把生锈了许久的铁剑。",addAttr:"3",myclass:"broke",getMoney:"300",judey:'wea',imgPath:"bag_wea_000.png"},

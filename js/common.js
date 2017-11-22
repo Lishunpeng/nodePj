@@ -62,9 +62,6 @@ myFun.prototype = {
 			success: function(data) {
 				vm.myData = JSON.parse(data);
 				if(search == "/GameTest.html" || search == "/beginAdven.html") {
-					vm.myWeapon = myobj.getData(myWeapon, vm.myData.weaponUse);
-					vm.myCloth = myobj.getData(myEqui, vm.myData.clothUse);
-					vm.myAmulet = myobj.getData(myAmulet, vm.myData.amuletUse);
 					if(search == "/beginAdven.html") {
 						vm.adventInfo.myATK = parseInt(vm.myData.ATK) + parseInt(vm.myWeapon.addAttr);
 						vm.adventInfo.myDEF = parseInt(vm.myData.DEF) + parseInt(vm.myCloth.addAttr);
@@ -73,10 +70,11 @@ myFun.prototype = {
 
 				} else if(search == "/mybag.html") {
 					
-					
+					console.log(vm.myData)
 					vm.equiData = myobj.bagEqui(vm.myData.equiCode);
-					console.log(vm.equiData)
-					
+					vm.materialData = myobj.bagData(mymaterial,vm.myData.materialCode);
+					localStorage.equCode = vm.myData.equiCode;
+					localStorage.matCode = vm.myData.materialCode;
 				}else if(search == "/gameRole.html"){
 					vm.equiData = myobj.bagEqui(vm.myData.EquiCode);
 					for (i in vm.equiData) {
@@ -109,6 +107,7 @@ myFun.prototype = {
 	bagData: function(dataBase, obj, val) {
 		var data = [];
 		var str = "";
+		obj = obj.split(',');
 		for(i in obj) {
 			var mydata = {};
 			mydata.name = 'mat'
@@ -189,10 +188,10 @@ myFun.prototype = {
 
 		var mydata = JSON.parse(localStorage.mydata);
 		var str = ""
-		mydata.goodsInfo.addAttr ? str = '物品：' + mydata.goodsInfo.name + '\n' + mydata.type + ':+' + mydata.goodsInfo.addAttr + '\n阐述：' + mydata.goodsInfo.detail :
-			str = '物品：' + mydata.goodsInfo.name + '\n阐述：' + mydata.goodsInfo.detail;
+		mydata.goodsInfo.addAttr ? str = '物品：<span class='+mydata.goodsInfo.myclass+'>' + mydata.goodsInfo.name + '</span>\n' + mydata.goodsInfo.belone + ':+' + mydata.goodsInfo.addAttr + '\n阐述：' + mydata.goodsInfo.detail :
+			str = '物品：<span class='+mydata.goodsInfo.myclass+'>' + mydata.goodsInfo.name + '</span>\n阐述：' + mydata.goodsInfo.detail;
 		mui.alert(str);
-		$('.mui-popup-text').addClass("alertLeft");
+		$('.mui-popup-text').addClass("mui-popup-left");
 	},
 	//物品的使用
 	clickBox_use: function() {
@@ -200,9 +199,11 @@ myFun.prototype = {
 		if(mydata.useState) {
 			if(mydata.useState == 1) {
 				return mui.alert("该物品使用中")
-			} else {
+			} else{
 				myobj.changeEqui(mydata);
 			}
+		}else{
+			return mui.alert("该物品无法使用");
 		}
 	},
 	//装备切换
@@ -212,25 +213,18 @@ myFun.prototype = {
 		strL = equiData.code.substr(2);
 		if(equiData.code[equiTypecount] == 0) {
 			postData.code = myobj.searchEqui(0, equiData.code);
-			postData.weaponUse = strL;
-			postData.equiClass = 'weapon'
 		} else if(equiData.code[equiTypecount] == 1) {
 			postData.code = myobj.searchEqui(1, equiData.code);
-			postData.clothUse = strL;
-			postData.equiClass = 'cloth'
 		} else if(equiData.code[equiTypecount] == 2) {
 			postData.code = myobj.searchEqui(2, equiData.code);
-			postData.amuletUse = strL;
-			postData.equiClass = 'amulet'
 		}
-		postData.typeCode = "equiCode";
+		postData.typeCode = "equ";
 		postData.myacco = localStorage.acco;
 		myobj.postajax('/useEqui', postData);
-		console.log(postData)
 	},
 	//查询装备类型并转化
 	searchEqui: function(val, code) {
-		var myCode = localStorage.equi.split(",");
+		var myCode = localStorage.equCode.split(",");
 		var str = "";
 		for(i in myCode) {
 			if(myCode[i][equiTypecount] == val && myCode[i][0] == 1) {
@@ -250,7 +244,7 @@ myFun.prototype = {
 			if(mydata.useState == 1) {
 				return mui.alert("装备使用中");
 			} else if(mydata.name == 'equi') {
-				var myCode = localStorage.equi;
+				var myCode = localStorage.equCode;
 				mui.confirm('是否确定出售？', function(e) {
 					if(e.index == 1) {
 						myobj.saleCode(myCode, 1, mydata.name);
@@ -258,9 +252,8 @@ myFun.prototype = {
 						return mui.alert('出售失败')
 					}
 				})
-			} else if(mydata.name == 'mat' || mydata.name == 'med') {
-				var myCode = "";
-				mydata.name == 'mat' ? myCode = localStorage.material : myCode = localStorage.medicine;
+			} else if(mydata.name == 'mat') {
+				var myCode = localStorage.matCode;
 				var num = parseInt(mydata.num);
 				mui.prompt('请输入丢弃数量', '请输入数量', function(e) {
 					if(e.index == 0) {
@@ -317,6 +310,7 @@ myFun.prototype = {
 		myobj.postajax('/saleGoods', postData)
 	},
 	//冒险模式随机产生怪物
+	
 	getMonster: function() {
 		var mydata = {};
 		if(hash == 0) {
@@ -490,6 +484,7 @@ var vm = new Vue({
 		name: "",
 		myData: [],
 		equiData:[],
+		materialData:[],
 		useWea:{},
 		useClo:{},
 		useAmu:{},

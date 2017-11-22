@@ -174,26 +174,7 @@ http.createServer(function(req, res) {
 			var whereData = {
 				myacco: myattr.myacco
 			}
-			if(myattr.equiClass == "weapon") {
-				var udInfo = {
-					$set: {
-						weaponUse: myattr.weaponUse
-					}
-				}
-			} else if(myattr.equiClass == "cloth") {
-				var udInfo = {
-					$set: {
-						clothUse: myattr.clothUse
-					}
-				}
-			} else if(myattr.equiClass == "amulet") {
-				var udInfo = {
-					$set: {
-						amuletUse: myattr.amuletUse
-					}
-				}
-			}
-			if(myattr.typeCode == "equiCode") {
+			if(myattr.typeCode == "equ") {
 				var udBag = {
 					$set: {
 						equiCode: myattr.code
@@ -204,9 +185,6 @@ http.createServer(function(req, res) {
 				updateData(db, whereData, udBag, function(result) {
 					db.close();
 				}, 'goods');
-				updateData(db, whereData, udInfo, function(result) {
-					db.close();
-				}, 'personInfo');
 				backData.msg = '使用成功';
 				res.end(JSON.stringify(backData));
 			});
