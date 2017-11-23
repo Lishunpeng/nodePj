@@ -23,16 +23,8 @@
 				</li>
 			</ul>
 		</div>
-		<ul class="chooseDiff">
-			<li>
-				<a href="adventPlan_A.html">简单模式<span></span></a>
-			</li>
-			<li>
-				<a href="adventPlan_A.html">困难模式<span></span></a>
-			</li>
-			<li>
-				<a href="adventPlan_A.html">地狱模式<span></span></a>
-			</li>
+		<ul class="choosePass" id="choosePass">
+			<li v-for="(data,index) in tgData" :style="{backgroundImage:'url('+data.imgPath+')'}" @click="myobj.adventLink(index,'adventTG.html')"><p v-text="data.name"></p></li>
 		</ul>
 	</body>
 	<script src="jquery-2.1.0.js"></script>
@@ -42,6 +34,7 @@
 	<script src="common.js"></script>
 	<script src="fontsize.js"></script>
 	<script type="text/javascript">
+		myobj.getAdvendata();
 	</script>
-
+	
 </html>

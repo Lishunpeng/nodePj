@@ -43,26 +43,26 @@ var myEqui =[
 
 //怪物
 /*掉落装备代码：#号前表示*/
-var easyMonster = [
-	{type:"00",name:"花蘑菇",detail:"漂亮的蘑菇",ATK:"15",DEF:'5',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'1',
-	 drop:[{type:'wea',code:'00',odds:'10'},{type:'clo',code:'00',odds:'10'},{type:'mat',code:'02',odds:'50'},{type:'med',code:'01',odds:'30'}]},
-	{type:"01",name:"毒蘑菇",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
+var monster = [
+	{type:"00",name:"花蘑菇",detail:"漂亮的蘑菇",ATK:"15",DEF:'5',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'1',imgPath:'monster/mon_00.png',
+	 drop:[{type:'equ',code:'0000',odds:'10'},{type:'equ',code:'0100',odds:'10'},{type:'mat',code:'02',odds:'50'},{type:'eui',code:'0201',odds:'10'}]},
+	{type:"01",name:"毒蘑菇",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
 	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
-	 {type:"02",name:"毒蘑菇2",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"pink",level:'1',dropMoney:"500",dropGoods:'3',
+	 {type:"02",name:"毒蘑菇2",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"pink",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
 	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
-	 {type:"03",name:"毒蘑菇3",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"pink",level:'1',dropMoney:"500",dropGoods:'3',
+	 {type:"03",name:"毒蘑菇3",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"pink",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
 	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
-	 {type:"04",name:"毒蘑菇4",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'3',
+	 {type:"04",name:"毒蘑菇4",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
 	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
-	 {type:"05",name:"毒蘑菇5",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'3',
+	 {type:"05",name:"毒蘑菇5",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
 	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
-	 {type:"06",name:"毒蘑菇6",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'3',
+	 {type:"06",name:"毒蘑菇6",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
 	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
-	 {type:"07",name:"毒蘑菇7",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
+	 {type:"07",name:"毒蘑菇7",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
 	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
-	 {type:"08",name:"毒蘑菇8",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'3',
+	 {type:"08",name:"毒蘑菇8",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
 	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]},
-	 {type:"09",name:"毒蘑菇9",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',
+	 {type:"09",name:"毒蘑菇9",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
 	 drop:[{type:'wea',code:'01',odds:'10'},{type:'amu',code:'00',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'med',code:'01',odds:'30'}]}
 ];
 //一些npc内容
@@ -71,7 +71,30 @@ var NPC =[
 	{name:'黄大仙3',myclass:'broke',detail:"444"},{name:'黄大仙4',myclass:'ordin',detail:"555"},{name:'黄大仙5',myclass:'pink',detail:"666"},
 	{name:'黄大仙6',myclass:'broke',detail:"777"},{name:'黄大仙7',myclass:'broke',detail:"888"}
 ];
-
+//设置关卡
+var tollGate = [
+	{name:'荒古草原',detail:'死气沉沉的草原',imgPath:'tollGateImg/tg_f_bg.jpg',
+	tg:[
+		{monsterCode:'00',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'},
+		{monsterCode:'01',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'},
+		{monsterCode:'02',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'},
+		{monsterCode:'03',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'}
+	]},
+	{name:'烈焰火山',detail:'死气沉沉的草原',imgPath:'tollGateImg/tg_s_bg.jpg',
+	tg:[
+		{monsterCode:'00',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'},
+		{monsterCode:'01',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'},
+		{monsterCode:'02',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'},
+		{monsterCode:'03',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'}
+	]},
+	{name:'极寒冰川',detail:'死气沉沉的草原',imgPath:'tollGateImg/tg_t_bg.jpg',
+	tg:[
+		{monsterCode:'00',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'},
+		{monsterCode:'01',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'},
+		{monsterCode:'02',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'},
+		{monsterCode:'03',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'}
+	]}
+];
 
 
 

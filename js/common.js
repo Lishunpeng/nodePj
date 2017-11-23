@@ -75,20 +75,22 @@ myFun.prototype = {
 					vm.materialData = myobj.bagData(mymaterial,vm.myData.materialCode);
 					localStorage.equCode = vm.myData.equiCode;
 					localStorage.matCode = vm.myData.materialCode;
-				}else if(search == "/gameRole.html"){
+				}else if(search == "/gameRole.html" || search == "/adventTG.html"){
 					vm.equiData = myobj.bagEqui(vm.myData.EquiCode);
 					for (i in vm.equiData) {
 						if (vm.equiData[i].useState=='1') {
 							if (vm.equiData[i].goodsInfo.judey=='wea') {
-								vm.useWea =  vm.equiData[i].goodsInfo;
+								vm.useWea = vm.equiData[i].goodsInfo;
+								vm.myData.ATK =parseInt(vm.useWea.addAttr)+parseInt(vm.myData.ATK);
 							}else if(vm.equiData[i].goodsInfo.judey=='clo'){
-								vm.useClo =  vm.equiData[i].goodsInfo;
+								vm.useClo = vm.equiData[i].goodsInfo;
+								vm.myData.DEF = parseInt(vm.useClo.addAttr)+parseInt(vm.myData.DEF);
 							}else if(vm.equiData[i].goodsInfo.judey=='amu'){
 								vm.useAmu =  vm.equiData[i].goodsInfo;
+								vm.myData.HP = parseInt(vm.useAmu.addAttr)+parseInt(vm.myData.HP);
 							}
 						}
 					}
-					console.log(vm.useClo)
 				}
 
 			}
@@ -154,6 +156,7 @@ myFun.prototype = {
 	//装备查看详细
 	equiUseinfo: function() {
 		$(".roleBorder p").on("click", function() {
+			console.log()
 			var data = JSON.parse($(this).attr('data-data')) 
 			console.log(data)
 			var str = '<span class='+data.myclass+'>'+data.name+'</span><br>'+
@@ -309,8 +312,27 @@ myFun.prototype = {
 		console.log(postData)
 		myobj.postajax('/saleGoods', postData)
 	},
+	//冒险关卡选择渲染
+	getAdvendata:function(){
+		vm.tgData = tollGate;
+		console.log(vm.tgData)
+	},
+	//关卡跳转
+	adventLink:function(obj,path){
+		window.location.href = path+"#"+obj+"";
+	},
+	//冒险章节选择渲染
+	getAdvenCont:function(){
+		$('body').css('background','url('+tollGate[hash].imgPath+')');
+		vm.tgData = tollGate[hash].tg;
+		console.log(vm.tgData)
+	},
+	fightBoard:function(val){
+		vm.monster = myobj.getData(monster,val);
+		$('.fightBoard').show(300);
+	},
+	/*
 	//冒险模式随机产生怪物
-	
 	getMonster: function() {
 		var mydata = {};
 		if(hash == 0) {
@@ -349,7 +371,7 @@ myFun.prototype = {
 			vm.adventData = vm.advent[vm.myPlace - 1]
 			myobj.creatHtml(vm.adventData);
 		}, 1000);
-	},
+	},*/
 	searchMap: function() {
 		$('.advenBox').slideToggle(300);
 	},
@@ -377,30 +399,30 @@ myFun.prototype = {
 	//一键攻击
 	attack: function() {
 		//敌方信息
-		vm.adventData.ATK = parseInt(vm.adventData.ATK);
-		vm.adventData.DEF = parseInt(vm.adventData.DEF);
-		vm.adventData.HP = parseInt(vm.adventData.HP);
+		vm.monster.ATK = parseInt(vm.monster.ATK);
+		vm.monster.DEF = parseInt(vm.monster.DEF);
+		vm.monster.HP = parseInt(vm.monster.HP);
 		//我放信息
-		vm.adventInfo.myATK = parseInt(vm.adventInfo.myATK);
-		vm.adventInfo.myDEF = parseInt(vm.adventInfo.myDEF);
-		vm.adventInfo.myHP = parseInt(vm.adventInfo.myHP);
-		if(vm.adventInfo.myATK < vm.adventData.DEF) {
-			mui.alert('你打不过的，放弃吧。');
+		vm.myData.ATK = parseInt(vm.myData.ATK);
+		vm.myData.DEF = parseInt(vm.myData.DEF);
+		vm.myData.HP = parseInt(vm.myData.HP);
+		if(vm.myData.ATK < vm.monster.DEF) {
+			mui.alert('你打不动',function(){window.onload()});
 		} else {
-			var eneLosehp = vm.adventInfo.myATK - vm.adventData.DEF;
-			vm.adventData.HP -= eneLosehp;
-			var myLosehp = vm.adventData.ATK - vm.adventInfo.myDEF;
-			vm.adventInfo.myHP -= myLosehp;
-			myobj.adventInfo(vm.adventInfo.myHP, vm.adventData.HP, myLosehp, eneLosehp);
+			var eneLosehp = vm.myData.ATK - vm.monster.DEF;
+			vm.monster.HP -= eneLosehp;
+			var myLosehp = vm.monster.ATK - vm.myData.DEF;
+			vm.myData.HP -= myLosehp;
+			myobj.adventInfo(vm.myData.HP, vm.monster.HP, myLosehp, eneLosehp);
 		}
+		console.log(vm.monster)
 	},
 	//冒险模式显示信息
 	adventInfo: function(myhp, enenyhp, mylose, enlose) {
+		console.log(myhp,enenyhp)
 		if(myhp <= 0) {
 			myhp = 0;
-			mui.alert('你死了，闯关失败！', function() {
-				window.location.href = "GameTest.html"
-			})
+			mui.alert('你死了！', function() {window.onload()})
 		} else if(enenyhp <= 0) {
 			enenyhp = 0;
 			var str = ''
@@ -421,12 +443,10 @@ myFun.prototype = {
 					str += '<br>获得了：<span class=' + myEqui.myclass + '>' + myEqui.name + '</span>'
 				}
 			}
-			$('.fightInfo').html('你杀死了' + vm.adventData.name + ',获得了' + vm.adventData.dropMoney + '元' + str)
 			console.log(vm.myDrop,vm.addMoney)
 		} else {
-			$('.monHP').text(enenyhp);
-			$('.nowHP').text('当前(' + myhp + ')');
-			$('.fightInfo').html('你对' + vm.adventData.name + '发起了攻击<br>' + vm.adventData.name + '失去了(' + enlose + ')血量<br>你失去了(' + mylose + ')的血量')
+//			$('.monHP').html('<span style="color:#ff0000">'+enenyhp+'</span>');
+//			$('.myHP').html('<span style="color:#ff0000">'+myhp+'</span>');
 		}
 	},
 	//概率计算
@@ -470,7 +490,7 @@ myFun.prototype = {
 }
 var myobj = new myFun();
 var vm = new Vue({
-	el: '#login,#firstLogin,#info,#bagData,#advenContent,#bagInfo',
+	el: '#login,#firstLogin,#info,#bagData,#advenContent,#bagInfo,#choosePass,#advenTG',
 	data: {
 		addMoney: 0, //获取的金币
 		myDrop: [], //掉落物品
@@ -482,6 +502,7 @@ var vm = new Vue({
 		opasswordag: "",
 		acco: "",
 		name: "",
+		monster:{},
 		myData: [],
 		equiData:[],
 		materialData:[],
@@ -491,6 +512,7 @@ var vm = new Vue({
 		myCount: 0,
 		adventData: {},
 		adventInfo: {},
+		tgData:[]
 	},
 	methods: {
 		//登录页面

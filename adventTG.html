@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" type="text/css" href="mui.css" />
+		<link rel="stylesheet" type="text/css" href="public.css" />
+		<title></title>
+	</head>
+
+	<body>
+		<div id="advenTG">
+			<ul class="advenTG">
+				<li v-for="data in tgData" :style="{backgroundImage:'url('+data.imgPath+')'}" @click="myobj.fightBoard(data.monsterCode)">
+					<p v-text="data.name"></p>
+				</li>
+			</ul>
+			<div class="fightBoard">
+				<div class="monData">
+					<div class="monInfo">
+						<div class="name" v-text="monster.name"></div>
+						<div>ATK&nbsp;:&nbsp;<span v-text="monster.ATK"></span></div>
+						<div>DEF&nbsp;:&nbsp;<span v-text="monster.DEF"></span></div>
+						<div>HP&nbsp;:&nbsp;<span v-text="monster.HP"></span></div>
+					</div>
+					<div class="imgbox">
+						<img :src="monster.imgPath" />
+					</div>
+
+				</div>
+				<div class="myData">
+					<div class="btnBox">
+						<input type="button" value="攻击" onclick="myobj.attack()"/>
+						<input type="button" value="一键攻击"/>
+					</div>
+					<div class="roleInfo" style="margin-bottom: .3rem;">
+						<div v-text="myData.name"></div>
+						<div>ATK&nbsp;:&nbsp;<span v-text="myData.ATK"></span></div>
+						<div>DEF&nbsp;:&nbsp;<span v-text="myData.DEF"></span></div>
+						<div>HP&nbsp;:&nbsp;<span v-text="myData.HP"></span></div>
+					</div>
+					<div class="imgbox">
+						<img src="head2.jpg" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="jquery-2.1.0.js"></script>
+	<script src="vue.min.js"></script>
+	<script src="mui.min.js"></script>
+	<script src="myData.js"></script>
+	<script src="common.js"></script>
+	<script src="fontsize.js"></script>
+	<script type="text/javascript">
+		myobj.getAdvenCont();
+		myobj.getajax("/getInfo?myacco=" + localStorage.acco);
+	</script>
+
+</html>

@@ -65,42 +65,7 @@
 				</ul>
 			</div>
 
-			<!--<div class="name">用户名:{{myData.myacco}}</div>-->
-
-			<!--<div class="ATK">ATK:{{myData.ATK}}<span class="addAttr" v-text="'(+'+myWeapon.addAttr+')'"></span></div>-->
-			<!--<div class="DEF">DEF:{{myData.DEF}} <span class="addAttr" v-text="'(+'+myCloth.addAttr+')'"></span></div>-->
-			<!--<div class="HP">HP:{{myData.HP}} <span class="addAttr" v-text="'(+'+myAmulet.addAttr+')'"></span></div>-->
-			<!--<div class="myMonye">金币：{{myData.money}}元</div>-->
-
-			<!--<div class="myCloth">
-				<div class="weapon myEqui">
-					<p>武器：<span :class="myWeapon.myclass" data-sea="0" v-text="myWeapon.name"></span></p>
-					<ul class="myDetail">
-						<li v-text="'ATK+'+myWeapon.addAttr"></li>
-						<li v-text="'阐述：'+myWeapon.detail"></li>
-					</ul>
-				</div>
-
-				<div class="equi myEqui">
-					<p>装备：<span :class="myCloth.myclass" data-sea="0" v-text="myCloth.name"></span></p>
-					<ul class="myDetail">
-						<li v-text="'DEF+'+myCloth.addAttr"></li>
-						<li v-text="'阐述：'+myCloth.detail"></li>
-					</ul>
-				</div>
-				<div class="amulet myEqui">
-					<p>首饰：<span :class="myAmulet.myclass" data-sea="0" v-text="myAmulet.name"></span></p>
-					<ul class="myDetail">
-						<li v-text="'HP+'+myAmulet.addAttr"></li>
-						<li v-text="'阐述：'+myAmulet.detail"></li>
-					</ul>
-				</div>
-			</div>
-		-->
-
-			<!--<div class="indexContent">
 			
-		</div>-->
 		</div>
 
 	</body>
@@ -111,7 +76,6 @@
 	<script src="common.js"></script>
 	<script src="fontsize.js"></script>
 	<script type="text/javascript">
-		//		myobj.changeHead();
 		localStorage.removeItem('cur');
 		myobj.equiUseinfo();
 		myobj.getajax("/getInfo?myacco=" + localStorage.acco);
