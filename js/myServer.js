@@ -121,7 +121,7 @@ http.createServer(function(req, res) {
 							myacco: myattr.myacco,
 							equiCode: "1000,0001,1100,0101,1200,0201", //装备
 //							medicineCode: "55#01,1#00", //药水
-							materialCode: "10#01,1#00", //材料
+							materialCode: "10#01,1#00,10#02,15#03", //材料
 							money: '1000'
 						};
 						insertData(db, initData, function(result) {
@@ -151,6 +151,7 @@ http.createServer(function(req, res) {
 				selectData(db, params, function(result) {
 					backData.money = result[0].money;
 					backData.EquiCode = result[0].equiCode;
+					backData.materialCode = result[0].materialCode;
 					res.end(JSON.stringify(backData));
 					db.close();
 				}, 'goods');

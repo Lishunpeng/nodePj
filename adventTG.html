@@ -20,7 +20,7 @@
 			<div class="fightBoard">
 				<div class="monData">
 					<div class="monInfo">
-						<div class="name" v-text="monster.name"></div>
+						<div :class="monster.myclass" v-text="monster.name"></div>
 						<div>ATK&nbsp;:&nbsp;<span v-text="monster.ATK"></span></div>
 						<div>DEF&nbsp;:&nbsp;<span v-text="monster.DEF"></span></div>
 						<div>HP&nbsp;:&nbsp;<span v-text="monster.HP"></span></div>
@@ -32,8 +32,8 @@
 				</div>
 				<div class="myData">
 					<div class="btnBox">
-						<input type="button" value="攻击" onclick="myobj.attack()"/>
-						<input type="button" value="一键攻击"/>
+						<input type="button" value="攻击" onclick="myobj.attack()" class="a_attack"/>
+						<input type="button" value="一键攻击" />
 					</div>
 					<div class="roleInfo" style="margin-bottom: .3rem;">
 						<div v-text="myData.name"></div>
@@ -43,6 +43,28 @@
 					</div>
 					<div class="imgbox">
 						<img src="head2.jpg" />
+					</div>
+				</div>
+			</div>
+
+			<div class="winnerBox">
+				<div class="winnerBorder">
+					<div class="imgbox">
+						<img src="winner.jpg" />
+					</div>
+					<p style="text-align: center;">你击败了<span :class="monster.myclass" v-text="monster.name"></span>获得了：</p>
+					<ul class="winDrop">
+						<div class="list">
+							<div class="imgbox" style="background-image: url(coin.png);"></div>
+							<p v-text="'￥'+addMoney+'元'"></p>
+						</div>
+						<li v-for="data in myDrop" class="list">
+							<div class="imgbox" :style="{backgroundImage: 'url('+data.imgPath+')'}"></div>
+							<p :class="data.myclass" v-text="data.name"></p>
+						</li>
+					</ul>
+					<div class="winner_btn">
+						<button  onclick="myobj.saveData()" class="mui-btn mui-btn-block">确定</button>
 					</div>
 				</div>
 			</div>
