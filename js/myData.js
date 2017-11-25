@@ -42,28 +42,24 @@ var myEqui =[
 
 
 //怪物
-/*掉落装备代码：#号前表示*/
+/*掉落装备代码：#号前表示稀有,##代表特别稀有*/
 var monster = [
-	{type:"00",name:"花蘑菇",detail:"漂亮的蘑菇",ATK:"15",DEF:'5',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'1',imgPath:'monster/mon_00.png',
-	 drop:[{type:'equ',code:'0000',odds:'10'},{type:'equ',code:'0100',odds:'10'},{type:'mat',code:'02',odds:'50'},{type:'equ',code:'0201',odds:'10'}]},
+	{type:"00",name:"花蘑菇",detail:"漂亮的蘑菇",ATK:"15",DEF:'5',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'2',imgPath:'monster/mon_00.png',
+	 drop:[{type:'mat',code:'03',odds:'100'},{type:'mat',code:'02',odds:'100'}]},
 	{type:"01",name:"毒蘑菇",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
 	 drop:[{type:'equ',code:'0001',odds:'10'},{type:'equ',code:'0200',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
 	 {type:"02",name:"毒蘑菇2",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"pink",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
 	 drop:[{type:'equ',code:'0001',odds:'10'},{type:'equ',code:'0100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
 	 {type:"03",name:"毒蘑菇3",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"pink",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
-	 drop:[{type:'equ',code:'0001',odds:'10'},{type:'equ',code:'0100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
-	 {type:"04",name:"毒蘑菇4",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
-	 drop:[{type:'equ',code:'0001',odds:'10'},{type:'equ',code:'0101',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
-	 {type:"05",name:"毒蘑菇5",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
-	 drop:[{type:'equ',code:'0001',odds:'10'},{type:'equ',code:'0100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
-	 {type:"06",name:"毒蘑菇6",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
-	 drop:[{type:'equ',code:'0001',odds:'10'},{type:'equ',code:'0001',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
-	 {type:"07",name:"毒蘑菇7",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
-	 drop:[{type:'equ',code:'0001',odds:'10'},{type:'equ',code:'0101',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
-	 {type:"08",name:"毒蘑菇8",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
-	 drop:[{type:'equ',code:'0001',odds:'10'},{type:'equ',code:'0201',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
-	 {type:"09",name:"毒蘑菇9",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
-	 drop:[{type:'equ',code:'0001',odds:'10'},{type:'equ',code:'0100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]}
+	drop:[{type:'equ',code:'0001',odds:'10'},{type:'equ',code:'0100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
+	{type:"#00",name:"☆毒蘑菇1",detail:"有毒蘑菇",ATK:"30",DEF:'18',HP:'130',myclass:"pink",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
+	drop:[{type:'equ',code:'0001',odds:'10'},{type:'equ',code:'0100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
+	{type:"#01",name:"☆毒蘑菇2",detail:"有毒蘑菇",ATK:"30",DEF:'18',HP:'130',myclass:"pink",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
+	drop:[{type:'equ',code:'0001',odds:'10'},{type:'equ',code:'0100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
+	{type:"#02",name:"☆毒蘑菇3",detail:"有毒蘑菇",ATK:"30",DEF:'18',HP:'130',myclass:"pink",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
+	drop:[{type:'equ',code:'0001',odds:'10'},{type:'equ',code:'0100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
+	{type:"#03",name:"☆毒蘑菇",detail:"有毒蘑菇",ATK:"30",DEF:'18',HP:'130',myclass:"pink",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
+	drop:[{type:'equ',code:'0001',odds:'10'},{type:'equ',code:'0100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
 ];
 //一些npc内容
 var NPC =[
@@ -75,24 +71,48 @@ var NPC =[
 var tollGate = [
 	{name:'荒古草原',detail:'死气沉沉的草原',imgPath:'tollGateImg/tg_f_bg.jpg',
 	tg:[
-		{monsterCode:'00',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'},
-		{monsterCode:'01',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'},
-		{monsterCode:'02',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'},
-		{monsterCode:'03',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'}
+		{monsterCode:'00,01,02,#00',imgPath:'tollGateImg/f1.png',name:'太原古店',detail:'荒废已久的古店'},
+		{monsterCode:'02,03,04,#01',imgPath:'tollGateImg/f2.png',name:'草原边际',detail:'一望无际的草原'},
+		{monsterCode:'00,01,02,#02',imgPath:'tollGateImg/f3.png',name:'草原中央',detail:'死气层层的草原'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/f4.png',name:'沼泽之地',detail:'脏兮兮的沼泽'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/f5.png',name:'荒古森林',detail:'漆黑恐怕的森林'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/f6.png',name:'森林边缘',detail:'隐约能看见太阳'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/f7.png',name:'森林深处',detail:'阴森森的森林'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/f8.png',name:'森林山洞',detail:'莫名其妙的洞穴'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/f9.png',name:'洞穴内部',detail:'可怕的洞穴'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/f10.png',name:'洞中小屋',detail:'奇怪的房子'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/f11.png',name:'小屋内部',detail:'奇怪的门'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/f12.png',name:'神秘密室',detail:'一个不知道通往哪里的密室'},
 	]},
 	{name:'烈焰火山',detail:'死气沉沉的草原',imgPath:'tollGateImg/tg_s_bg.jpg',
 	tg:[
-		{monsterCode:'00',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'},
-		{monsterCode:'01',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'},
-		{monsterCode:'02',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'},
-		{monsterCode:'03',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'}
+		{monsterCode:'00,01,02,#00',imgPath:'tollGateImg/s1.png',name:'密室通道',detail:'不知分岔后去向'},
+		{monsterCode:'02,03,04,#01',imgPath:'tollGateImg/s2.png',name:'火焰山口',detail:'热气腾腾的火焰山入口'},
+		{monsterCode:'00,01,02,#02',imgPath:'tollGateImg/s3.png',name:'山口森林',detail:'地板都是滚烫的'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/s4.png',name:'火焰桥头',detail:'随时可能坠入熔岩'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/s5.png',name:'桥头对面',detail:'热腾腾的山洞'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/s6.png',name:'火洞边缘',detail:'被烧焦的气味'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/s7.png',name:'火焰深处',detail:'靠近热中心'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/s8.png',name:'熔岩巨洞',detail:'温度急剧升高'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/s9.png',name:'洞穴内部',detail:'可怕的洞穴'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/s10.png',name:'火焰内核',detail:'火焰山核心，靠此发出火焰'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/s11.png',name:'火洞外围',detail:'温度开始减低了'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/s12.png',name:'离开山洞',detail:'走出了山洞'},
 	]},
 	{name:'极寒冰川',detail:'死气沉沉的草原',imgPath:'tollGateImg/tg_t_bg.jpg',
 	tg:[
-		{monsterCode:'00',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'},
-		{monsterCode:'01',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'},
-		{monsterCode:'02',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'},
-		{monsterCode:'03',imgPath:'tollGateImg/tg_f_1.png',name:'太原古店',detail:'荒废已久的古店'}
+		{monsterCode:'00,01,02,#00',imgPath:'tollGateImg/t1.png',name:'荒凉山村',detail:'不知名的村庄'},
+		{monsterCode:'02,03,04,#01',imgPath:'tollGateImg/t2.png',name:'村口雪地',detail:'地上铺满了雪'},
+		{monsterCode:'00,01,02,#02',imgPath:'tollGateImg/t3.png',name:'冰封雪地',detail:'地上铺满了雪'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/t4.png',name:'极地冰洞',detail:'随时可能坠入熔岩'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/t5.png',name:'极地桥头',detail:'热腾腾的山洞'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/t6.png',name:'冰洞深处',detail:'被烧焦的气味'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/t7.png',name:'临近海洋',detail:'靠近热中心'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/t8.png',name:'港口',detail:'温度急剧升高'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/t9.png',name:'海洋深处',detail:'可怕的洞穴'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/t10.png',name:'不明海洋',detail:'火焰山核心，靠此发出火焰'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/t11.png',name:'不明发电厂',detail:'温度开始减低了'},
+		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/t12.png',name:'发电厂内部',detail:'走出了山洞'},
 	]}
 ];
 

@@ -229,6 +229,21 @@ http.createServer(function(req, res) {
 				}, 'goods');
 			});
 		});
+	}else if(pathname == "/saveData") {
+		req.on('data', function(attr) {
+			myattr = qs.parse(decodeURI(attr));
+			var whereData = {
+				myacco: myattr.myacco
+			}
+			
+			MongoClient.connect(DB_CONN_STR, function(err, db) {
+				updateData(db, whereData, myattr, function(result) {
+					backData.msg = '闯关成功';
+					res.end(JSON.stringify(backData))
+					db.close();
+				}, 'goods');
+			});
+		});
 	}
 }).listen(3000);
 var insertData = function(db, mydata, callback, table) {

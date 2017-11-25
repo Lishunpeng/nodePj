@@ -49,6 +49,8 @@ myFun.prototype = {
 					path == '/useEqui' ? mui.alert(data.msg, function() {
 						location.reload();
 					}) : "";
+				}else if(search == "/adventTG.html") {
+					location.reload();
 				}
 			}
 		});
@@ -328,7 +330,15 @@ myFun.prototype = {
 		console.log(vm.tgData)
 	},
 	fightBoard: function(val) {
-		vm.monster = myobj.getData(monster, val);
+		val = val.split(',');
+		var lastVal = val.pop();
+		var rdConut =Math.ceil(Math.random()*100);
+		if(rdConut <=50 ){
+			vm.monster = myobj.getData(monster, lastVal);
+		}else{
+			var rd =Math.ceil(Math.random()*val.length);
+			vm.monster = myobj.getData(monster, val[rd-1]);
+		}
 		$('.fightBoard').fadeIn(300);
 	},
 	/*
@@ -408,7 +418,7 @@ myFun.prototype = {
 		vm.myData.HP = parseInt(vm.myData.HP);
 		if(vm.myData.ATK < vm.monster.DEF) {
 			mui.alert('你打不动', function() {
-				window.onload()
+				location.reload();
 			});
 		} else {
 			var eneLosehp = vm.myData.ATK - vm.monster.DEF;
@@ -425,7 +435,7 @@ myFun.prototype = {
 		if(myhp <= 0) {
 			myhp = 0;
 			mui.alert('你死了！', function() {
-				window.onload()
+				location.reload();
 			})
 		} else if(enenyhp <= 0) {
 			$('.a_attack').attr('disabled', 'disabled');
@@ -478,31 +488,36 @@ myFun.prototype = {
 		var postData = {};
 		var isBaghas = false;
 		postData.equiCode = vm.myData.EquiCode;
-		postData.matCode = "";
-		var matCode = vm.myData.materialCode.split(',');
-		var a = '';
+		postData.materialCode = vm.myData.materialCode;
 		console.log(vm.myData)
 		if(vm.myDrop.length) {
 			for(i in vm.myDrop) {
 				if(vm.myDrop[i].judey == 'mat') {
+					var matCode = vm.myData.materialCode.split(',');
+					postData.materialCode = "";
 					for(j in matCode) {
-						var str = matCode[j].split("#");
+						var str = matCode[j].split('#');
 						if(vm.myDrop[i].type == str[1]) {
 							isBaghas = true;
-							str[0] ++;
-							matCode[j] = str[0] + '#' + str[1];
+							str[0]++;
 						}
-						postData.matCode += ','+matCode[j];
+						matCode[j] = ',' + str[0] + '#' + str[1];
+						postData.materialCode += matCode[j];
 					}
+					if(!isBaghas) {
+						postData.materialCode = ',' + vm.myData.materialCode + ',1#' + vm.myDrop[i].type;
+					}
+					vm.myData.materialCode = postData.materialCode.substr(1);
+					postData.materialCode = vm.myData.materialCode;
 				} else {
 					postData.equiCode += ',0' + vm.myDrop[i].type;
 				}
-
 			}
-			console.log(postData);
-		}
 
-		//		console.log(vm.materialData);
+		}
+		postData.money = parseInt(vm.myData.money) + parseInt(vm.addMoney);
+		postData.myacco = vm.myData.myacco;
+		myobj.postajax("/saveData", postData);
 	}
 
 }
