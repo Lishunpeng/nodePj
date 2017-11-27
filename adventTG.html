@@ -26,14 +26,15 @@
 						<div>HP&nbsp;:&nbsp;<span v-text="monster.HP"></span></div>
 					</div>
 					<div class="imgbox">
-						<img :src="monster.imgPath" />
+						<span class="monLosehp"></span>
+						<img :src="monster.imgPath"/>
 					</div>
 
 				</div>
 				<div class="myData">
 					<div class="btnBox">
 						<input type="button" value="攻击" onclick="myobj.attack()" class="a_attack"/>
-						<input type="button" value="一键攻击" />
+						<input type="button" value="捕捉" onclick="myobj.catchMon()"/>
 					</div>
 					<div class="roleInfo" style="margin-bottom: .3rem;">
 						<div v-text="myData.name"></div>
@@ -42,6 +43,7 @@
 						<div>HP&nbsp;:&nbsp;<span v-text="myData.HP"></span></div>
 					</div>
 					<div class="imgbox">
+						<span class="myLosehp"></span>
 						<img src="head2.jpg" />
 					</div>
 				</div>

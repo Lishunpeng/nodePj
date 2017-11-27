@@ -119,11 +119,22 @@ http.createServer(function(req, res) {
 						/*其他物品代码1000：前两位代表数量,最后两位00代表物品代码**/
 						var goods = {
 							myacco: myattr.myacco,
-							equiCode: "1000,0001,1100,0101,1200,0201", //装备
-//							medicineCode: "55#01,1#00", //药水
+							equiCode: "1000&0,0001&0,0001&0,0001&0,0001&0,1100&0,0101&0,1200&0,0201&0", //装备
+							petCode: "000&1,1#01&1", //宠物
 							materialCode: "10#01,1#00,10#02,15#03", //材料
 							money: '1000'
 						};
+						var equiCode1 = {
+							myacco: myattr.myacco,
+							equiId:1,
+							equiCode:'000',
+						}
+						var equiCode2 = {
+							myacco: myattr.myacco,
+							equiId:2,
+							equiCode:'001',
+						}
+						
 						insertData(db, initData, function(result) {
 							db.close();
 						}, 'personInfo');
@@ -133,6 +144,12 @@ http.createServer(function(req, res) {
 						insertData(db, myattr, function(result) {
 							db.close();
 						}, 'user');
+						insertData(db, equiCode1, function(result) {
+							db.close();
+						}, 'b_equi');
+						insertData(db, equiCode2, function(result) {
+							db.close();
+						}, 'b_equi');
 						backData.msg = "注册成功"
 						res.end(JSON.stringify(backData));
 					}

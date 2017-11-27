@@ -73,12 +73,16 @@ myFun.prototype = {
 				} else if(search == "/mybag.html") {
 
 					console.log(vm.myData)
-					vm.equiData = myobj.bagEqui(vm.myData.equiCode);
-					vm.materialData = myobj.bagData(mymaterial, vm.myData.materialCode);
+					vm.equiData = myobj.bagEqui(vm.myData.equiCode,'equi');
+//					vm.petData = myobj.bagEqui(vm.myData.petCode,'pet');
+					vm.materialData = myobj.bagData(mymaterial, vm.myData.materialCode,'mat');
 					localStorage.equCode = vm.myData.equiCode;
 					localStorage.matCode = vm.myData.materialCode;
+					localStorage.petData = vm.myData.petData;
+					
 				} else if(search == "/gameRole.html" || search == "/adventTG.html") {
-					vm.equiData = myobj.bagEqui(vm.myData.EquiCode);
+					vm.equiData = myobj.bagEqui(vm.myData.EquiCode,'equi');
+					console.log(vm.equiData)
 					for(i in vm.equiData) {
 						if(vm.equiData[i].useState == '1') {
 							if(vm.equiData[i].goodsInfo.judey == 'wea') {
@@ -109,26 +113,26 @@ myFun.prototype = {
 	},
 	//背包非装备信息变化
 	bagData: function(dataBase, obj, val) {
+		
 		var data = [];
 		var str = "";
 		obj = obj.split(',');
 		for(i in obj) {
 			var mydata = {};
-			mydata.name = 'mat'
 			mydata.code = obj[i];
-			if(val == "medicine") {
-				mydata.type = "HP";
-				mydata.name = 'med'
+			mydata.name = val;
+			if (val == 'mat') {
+				str = obj[i].split("#");
+				mydata.num = str[0];
+				obj[i] = str[1]
 			}
-			str = obj[i].split("#");
-			mydata.num = str[0];
-			mydata.goodsInfo = myobj.getData(dataBase, str[1]);
+			mydata.goodsInfo = myobj.getData(dataBase, obj[i]);
 			data.push(mydata)
 		}
 		return data;
 	},
-	//背包信息中的装备栏
-	bagEqui: function(obj) {
+	//背包信息中的装备栏及宠物
+	bagEqui: function(obj,val) {
 		obj = obj.split(',');
 		console.log(obj)
 		var data = [];
@@ -136,15 +140,16 @@ myFun.prototype = {
 		var strL = "";
 		for(i in obj) {
 			var mydata = {};
-			mydata.name = 'equi'
+			mydata.name = val
 			strF = obj[i].substr(0, 1);
-			strL = obj[i].substr(1);
-			console.log(strF, strL)
+			strL = obj[i].substr(1).split('&');
 			mydata.useState = strF;
 			mydata.code = obj[i];
-			mydata.goodsInfo = myobj.getData(myEqui, strL);
+			val=='equi'?mydata.goodsInfo = myobj.getData(myEqui, strL[0]):mydata.goodsInfo = myobj.getData(monster, strL[0]);
+			mydata.intensify = strL[1];
 			data.push(mydata);
 		}
+		console.log(data)
 		return data;
 	},
 	changeBag: function() {
@@ -212,27 +217,21 @@ myFun.prototype = {
 		}
 	},
 	//装备切换
-	changeEqui: function(equiData) {
+	changeEqui: function(data) {
 		var postData = {};
 		var strL = "";
-		strL = equiData.code.substr(2);
-		if(equiData.code[equiTypecount] == 0) {
-			postData.code = myobj.searchEqui(0, equiData.code);
-		} else if(equiData.code[equiTypecount] == 1) {
-			postData.code = myobj.searchEqui(1, equiData.code);
-		} else if(equiData.code[equiTypecount] == 2) {
-			postData.code = myobj.searchEqui(2, equiData.code);
-		}
+		postData.code = myobj.searchEqui(data.code);
 		postData.typeCode = "equ";
 		postData.myacco = localStorage.acco;
+		console.log(postData)
 		myobj.postajax('/useEqui', postData);
 	},
 	//查询装备类型并转化
-	searchEqui: function(val, code) {
+	searchEqui: function(code) {
 		var myCode = localStorage.equCode.split(",");
 		var str = "";
 		for(i in myCode) {
-			if(myCode[i][equiTypecount] == val && myCode[i][0] == 1) {
+			if(myCode[i][equiTypecount] == code[equiTypecount] && myCode[i][0] == 1) {
 				myCode[i] = '0' + myCode[i].substr(1);
 			}
 			if(myCode[i] == code) {
@@ -341,73 +340,16 @@ myFun.prototype = {
 		}
 		$('.fightBoard').fadeIn(300);
 	},
-	/*
-	//冒险模式随机产生怪物
-	getMonster: function() {
-		var mydata = {};
-		if(hash == 0) {
-			for(var i = 0; i < vm.allPlace; i++) {
-				var myCount = Math.ceil(Math.random() * 2);
-				if(myCount == 1) {
-					var monsterCount = Math.ceil(Math.random() * easyMonster.length);
-					mydata = easyMonster[monsterCount - 1];
-					mydata.ismon = true;
-				} else {
-					var npcCount = Math.ceil(Math.random() * NPC.length);
-					mydata = NPC[npcCount - 1];
-					mydata.ismon = false;
-				}
-				vm.advent.push(mydata);
-			}
-			console.log(vm.advent);
-		}
-	},
-	//移动
-	moveGrid: function(obj) {
-
-		$(obj).attr("disabled", 'disabled');
-		$('.diceIcon').attr('src', 'dice.gif');
-		$('.diceIcon').show();
-		setTimeout(function() {
-			vm.myCount = Math.ceil(Math.random() * 6);
-			$('.diceIcon').attr('src', 'dice' + vm.myCount + '.png');
-			//点击按钮是否开启
-			$(obj).attr("disabled", false);
-			vm.myPlace += vm.myCount;
-			if(vm.myPlace >= vm.allPlace) {
-				vm.myPlace = vm.allPlace;
-				return mui.alert('闯关完成')
-			}
-			vm.adventData = vm.advent[vm.myPlace - 1]
-			myobj.creatHtml(vm.adventData);
-		}, 1000);
-	},*/
-	searchMap: function() {
-		$('.advenBox').slideToggle(300);
-	},
-	//闯关页面的HTML
-	creatHtml: function(obj) {
-		$('.advenShow').empty();
-		if(obj.ismon) {
-			var str = '<div class="monsterInfo">你遇到了：<br/>名字：' +
-				obj.name + '<br/>' +
-				'攻击力：' + obj.ATK + '<br/>' +
-				'血量：' + '<span class="monHP">' + obj.HP + '</span>' + '<br/>' +
-				'防御力：' + obj.DEF + '<br/>' +
-				'怪物详情：' + obj.detail + '<br/>' +
-				'难度系数：' + obj.level + '<br/>' +
-				'<ul class = "myOperation" >' +
-				'<li onclick="myobj.attack()">攻击</li><li>使用药水</li><li onclick="myobj.attack()">一键攻击</li>' +
-				'</ul><p class="fightInfo"></p></div>';
-		} else {
-			var str = '<div class="monsterInfo">你遇到了：' +
-				obj.name + '<br/>' +
-				'npc详情：' + obj.detail + '</div>'
-		}
-		$('.advenShow').append(str);
+	
+	//捕捉
+	catchMon:function(){
+		vm.monster.HP = parseInt(vm.monster.HP);
+		console.log(vm.monster.HP)
 	},
 	//攻击
 	attack: function() {
+		$('.monData .imgbox').remove('span');
+		$('.myData .imgbox').remove('span');
 		//敌方信息
 		vm.monster.ATK = parseInt(vm.monster.ATK);
 		vm.monster.DEF = parseInt(vm.monster.DEF);
@@ -455,8 +397,9 @@ myFun.prototype = {
 			}
 			console.log(vm.myDrop, vm.addMoney)
 		} else {
-			//			$('.monHP').html('<span style="color:#ff0000">'+enenyhp+'</span>');
-			//			$('.myHP').html('<span style="color:#ff0000">'+myhp+'</span>');
+						
+						$('.monData .imgbox').prepend("<span class='loseHp'>-"+enenyhp+"</span> ");
+						$('.myData .imgbox').prepend("<span class='loseHp'>-"+mylose+"</span> ");
 		}
 	},
 	//概率计算
@@ -519,6 +462,71 @@ myFun.prototype = {
 		postData.myacco = vm.myData.myacco;
 		myobj.postajax("/saveData", postData);
 	}
+	/*
+	//冒险模式随机产生怪物
+	getMonster: function() {
+		var mydata = {};
+		if(hash == 0) {
+			for(var i = 0; i < vm.allPlace; i++) {
+				var myCount = Math.ceil(Math.random() * 2);
+				if(myCount == 1) {
+					var monsterCount = Math.ceil(Math.random() * easyMonster.length);
+					mydata = easyMonster[monsterCount - 1];
+					mydata.ismon = true;
+				} else {
+					var npcCount = Math.ceil(Math.random() * NPC.length);
+					mydata = NPC[npcCount - 1];
+					mydata.ismon = false;
+				}
+				vm.advent.push(mydata);
+			}
+			console.log(vm.advent);
+		}
+	},
+	//移动
+	moveGrid: function(obj) {
+
+		$(obj).attr("disabled", 'disabled');
+		$('.diceIcon').attr('src', 'dice.gif');
+		$('.diceIcon').show();
+		setTimeout(function() {
+			vm.myCount = Math.ceil(Math.random() * 6);
+			$('.diceIcon').attr('src', 'dice' + vm.myCount + '.png');
+			//点击按钮是否开启
+			$(obj).attr("disabled", false);
+			vm.myPlace += vm.myCount;
+			if(vm.myPlace >= vm.allPlace) {
+				vm.myPlace = vm.allPlace;
+				return mui.alert('闯关完成')
+			}
+			vm.adventData = vm.advent[vm.myPlace - 1]
+			myobj.creatHtml(vm.adventData);
+		}, 1000);
+	},
+	searchMap: function() {
+		$('.advenBox').slideToggle(300);
+	},
+	//闯关页面的HTML
+	creatHtml: function(obj) {
+		$('.advenShow').empty();
+		if(obj.ismon) {
+			var str = '<div class="monsterInfo">你遇到了：<br/>名字：' +
+				obj.name + '<br/>' +
+				'攻击力：' + obj.ATK + '<br/>' +
+				'血量：' + '<span class="monHP">' + obj.HP + '</span>' + '<br/>' +
+				'防御力：' + obj.DEF + '<br/>' +
+				'怪物详情：' + obj.detail + '<br/>' +
+				'难度系数：' + obj.level + '<br/>' +
+				'<ul class = "myOperation" >' +
+				'<li onclick="myobj.attack()">攻击</li><li>使用药水</li><li onclick="myobj.attack()">一键攻击</li>' +
+				'</ul><p class="fightInfo"></p></div>';
+		} else {
+			var str = '<div class="monsterInfo">你遇到了：' +
+				obj.name + '<br/>' +
+				'npc详情：' + obj.detail + '</div>'
+		}
+		$('.advenShow').append(str);
+	},*/
 
 }
 var myobj = new myFun();
@@ -539,6 +547,7 @@ var vm = new Vue({
 		myData: [],
 		equiData: [], //背包装备数组
 		materialData: [], //背包材料数据数组
+		petData:[],//背包宠物数组
 		useWea: {}, //使用武器对象
 		useClo: {}, //使用衣服对象
 		useAmu: {}, //使用护符对象
