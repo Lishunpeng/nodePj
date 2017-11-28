@@ -40,28 +40,26 @@
 				<li><span></span>宠物</li>
 			</ul>
 			<ol class="bagDetail" id="bagData">
-				<!--<div class="myMoney">我的金币<span v-text="myData.money+'元'" style="float: right;"></span></div>-->
 				<li class="cur">
 					<ul class="bagCont">
-						<li :class="data.goodsInfo.myclass" v-for="data in equiData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goodsInfo.imgPath+')'}">
+						<li :class="data.myclass" v-for="data in equiData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.imgPath+')'}">
 							<span :class="data.useState==1?'use':'unuse'"></span>
-							<span class="intensify" v-text="'+'+data.intensify"></span>
+							<span class="intensify" v-text="'+'+data.inten"></span>
 						</li>
 					</ul>
 				</li>
 				<li>
 					<ul class="bagCont">
-						<li :class="data.goodsInfo.myclass" v-for="data in materialData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goodsInfo.imgPath+')'}">
-							<!--<span :class="data.goodsInfo.myclass" v-text="data.goodsInfo.name" ></span>-->
+						<li :class="data.myclass" v-for="data in matData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.imgPath+')'}">
 							<span style="float: right;margin-top: .7rem;color: #fff;font-size: .5rem;" v-text="data.num"></span>
 						</li>
 					</ul>
 				</li>
 				<li>
 					<ul class="bagCont mui-table-view">
-						<li :class="data.goodsInfo.myclass" v-for="data in petData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goodsInfo.imgPath+')'}">
+						<li :class="data.myclass" v-for="data in petData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.imgPath+')'}">
 							<span :class="data.useState==1?'use':'unuse'"></span>
-							<span class="intensify" v-text="data.intensify+'级'" style="color: #b26b32;"></span>
+							<span class="intensify" v-text="data.level+'级'" style="color: #b26b32;"></span>
 						</li>
 					</ul>
 				</li>

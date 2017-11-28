@@ -23,19 +23,19 @@ var mymedicine = [
 ];*/
 //材料
 var mymaterial = [
-	{type:"00",name:"神奇的石头",detail:"一颗会发光的石头，还不知道有什么用",addAttr:"",myclass:"pink",judey:'mat',imgPath:"bag_mat_00.png"},
-	{type:"01",name:"材料2",detail:"我的材料2。",addAttr:"",myclass:"ordin",getMoney:"100",judey:'mat',imgPath:"bag_mat_00.png"},
-	{type:"02",name:"死去的蘑菇",detail:"花蘑菇尸体。",addAttr:"",myclass:"ordin",getMoney:"300",judey:'mat',imgPath:"bag_mat_00.png"},
-	{type:"03",name:"有毒的蘑菇盖",detail:"毒蘑菇头盖。",addAttr:"",myclass:"ordin",getMoney:"500",judey:'mat',imgPath:"bag_mat_00.png"}
+	{code:"00",name:"神奇的石头",detail:"一颗会发光的石头，还不知道有什么用",addAttr:"",myclass:"pink",imgPath:"bag_mat_00.png"},
+	{code:"01",name:"材料2",detail:"我的材料2。",addAttr:"",myclass:"ordin",getMoney:"100",imgPath:"bag_mat_00.png"},
+	{code:"02",name:"死去的蘑菇",detail:"花蘑菇尸体。",addAttr:"",myclass:"ordin",getMoney:"300",imgPath:"bag_mat_00.png"},
+	{code:"03",name:"有毒的蘑菇盖",detail:"毒蘑菇头盖。",addAttr:"",myclass:"ordin",getMoney:"500",imgPath:"bag_mat_00.png"}
 ];
 //合并装备
 var myEqui =[
-	{type:"000",belone:'ATK',name:"生锈的铁剑",detail:"一把生锈了许久的铁剑。",addAttr:"3",myclass:"broke",getMoney:"300",judey:'wea',imgPath:"bag_wea_000.png"},
-	{type:"001",belone:'ATK',name:"铁剑",detail:"一把铁剑，比较新。",addAttr:"5",myclass:"ordin",getMoney:"500",judey:'wea',imgPath:"bag_wea_000.png"},
-	{type:"100",belone:'DEF',name:"破损的布衣",detail:"一个穷逼穿的衣服。",addAttr:"3",myclass:"broke",getMoney:"300",judey:'clo',imgPath:"bag_wea_000.png"},
-	{type:"101",belone:'DEF',name:"普通的布衣",detail:"普通草民衣服。",addAttr:"5",myclass:"ordin",getMoney:"500",judey:'clo',imgPath:"bag_wea_000.png"},
-	{type:"200",belone:'HP',name:"破损的护符",detail:"一个损坏的护身符。",addAttr:"30",myclass:"broke",getMoney:"300",judey:'amu',imgPath:"bag_wea_000.png"},
-	{type:"201",belone:'HP',name:"普通的护符",detail:"普通家庭的传家符。",addAttr:"50",myclass:"ordin",getMoney:"500",judey:'amu',imgPath:"bag_wea_000.png"}
+	{code:"000",belone:'ATK',name:"生锈的铁剑",detail:"一把生锈了许久的铁剑。",addAttr:"3",myclass:"broke",getMoney:"300",imgPath:"bag_wea_000.png"},
+	{code:"001",belone:'ATK',name:"铁剑",detail:"一把铁剑，比较新。",addAttr:"5",myclass:"ordin",getMoney:"500",imgPath:"bag_wea_000.png"},
+	{code:"100",belone:'DEF',name:"破损的布衣",detail:"一个穷逼穿的衣服。",addAttr:"3",myclass:"broke",getMoney:"300",imgPath:"bag_wea_000.png"},
+	{code:"101",belone:'DEF',name:"普通的布衣",detail:"普通草民衣服。",addAttr:"5",myclass:"ordin",getMoney:"500",imgPath:"bag_wea_000.png"},
+	{code:"200",belone:'HP',name:"破损的护符",detail:"一个损坏的护身符。",addAttr:"30",myclass:"broke",getMoney:"300",judey:'amu',imgPath:"bag_wea_000.png"},
+	{code:"201",belone:'HP',name:"普通的护符",detail:"普通家庭的传家符。",addAttr:"50",myclass:"ordin",getMoney:"500",judey:'amu',imgPath:"bag_wea_000.png"}
 ];
 
 
@@ -44,22 +44,22 @@ var myEqui =[
 //怪物
 /*掉落装备代码：#号前表示稀有,##代表特别稀有*/
 var monster = [
-	{type:"00",name:"花蘑菇",detail:"漂亮的蘑菇",ATK:"15",DEF:'5',HP:'30',myclass:"ordin",level:'1',dropMoney:"500",dropGoods:'2',imgPath:'monster/mon_00.png',
+	{code:"00",name:"花蘑菇",detail:"漂亮的蘑菇",ATK:"15",DEF:'5',HP:'30',myclass:"ordin",strong:'1',dropMoney:"500",dropGoods:'2',imgPath:'monster/mon_00.png',
 	 drop:[{type:'mat',code:'03',odds:'100'},{type:'mat',code:'02',odds:'100'}]},
-	{type:"01",name:"毒蘑菇",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
-	 drop:[{type:'equ',code:'0001',odds:'10'},{type:'equ',code:'0200',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
-	 {type:"02",name:"毒蘑菇2",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"pink",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
-	 drop:[{type:'equ',code:'0001',odds:'10'},{type:'equ',code:'0100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
-	 {type:"03",name:"毒蘑菇3",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"pink",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
-	drop:[{type:'equ',code:'0001',odds:'10'},{type:'equ',code:'0100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
-	{type:"#00",name:"☆毒蘑菇1",detail:"有毒蘑菇",ATK:"30",DEF:'18',HP:'130',myclass:"pink",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
-	drop:[{type:'equ',code:'0001',odds:'10'},{type:'equ',code:'0100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
-	{type:"#01",name:"☆毒蘑菇2",detail:"有毒蘑菇",ATK:"30",DEF:'18',HP:'130',myclass:"pink",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
-	drop:[{type:'equ',code:'0001',odds:'10'},{type:'equ',code:'0100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
-	{type:"#02",name:"☆毒蘑菇3",detail:"有毒蘑菇",ATK:"30",DEF:'18',HP:'130',myclass:"pink",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
-	drop:[{type:'equ',code:'0001',odds:'10'},{type:'equ',code:'0100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
-	{type:"#03",name:"☆毒蘑菇",detail:"有毒蘑菇",ATK:"30",DEF:'18',HP:'130',myclass:"pink",level:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
-	drop:[{type:'equ',code:'0001',odds:'10'},{type:'equ',code:'0100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
+	{code:"01",name:"毒蘑菇",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",strong:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
+	 drop:[{type:'equ',code:'001',odds:'10'},{type:'equ',code:'200',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
+	 {code:"02",name:"毒蘑菇2",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"pink",strong:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
+	 drop:[{type:'equ',code:'001',odds:'10'},{type:'equ',code:'100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
+	 {code:"03",name:"毒蘑菇3",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"pink",strong:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
+	drop:[{type:'equ',code:'001',odds:'10'},{type:'equ',code:'100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
+	{code:"#00",name:"☆毒蘑菇1",detail:"有毒蘑菇",ATK:"30",DEF:'18',HP:'130',myclass:"pink",strong:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
+	drop:[{type:'equ',code:'001',odds:'10'},{type:'equ',code:'100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
+	{code:"#01",name:"☆毒蘑菇2",detail:"有毒蘑菇",ATK:"30",DEF:'18',HP:'130',myclass:"pink",strong:'2',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
+	drop:[{type:'equ',code:'001',odds:'10'},{type:'equ',code:'100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
+	{code:"#02",name:"☆毒蘑菇3",detail:"有毒蘑菇",ATK:"30",DEF:'18',HP:'130',myclass:"pink",strong:'3',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
+	drop:[{type:'equ',code:'001',odds:'10'},{type:'equ',code:'100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
+	{code:"#03",name:"☆毒蘑菇",detail:"有毒蘑菇",ATK:"30",DEF:'18',HP:'130',myclass:"pink",strong:'3',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
+	drop:[{type:'equ',code:'001',odds:'10'},{type:'equ',code:'100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
 ];
 //一些npc内容
 var NPC =[

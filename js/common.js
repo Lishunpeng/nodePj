@@ -49,7 +49,7 @@ myFun.prototype = {
 					path == '/useEqui' ? mui.alert(data.msg, function() {
 						location.reload();
 					}) : "";
-				}else if(search == "/adventTG.html") {
+				} else if(search == "/adventTG.html") {
 					location.reload();
 				}
 			}
@@ -64,24 +64,17 @@ myFun.prototype = {
 			success: function(data) {
 				vm.myData = JSON.parse(data);
 				if(search == "/GameTest.html" || search == "/beginAdven.html") {
-					if(search == "/beginAdven.html") {
-						vm.adventInfo.myATK = parseInt(vm.myData.ATK) + parseInt(vm.myWeapon.addAttr);
-						vm.adventInfo.myDEF = parseInt(vm.myData.DEF) + parseInt(vm.myCloth.addAttr);
-						vm.adventInfo.myHP = parseInt(vm.myData.HP) + parseInt(vm.myAmulet.addAttr);
-					}
-
-				} else if(search == "/mybag.html") {
-
 					console.log(vm.myData)
-					vm.equiData = myobj.bagEqui(vm.myData.equiCode,'equi');
-//					vm.petData = myobj.bagEqui(vm.myData.petCode,'pet');
-					vm.materialData = myobj.bagData(mymaterial, vm.myData.materialCode,'mat');
-					localStorage.equCode = vm.myData.equiCode;
-					localStorage.matCode = vm.myData.materialCode;
-					localStorage.petData = vm.myData.petData;
-					
+				} else if(search == "/mybag.html") {
+					console.log(vm.myData);
+					vm.equiData = myobj.getData(myEqui, vm.myData.equiCode,'equi');
+					vm.petData = myobj.getData(monster, vm.myData.petCode,'pet');
+					vm.matData = myobj.getData(mymaterial, vm.myData.matCode,'mat');
+					console.log(vm.equiData, 'vm.equiData');
+					console.log(vm.petData, 'vm.petData');
+					console.log(vm.matData, 'vm.matData');
 				} else if(search == "/gameRole.html" || search == "/adventTG.html") {
-					vm.equiData = myobj.bagEqui(vm.myData.EquiCode,'equi');
+					/*vm.equiData = myobj.bagEqui(vm.myData.EquiCode, 'equi');
 					console.log(vm.equiData)
 					for(i in vm.equiData) {
 						if(vm.equiData[i].useState == '1') {
@@ -96,24 +89,38 @@ myFun.prototype = {
 								vm.myData.HP = parseInt(vm.useAmu.addAttr) + parseInt(vm.myData.HP);
 							}
 						}
-					}
+					}*/
 				}
 
 			}
 		})
 	},
 	//数据代码类型转换数据
-	getData: function(dataBase, obj) {
-		var data = null;
-		for(var i = 0; i < dataBase.length; i++) {
-			if(obj == dataBase[i].type) {
-				return data = dataBase[i];
+	getData: function(dataBase,obj,val) {
+		var data = [];
+		for(i in obj) {
+			for(j in dataBase) {
+				if(obj[i].code == dataBase[j].code) {
+					if (val=='mat') {
+						dataBase[j].num = obj[i].num;
+					}else if(val=='equi'){
+						dataBase[j].inten = obj[i].inten;
+						dataBase[j].useState = obj[i].useState;
+					}else if(val=='pet'){
+						dataBase[j].level = obj[i].level;
+					}
+					dataBase[j].type = obj[i].type;
+					dataBase[j]._id = obj[i]._id;
+					data.push(dataBase[j]);
+				}
 			}
 		}
+		return data;
 	},
+	/*
 	//背包非装备信息变化
 	bagData: function(dataBase, obj, val) {
-		
+
 		var data = [];
 		var str = "";
 		obj = obj.split(',');
@@ -121,7 +128,7 @@ myFun.prototype = {
 			var mydata = {};
 			mydata.code = obj[i];
 			mydata.name = val;
-			if (val == 'mat') {
+			if(val == 'mat') {
 				str = obj[i].split("#");
 				mydata.num = str[0];
 				obj[i] = str[1]
@@ -132,7 +139,7 @@ myFun.prototype = {
 		return data;
 	},
 	//背包信息中的装备栏及宠物
-	bagEqui: function(obj,val) {
+	bagEqui: function(obj, val) {
 		obj = obj.split(',');
 		console.log(obj)
 		var data = [];
@@ -145,13 +152,14 @@ myFun.prototype = {
 			strL = obj[i].substr(1).split('&');
 			mydata.useState = strF;
 			mydata.code = obj[i];
-			val=='equi'?mydata.goodsInfo = myobj.getData(myEqui, strL[0]):mydata.goodsInfo = myobj.getData(monster, strL[0]);
+			val == 'equi' ? mydata.goodsInfo = myobj.getData(myEqui, strL[0]) : mydata.goodsInfo = myobj.getData(monster, strL[0]);
 			mydata.intensify = strL[1];
 			data.push(mydata);
 		}
 		console.log(data)
 		return data;
 	},
+	*/
 	changeBag: function() {
 		$(".bagClass li").on("click", function() {
 			console.log($(this).index());
@@ -198,8 +206,8 @@ myFun.prototype = {
 
 		var mydata = JSON.parse(localStorage.mydata);
 		var str = ""
-		mydata.goodsInfo.addAttr ? str = '物品：<span class=' + mydata.goodsInfo.myclass + '>' + mydata.goodsInfo.name + '</span>\n' + mydata.goodsInfo.belone + ':+' + mydata.goodsInfo.addAttr + '\n阐述：' + mydata.goodsInfo.detail :
-			str = '物品：<span class=' + mydata.goodsInfo.myclass + '>' + mydata.goodsInfo.name + '</span>\n阐述：' + mydata.goodsInfo.detail;
+		mydata.addAttr ? str = '物品：<span class=' + mydata.myclass + '>' + mydata.name + '</span>\n' + mydata.belone + ':+' + mydata.addAttr + '\n阐述：' + mydata.detail :
+			str = '物品：<span class=' + mydata.myclass + '>' + mydata.name + '</span>\n阐述：' + mydata.detail;
 		mui.alert(str);
 		$('.mui-popup-text').addClass("mui-popup-left");
 	},
@@ -219,15 +227,16 @@ myFun.prototype = {
 	//装备切换
 	changeEqui: function(data) {
 		var postData = {};
-		var strL = "";
-		postData.code = myobj.searchEqui(data.code);
-		postData.typeCode = "equ";
+		console.log(data)
+//		postData.code = myobj.searchEqui(data.code);
 		postData.myacco = localStorage.acco;
+		postData.type = data.type;
+		postData._id = data._id;
 		console.log(postData)
-		myobj.postajax('/useEqui', postData);
+//		myobj.postajax('/useEqui', postData);
 	},
 	//查询装备类型并转化
-	searchEqui: function(code) {
+	/*searchEqui: function(code) {
 		var myCode = localStorage.equCode.split(",");
 		var str = "";
 		for(i in myCode) {
@@ -240,7 +249,7 @@ myFun.prototype = {
 			str += ',' + myCode[i];
 		}
 		return str.substr(1);
-	},
+	},*/
 	//物品出售
 	clickBox_sale: function() {
 		var mydata = JSON.parse(localStorage.mydata);
@@ -331,18 +340,18 @@ myFun.prototype = {
 	fightBoard: function(val) {
 		val = val.split(',');
 		var lastVal = val.pop();
-		var rdConut =Math.ceil(Math.random()*100);
-		if(rdConut <=50 ){
+		var rdConut = Math.ceil(Math.random() * 100);
+		if(rdConut <= 50) {
 			vm.monster = myobj.getData(monster, lastVal);
-		}else{
-			var rd =Math.ceil(Math.random()*val.length);
-			vm.monster = myobj.getData(monster, val[rd-1]);
+		} else {
+			var rd = Math.ceil(Math.random() * val.length);
+			vm.monster = myobj.getData(monster, val[rd - 1]);
 		}
 		$('.fightBoard').fadeIn(300);
 	},
-	
+
 	//捕捉
-	catchMon:function(){
+	catchMon: function() {
 		vm.monster.HP = parseInt(vm.monster.HP);
 		console.log(vm.monster.HP)
 	},
@@ -397,9 +406,9 @@ myFun.prototype = {
 			}
 			console.log(vm.myDrop, vm.addMoney)
 		} else {
-						
-						$('.monData .imgbox').prepend("<span class='loseHp'>-"+enenyhp+"</span> ");
-						$('.myData .imgbox').prepend("<span class='loseHp'>-"+mylose+"</span> ");
+
+			$('.monData .imgbox').prepend("<span class='loseHp'>-" + enenyhp + "</span> ");
+			$('.myData .imgbox').prepend("<span class='loseHp'>-" + mylose + "</span> ");
 		}
 	},
 	//概率计算
@@ -546,8 +555,8 @@ var vm = new Vue({
 		monster: {}, //怪物对象
 		myData: [],
 		equiData: [], //背包装备数组
-		materialData: [], //背包材料数据数组
-		petData:[],//背包宠物数组
+		matData: [], //背包材料数据数组
+		petData: [], //背包宠物数组
 		useWea: {}, //使用武器对象
 		useClo: {}, //使用衣服对象
 		useAmu: {}, //使用护符对象

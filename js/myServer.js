@@ -3,6 +3,7 @@ var fs = require('fs');
 var url = require('url');
 var qs = require('querystring');
 var MongoClient = require('mongodb').MongoClient;
+var ObjectId = require('mongodb').ObjectId
 var DB_CONN_STR = 'mongodb://localhost:27017/mytest'; //数据库为 mytest
 http.createServer(function(req, res) {
 	var pathname = url.parse(req.url, true).pathname;
@@ -112,44 +113,51 @@ http.createServer(function(req, res) {
 							name: myattr.name,
 							ATK: "10",
 							DEF: "10",
-							HP: "100"
-						};
-						//初始化武器数据
-						/*装备代码1000：第一位1表示是否使用中,第二位0表示武器，1表示防具，2表示护符,最后两位00代表装备代码**/
-						/*其他物品代码1000：前两位代表数量,最后两位00代表物品代码**/
-						var goods = {
-							myacco: myattr.myacco,
-							equiCode: "1000&0,0001&0,0001&0,0001&0,0001&0,1100&0,0101&0,1200&0,0201&0", //装备
-							petCode: "000&1,1#01&1", //宠物
-							materialCode: "10#01,1#00,10#02,15#03", //材料
+							HP: "100",
 							money: '1000'
 						};
-						var equiCode1 = {
-							myacco: myattr.myacco,
-							equiId:1,
-							equiCode:'000',
-						}
-						var equiCode2 = {
-							myacco: myattr.myacco,
-							equiId:2,
-							equiCode:'001',
-						}
-						
+						//初始化背包数据
+						var equiCode = [
+						{myacco: myattr.myacco,code:'000',type:'wea',useState:'0',inten:0},
+						{myacco: myattr.myacco,code:'001',type:'wea',useState:'0',inten:0},
+						{myacco: myattr.myacco,code:'100',type:'clo',useState:'0',inten:0},
+						{myacco: myattr.myacco,code:'101',type:'clo',useState:'0',inten:0},
+						{myacco: myattr.myacco,code:'200',type:'amu',useState:'0',inten:0},
+						{myacco: myattr.myacco,code:'201',type:'amu',useState:'0',inten:0}
+						]
+						var matCode = [
+						{myacco: myattr.myacco,code:'00',type:'mat',num:5},
+						{myacco: myattr.myacco,code:'01',type:'mat',num:3},
+						{myacco: myattr.myacco,code:'02',type:'mat',num:2},
+						{myacco: myattr.myacco,code:'03',type:'mat',num:10}
+						]
+						var petCode = [
+						{myacco: myattr.myacco,code:'00',type:'pet',level:5,useState:'0'},
+						{myacco: myattr.myacco,code:'01',type:'pet',level:3,useState:'0'},
+						{myacco: myattr.myacco,code:'02',type:'pet',level:2,useState:'0'},
+						{myacco: myattr.myacco,code:'03',type:'pet',level:10,useState:'0'}
+						]
 						insertData(db, initData, function(result) {
 							db.close();
 						}, 'personInfo');
-						insertData(db, goods, function(result) {
-							db.close();
-						}, 'goods');
 						insertData(db, myattr, function(result) {
 							db.close();
 						}, 'user');
-						insertData(db, equiCode1, function(result) {
+						for (i in matCode) {
+							insertData(db, matCode[i], function(result) {
 							db.close();
-						}, 'b_equi');
-						insertData(db, equiCode2, function(result) {
+						}, 'bag_mat');
+						}
+						for (i in equiCode) {
+							insertData(db, equiCode[i], function(result) {
 							db.close();
-						}, 'b_equi');
+						}, 'bag_equi');
+						}
+						for (i in petCode) {
+							insertData(db, petCode[i], function(result) {
+							db.close();
+						}, 'bag_pet');
+						}
 						backData.msg = "注册成功"
 						res.end(JSON.stringify(backData));
 					}
@@ -164,25 +172,26 @@ http.createServer(function(req, res) {
 				selectData(db, params, function(result) {
 					backData = result[0];
 					db.close();
-				}, 'personInfo');
-				selectData(db, params, function(result) {
-					backData.money = result[0].money;
-					backData.EquiCode = result[0].equiCode;
-					backData.materialCode = result[0].materialCode;
 					res.end(JSON.stringify(backData));
-					db.close();
-				}, 'goods');
+				}, 'personInfo');
 			} else if(pathname == "/getGoods") {
 				selectData(db, params, function(result) {
-					
 					backData = result[0];
 					db.close();
-				}, 'goods');
-				selectData(db, params, function(result) {
-					backData.name = result[0].name;
-					res.end(JSON.stringify(backData));
-					db.close();
 				}, 'personInfo');
+				selectData(db, params, function(result) {
+					backData.matCode = result;
+					db.close();
+				}, 'bag_mat');
+				selectData(db, params, function(result) {
+					backData.equiCode = result;
+					db.close();
+				}, 'bag_equi');
+				selectData(db, params, function(result) {
+					backData.petCode = result;
+					db.close();
+					res.end(JSON.stringify(backData));
+				}, 'bag_pet');
 			}
 
 		});
@@ -190,27 +199,24 @@ http.createServer(function(req, res) {
 		req.on('data', function(attr) {
 			myattr = qs.parse(decodeURI(attr));
 			var whereData = {
-				myacco: myattr.myacco
+				myacco: myattr.myacco,
+				type:myattr.type
 			}
-			if(myattr.typeCode == "equ") {
-				var udBag = {
-					$set: {
-						equiCode: myattr.code
-					}
-				}
-			}
+			var selecData = {"_id" : ObjectId(myattr._id)}
+			var selecUdData = {$set: {useState:'1'}}
+			var udData = {$set: {useState:'0'}}
+			console.log(selecData)
 			MongoClient.connect(DB_CONN_STR, function(err, db) {
-				updateData(db, whereData, udBag, function(result) {
+				updateData(db, whereData,udData,function(result) {db.close();}, 'bag_equi');
+				updateData(db, selecData,selecUdData,function(result) {
 					db.close();
-				}, 'goods');
-				backData.msg = '使用成功';
-				res.end(JSON.stringify(backData));
+					backData.msg = '使用成功';
+					res.end(JSON.stringify(backData));}, 'bag_equi');
 			});
 		});
 	} else if(pathname == "/saleGoods") {
 		req.on('data', function(attr) {
 			myattr = qs.parse(decodeURI(attr));
-			
 			console.log(myattr);
 			var whereData = {
 				myacco: myattr.myacco
@@ -286,10 +292,10 @@ var selectData = function(db, mydata, callback, table) {
 	});
 }
 //修改数据
-var updateData = function(db, whereData, mydata, callback, table) {
+var updateData = function(db, whereData, mydata,callback, table) {
 	var collection = db.collection(table);
 	//更新数据
-	collection.update(whereData, mydata, function(err, result) {
+	collection.update(whereData, mydata,{multi:true},function(err, result) {
 		if(err) {
 			console.log('Error:' + err);
 			return;
