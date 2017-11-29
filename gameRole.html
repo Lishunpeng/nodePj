@@ -42,30 +42,36 @@
 					<div class="HP" v-text="'角色血量:'+myData.HP"></div>
 				</div>
 				<div class="petInfo">
-					<div class="ATK" v-text="'宠物攻击力:'+petData.ATK"></div>
-					<div class="DEF" v-text="'宠物防御力:'+petData.DEF"></div>
-					<div class="HP" v-text="'宠物血量:'+petData.HP"></div>
+					<div class="ATK" v-text="'宠物攻击力:'+myData.petATK"></div>
+					<div class="DEF" v-text="'宠物防御力:'+myData.petDEF"></div>
 				</div>
 				</div>
 				<div class="roleBorder border">
-					<div><p :class="useWea.myclass" :style="{backgroundImage:'url('+useWea.imgPath+')'}" :data-data="JSON.stringify(useWea)">
-						<span class="intensify" v-text="'+'+useWea.inten"></span>
+					
+					<div v-for="data in equiData">
+						<p :class="data.goods.myclass" :style="{backgroundImage:'url('+data.goods.imgPath+')'}" :data-data="JSON.stringify(data)" onclick="myobj.equiUseinfo(this)">
+						<span class="intensify" v-text="'+'+data.inten"></span>
 					</p>
-						
 					</div>
+					<div v-for="data in petData" style="float: left;">
+						<p :class="data.goods.myclass" :style="{backgroundImage:'url('+data.goods.imgPath+')'}" :data-data="JSON.stringify(data)" onclick="myobj.equiUseinfo(this)">
+							<span class="intensify" v-text="data.level+'级'"></span>
+						</p>
+					</div>
+					<!--
 					<div><p :class="useClo.myclass" :style="{backgroundImage:'url('+useClo.imgPath+')'}" :data-data="JSON.stringify(useClo)">
 						<span class="intensify" v-text="'+'+useClo.inten"></span>
 					</p>
 						
 					</div>
 					<div>
-						<p :class="petData.myclass" :style="{backgroundImage:'url('+petData.imgPath+')'}" :data-data="JSON.stringify(petData)">
-							<span class="intensify" v-text="petData.level+'级'"></span>
+						<p :class="usePet.goods.myclass" :style="{backgroundImage:'url('+usePet.goods.imgPath+')'}" :data-data="JSON.stringify(usePet)">
+							<span class="intensify" v-text="usePet.level+'级'"></span>
 						</p>
 						<p :class="useAmu.myclass" :style="{backgroundImage:'url('+useAmu.imgPath+')'}" :data-data="JSON.stringify(useAmu)">
 							<span class="intensify" v-text="'+'+useAmu.inten"></span>
 						</p>
-					</div>
+					</div>-->
 				</div>
 		</div>
 		</div>
@@ -80,7 +86,6 @@
 	<script type="text/javascript">
 		//		myobj.changeHead();
 		localStorage.removeItem('cur');
-		myobj.equiUseinfo();
 		myobj.getajax("/getRole?myacco=" + localStorage.acco);
 	</script>
 

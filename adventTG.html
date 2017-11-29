@@ -45,11 +45,11 @@
 					<div class="adven_petInfo" style="margin-bottom: .3rem;">
 						<div class="imgbox">
 							<span class="myLosehp"></span>
-							<img :src="petData.imgPath" />
+							<img :src="myData.petimgPath" />
 						</div>
-						<div :class="petData.myclass" v-text="petData.name"></div>
-						<div>ATK&nbsp;:&nbsp;<span v-text="petData.ATK"></span></div>
-						<div>DEF&nbsp;:&nbsp;<span v-text="petData.DEF"></span></div>
+						<div :class="petData.myclass" v-text="myData.petName"></div>
+						<div>ATK&nbsp;:&nbsp;<span v-text="myData.petATK"></span></div>
+						<div>DEF&nbsp;:&nbsp;<span v-text="myData.petDEF"></span></div>
 					</div>
 					<div class="btnBox">
 						<input type="button" value="攻击" onclick="myobj.attack()" class="a_attack" />

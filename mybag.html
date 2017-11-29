@@ -42,7 +42,7 @@
 			<ol class="bagDetail" id="bagData">
 				<li class="cur">
 					<ul class="bagCont border">
-						<li :class="data.myclass" v-for="data in equiData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.imgPath+')'}">
+						<li :class="data.goods.myclass" v-for="data in equiData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goods.imgPath+')'}">
 							<span :class="data.useState==1?'use':'unuse'"></span>
 							<span class="intensify" v-text="'+'+data.inten"></span>
 						</li>
@@ -50,14 +50,14 @@
 				</li>
 				<li>
 					<ul class="bagCont">
-						<li :class="data.myclass" v-for="data in matData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.imgPath+')'}">
+						<li :class="data.goods.myclass" v-for="data in matData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goods.imgPath+')'}">
 							<span style="float: right;margin-top: .7rem;color: #fff;font-size: .5rem;" v-text="data.num"></span>
 						</li>
 					</ul>
 				</li>
 				<li>
 					<ul class="bagCont mui-table-view">
-						<li :class="data.myclass" v-for="data in petData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.imgPath+')'}">
+						<li :class="data.goods.myclass" v-for="data in petData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goods.imgPath+')'}">
 							<span :class="data.useState==1?'use':'unuse'"></span>
 							<span class="intensify" v-text="data.level+'级'" style="color: #b26b32;"></span>
 						</li>
