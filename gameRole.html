@@ -35,15 +35,37 @@
 			
 		<div class="roleCont">
 				<div class="cent_nav">角色</div>
+				<div class="myInfo">
 				<div class="roleInfo">
-					<div class="ATK" v-text="'ATK:'+myData.ATK"></div>
-					<div class="DEF" v-text="'DEF:'+myData.DEF"></div>
-					<div class="HP" v-text="'HP:'+myData.HP"></div>
+					<div class="ATK" v-text="'角色攻击力:'+myData.ATK"></div>
+					<div class="DEF" v-text="'角色防御力:'+myData.DEF"></div>
+					<div class="HP" v-text="'角色血量:'+myData.HP"></div>
 				</div>
-				<div class="roleBorder">
-					<div><p :style="{backgroundImage:'url('+useClo.imgPath+')'}" :data-data="JSON.stringify(useClo)"></p></div>
-					<div><p :style="{backgroundImage:'url('+useWea.imgPath+')'}" :data-data="JSON.stringify(useWea)"></p></div>
-					<div><p :style="{backgroundImage:'url('+useAmu.imgPath+')'}" :data-data="JSON.stringify(useAmu)"></p></div>
+				<div class="petInfo">
+					<div class="ATK" v-text="'宠物攻击力:'+petData.ATK"></div>
+					<div class="DEF" v-text="'宠物防御力:'+petData.DEF"></div>
+					<div class="HP" v-text="'宠物血量:'+petData.HP"></div>
+				</div>
+				</div>
+				<div class="roleBorder border">
+					<div><p :class="useWea.myclass" :style="{backgroundImage:'url('+useWea.imgPath+')'}" :data-data="JSON.stringify(useWea)">
+						<span class="intensify" v-text="'+'+useWea.inten"></span>
+					</p>
+						
+					</div>
+					<div><p :class="useClo.myclass" :style="{backgroundImage:'url('+useClo.imgPath+')'}" :data-data="JSON.stringify(useClo)">
+						<span class="intensify" v-text="'+'+useClo.inten"></span>
+					</p>
+						
+					</div>
+					<div>
+						<p :class="petData.myclass" :style="{backgroundImage:'url('+petData.imgPath+')'}" :data-data="JSON.stringify(petData)">
+							<span class="intensify" v-text="petData.level+'级'"></span>
+						</p>
+						<p :class="useAmu.myclass" :style="{backgroundImage:'url('+useAmu.imgPath+')'}" :data-data="JSON.stringify(useAmu)">
+							<span class="intensify" v-text="'+'+useAmu.inten"></span>
+						</p>
+					</div>
 				</div>
 		</div>
 		</div>
@@ -59,7 +81,7 @@
 		//		myobj.changeHead();
 		localStorage.removeItem('cur');
 		myobj.equiUseinfo();
-		myobj.getajax("/getInfo?myacco=" + localStorage.acco);
+		myobj.getajax("/getRole?myacco=" + localStorage.acco);
 	</script>
 
 </html>

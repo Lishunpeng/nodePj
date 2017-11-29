@@ -7,10 +7,10 @@ img{width: 100%;}
 .broke{color: #999999!important;}/*损坏的字体颜色*/
 .ordin{color: #f1f1f1!important;}/*损坏的字体颜色*/
 .pink{color: pink!important;}/*损坏的字体颜色*/
-.bagCont .broke{border: .05rem solid #999999;}
-.bagCont .ordin{border: .05rem solid #f1f1f1;}
-.bagCont .pink{border: .05rem solid pink;}
-.bagCont .intensify{font-size: .35rem;color: #FFFF00;position: absolute;top: 0;left: 0;}
+.border .broke{border: .05rem solid #999999;}
+.border .ordin{border: .05rem solid #f1f1f1;}
+.border .pink{border: .05rem solid pink;}
+.border .intensify{font-size: .35rem;color: #FFFF00;position: absolute;top: 0;left: 0;}
 .backIndex:active{background: #f1f1f1;}
 .backIndex{z-index: 100;height: .8rem;background: #fff;color: #666;display: block;position: fixed;bottom: 0;width: 100%;text-align: center;line-height: .8rem;}
 .mui-popup-button,.mui-popup-inner{background: rgba(0,0,0,.7);color: #e1e1e1;}
@@ -35,10 +35,13 @@ img{width: 100%;}
 .infoCent ul li p{text-align: center;}
 /*角色页面*/
 .roleBorder{height: 6.5rem;width: 100%;background: url(myRole.png);background-size:100% 100%;}
-.roleBorder>div p{height: 2rem;width: 2rem;margin: .1rem;border: .1rem solid #777777;background-color: #333333;background-size:100% 100%;}
+.roleBorder>div p{position: relative;height: 2rem;width: 2rem;margin: .1rem;border: .1rem solid #777777;background-color: #333333;background-size:100% 100%;}
 .roleBorder div:nth-child(2) p{margin: .1rem auto;}
-.roleBorder div:nth-child(3) p{float: right;}
+.roleBorder div:nth-child(3) p{float: left;}
+.roleBorder div:nth-child(3) p:nth-child(2){float: right;}
 .roleInfo div,.monInfo div{text-align: center;}
+.myInfo{display: flex;}
+.myInfo>div{flex:1}
 /*我的背包页面信息*/
 .bagClass{height: .6rem;width: 100%;display: flex;margin-top: .2rem;}
 .bagClass li{position: relative;height: .8rem;flex: 1;font-size: .35rem;text-align: center;line-height: .8rem;background: url(bagBtn.png) no-repeat;background-size:100% 100%;}
@@ -95,10 +98,14 @@ img{width: 100%;}
 .advenTG li:nth-child(2n+1){margin-left: 0;}
 .fightBoard{z-index: 20;height: 100%;width: 100%;position: fixed;background: rgba(0,0,0,.7);left: 0;top: 0;display: none;}
 .fightBoard>div{overflow: hidden;}
-.fightBoard .monData{height: 50%;width: 100%;}
-.fightBoard .myData{height: 50%;width: 100%;flex-direction:column-reverse;display: flex;}
+.fightBoard .monData,.fightBoard .myData{height: 50%;width: 100%;}
+.fightBoard .adven_myInfo,.fightBoard .adven_petInfo{height:70%;width: 50%;float: left;margin-top: .8rem;}
+.fightBoard div{text-align: center;}
 .fightBoard .loseHp{color: #FF0000;position: absolute;left: 40%;top: 40%;display: block;animation:Hpmove 0.8s linear both;font-size: .4rem;font-weight: 700;}
-.fightBoard .imgbox{width: 2rem;margin: .3rem auto;position: relative;}
+.fightBoard .myattack{left: 20%!important;}
+.fightBoard .petattack{left: 60%!important;}
+.fightBoard .imgbox img{height: 100%;width: 100%;}
+.fightBoard .imgbox{width: 2rem;margin: .3rem auto;position: relative;height: 2rem;}
 .monInfo{margin-top: .3rem;}
 .fightBoard .myData .btnBox{padding: .3rem;}
 .fightBoard span{color: #FF0000}
@@ -114,9 +121,9 @@ img{width: 100%;}
 .mybackLink:active{background-color: #ccc;}
 /*效果hpLose*/
 @keyframes Hpmove{
-	0%{left: 40%;top: 40%;opacity: 1;}
-	25%{left: 35%;top: 30%;opacity: 0.75;}
-	50%{left: 40%;top: 20%;opacity: 0.5;}
-	75%{left: 45%;top: 10%;opacity: 0.25;}
-	100%{left: 40%;top: 0%;opacity: 0;}
+	0%{transform: translate(0,0);opacity: 1;}
+	25%{transform: translate(-10px,-10px);opacity: 0.75;}
+	50%{transform: translate(0,-20px);opacity: 0.5;}
+	75%{transform: translate(10px,-30px);opacity: 0.25;}
+	100%{transform: translate(0,-40px);opacity: 0;}
 }

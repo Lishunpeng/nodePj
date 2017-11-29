@@ -41,7 +41,7 @@
 			</ul>
 			<ol class="bagDetail" id="bagData">
 				<li class="cur">
-					<ul class="bagCont">
+					<ul class="bagCont border">
 						<li :class="data.myclass" v-for="data in equiData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.imgPath+')'}">
 							<span :class="data.useState==1?'use':'unuse'"></span>
 							<span class="intensify" v-text="'+'+data.inten"></span>

@@ -50,7 +50,9 @@ myFun.prototype = {
 						location.reload();
 					}) : "";
 				} else if(search == "/adventTG.html") {
-					location.reload();
+					mui.alert(data.msg, function() {
+						location.reload();
+					})
 				}
 			}
 		});
@@ -66,14 +68,32 @@ myFun.prototype = {
 				if(search == "/GameTest.html" || search == "/beginAdven.html") {
 					console.log(vm.myData)
 				} else if(search == "/mybag.html") {
-					console.log(vm.myData);
-					vm.equiData = myobj.getData(myEqui, vm.myData.equiCode,'equi');
-					vm.petData = myobj.getData(monster, vm.myData.petCode,'pet');
-					vm.matData = myobj.getData(mymaterial, vm.myData.matCode,'mat');
+//					console.log(vm.myData);
+//					vm.equiData = myobj.getData(myEqui, vm.myData.equiCode, 'equi');
+					vm.petData = myobj.getData(monster, vm.myData.petCode, 'pet');
+//					vm.matData = myobj.getData(mymaterial, vm.myData.matCode, 'mat');
+//					console.log(vm.equiData, 'vm.equiData');
+//					console.log(vm.petData, 'vm.petData');
+//					console.log(vm.matData, 'vm.matData');
+				} else if(search == "/gameRole.html" || search == "/adventTG.html") {
+					console.log(vm.myData)
+					vm.equiData = myobj.getData(myEqui, vm.myData.equi, 'equi');
+					vm.petData = myobj.getData(monster, vm.myData.pet, 'pet')[0];
 					console.log(vm.equiData, 'vm.equiData');
 					console.log(vm.petData, 'vm.petData');
-					console.log(vm.matData, 'vm.matData');
-				} else if(search == "/gameRole.html" || search == "/adventTG.html") {
+					//计算总属性
+					for(i in vm.equiData) {
+						if(vm.equiData[i].type == 'wea') {
+							vm.myData.ATK = parseInt(vm.equiData[i].addAttr) + parseInt(vm.myData.ATK);
+							vm.useWea = vm.equiData[i];
+						} else if(vm.equiData[i].type == 'clo') {
+							vm.myData.DEF = parseInt(vm.equiData[i].addAttr) + parseInt(vm.myData.DEF);
+							vm.useClo = vm.equiData[i];
+						} else if(vm.equiData[i].type == 'amu') {
+							vm.myData.HP = parseInt(vm.equiData[i].addAttr) + parseInt(vm.myData.HP);
+							vm.useAmu = vm.equiData[i];
+						}
+					}
 					/*vm.equiData = myobj.bagEqui(vm.myData.EquiCode, 'equi');
 					console.log(vm.equiData)
 					for(i in vm.equiData) {
@@ -95,27 +115,48 @@ myFun.prototype = {
 			}
 		})
 	},
+	isArray: function(obj) {
+		return Object.prototype.toString.call(obj) == '[object Array]';
+	},
 	//数据代码类型转换数据
-	getData: function(dataBase,obj,val) {
+	getData: function(dataBase, obj, val) {
 		var data = [];
-		for(i in obj) {
-			for(j in dataBase) {
-				if(obj[i].code == dataBase[j].code) {
-					if (val=='mat') {
-						dataBase[j].num = obj[i].num;
-					}else if(val=='equi'){
-						dataBase[j].inten = obj[i].inten;
-						dataBase[j].useState = obj[i].useState;
-					}else if(val=='pet'){
-						dataBase[j].level = obj[i].level;
+		var myData = {};
+		if(myobj.isArray(obj)) {
+			for(i in obj) {
+				for(j in dataBase) {	
+					console.log(obj[i]._id)
+					if(obj[i].code == dataBase[j].code) {
+						
+				
+						myData = dataBase[j];
+//						myData.type = obj[i].type;
+						myData._id = obj[i]._id;
+//						if(val == 'mat') {
+//							myData.num = obj[i].num;
+//						} else if(val == 'equi') {
+//							myData.inten = obj[i].inten;
+//							myData.useState = obj[i].useState;
+//						} else if(val == 'pet') {
+//							myData.level = obj[i].level;
+//							myData.useState = obj[i].useState;
+//						}
+						console.log(myData)
+						data.push(myData);
 					}
-					dataBase[j].type = obj[i].type;
-					dataBase[j]._id = obj[i]._id;
-					data.push(dataBase[j]);
+				}
+			}
+			console.log(data)
+			return data;
+		} else {
+			for(i in dataBase) {
+				console.log(obj)
+				if(obj == dataBase[i].code) {
+					return dataBase[i];
 				}
 			}
 		}
-		return data;
+
 	},
 	/*
 	//背包非装备信息变化
@@ -174,10 +215,11 @@ myFun.prototype = {
 			console.log()
 			var data = JSON.parse($(this).attr('data-data'))
 			console.log(data)
+			var str1 = "";
+			data.type == 'pet' ? str1 = '<br>宠物等级：' + data.level : str1 = '<br>强化等级：' + data.inten + '<br>' + data.belone + ':+' + data.addAttr + '<br>';
 			var str = '<span class=' + data.myclass + '>' + data.name + '</span><br>' +
-				data.belone + ':+' + data.addAttr + '<br>' +
 				'详情:' + data.detail;
-			mui.alert(str, '装备信息');
+			mui.alert(str + str1, '提示信息');
 			$('.mui-popup').addClass('mui-popup-left')
 		})
 	},
@@ -228,12 +270,12 @@ myFun.prototype = {
 	changeEqui: function(data) {
 		var postData = {};
 		console.log(data)
-//		postData.code = myobj.searchEqui(data.code);
+		//		postData.code = myobj.searchEqui(data.code);
 		postData.myacco = localStorage.acco;
 		postData.type = data.type;
 		postData._id = data._id;
 		console.log(postData)
-//		myobj.postajax('/useEqui', postData);
+		myobj.postajax('/useEqui', postData);
 	},
 	//查询装备类型并转化
 	/*searchEqui: function(code) {
@@ -286,7 +328,7 @@ myFun.prototype = {
 		}
 	},
 	//生成物品代码串
-	saleCode: function(code, val, name) {
+	/*saleCode: function(code, val, name) {
 		var mydata = JSON.parse(localStorage.mydata);
 		var postData = {};
 		var data = code.split(",");
@@ -321,7 +363,7 @@ myFun.prototype = {
 		postData.money = parseInt(vm.myData.money) + parseInt(mydata.goodsInfo.getMoney * val);
 		console.log(postData)
 		myobj.postajax('/saleGoods', postData)
-	},
+	},*/
 	//冒险关卡选择渲染
 	getAdvendata: function() {
 		vm.tgData = tollGate;
@@ -341,11 +383,12 @@ myFun.prototype = {
 		val = val.split(',');
 		var lastVal = val.pop();
 		var rdConut = Math.ceil(Math.random() * 100);
-		if(rdConut <= 50) {
+		if(rdConut <= 3) {
 			vm.monster = myobj.getData(monster, lastVal);
 		} else {
 			var rd = Math.ceil(Math.random() * val.length);
 			vm.monster = myobj.getData(monster, val[rd - 1]);
+			console.log(val[rd - 1])
 		}
 		$('.fightBoard').fadeIn(300);
 	},
@@ -366,23 +409,26 @@ myFun.prototype = {
 		//我放信息
 		vm.myData.ATK = parseInt(vm.myData.ATK);
 		vm.myData.DEF = parseInt(vm.myData.DEF);
+		vm.petData.ATK = parseInt(vm.petData.ATK);
+		vm.petData.DEF = parseInt(vm.petData.DEF);
 		vm.myData.HP = parseInt(vm.myData.HP);
 		if(vm.myData.ATK < vm.monster.DEF) {
 			mui.alert('你打不动', function() {
 				location.reload();
 			});
 		} else {
-			var eneLosehp = vm.myData.ATK - vm.monster.DEF;
-			vm.monster.HP -= eneLosehp;
+			var myAttack = vm.myData.ATK - vm.monster.DEF;
+			var petAttack = vm.petData.ATK - vm.monster.DEF;
+			petAttack > 0 ? petAttack = petAttack : petAttack = 0;
+			vm.monster.HP -= myAttack + petAttack;
 			var myLosehp = vm.monster.ATK - vm.myData.DEF;
 			vm.myData.HP -= myLosehp;
-			myobj.adventInfo(vm.myData.HP, vm.monster.HP, myLosehp, eneLosehp);
+			myobj.adventInfo(vm.myData.HP, vm.monster.HP, myLosehp, myAttack, petAttack);
 		}
 		console.log(vm.monster)
 	},
 	//冒险模式显示信息
-	adventInfo: function(myhp, enenyhp, mylose, enlose) {
-		console.log(myhp, enenyhp)
+	adventInfo: function(myhp, enenyhp, mylose, myAttack, petAttack) {
 		if(myhp <= 0) {
 			myhp = 0;
 			mui.alert('你死了！', function() {
@@ -396,9 +442,7 @@ myFun.prototype = {
 			for(var i = 0; i < parseInt(vm.monster.dropGoods); i++) {
 				var myEqui = null;
 				var ramDom = Math.ceil(Math.random() * vm.monster.drop.length);
-				console.log();
 				var myDrop = myobj.oddsCount(vm.monster.drop[ramDom - 1].odds);
-				console.log(myDrop)
 				if(myDrop) {
 					myEqui = myobj.chgetData(vm.monster.drop[ramDom - 1].type, vm.monster.drop[ramDom - 1].code);
 					vm.myDrop.push(myEqui);
@@ -407,8 +451,9 @@ myFun.prototype = {
 			console.log(vm.myDrop, vm.addMoney)
 		} else {
 
-			$('.monData .imgbox').prepend("<span class='loseHp'>-" + enenyhp + "</span> ");
-			$('.myData .imgbox').prepend("<span class='loseHp'>-" + mylose + "</span> ");
+			$('.monData .imgbox').prepend("<span class='loseHp myattack'>-" + myAttack + "</span> ");
+			$('.monData .imgbox').prepend("<span class='loseHp petattack'>-" + petAttack + "</span> ");
+			$('.myData .imgbox:first').prepend("<span class='loseHp'>-" + mylose + "</span> ");
 		}
 	},
 	//概率计算
@@ -424,51 +469,50 @@ myFun.prototype = {
 	//数据代码判断加以转化
 	chgetData: function(judey, code) {
 		var data = {};
-		switch(judey) {
-			case 'equ':
-				code = code.substr(1);
-				data = myobj.getData(myEqui, code);
-				break;
-			case 'mat':
-				data = myobj.getData(mymaterial, code);
-				break;
-		}
+		judey == 'mat' ? data = myobj.getData(mymaterial, code) : data = myobj.getData(myEqui, code);
 		return data;
 	},
 	//保存
 	saveData: function() {
 		var postData = {};
-		var isBaghas = false;
-		postData.equiCode = vm.myData.EquiCode;
-		postData.materialCode = vm.myData.materialCode;
+		var dropData = [];
+		console.log(vm.myDrop)
 		console.log(vm.myData)
 		if(vm.myDrop.length) {
 			for(i in vm.myDrop) {
-				if(vm.myDrop[i].judey == 'mat') {
-					var matCode = vm.myData.materialCode.split(',');
-					postData.materialCode = "";
-					for(j in matCode) {
-						var str = matCode[j].split('#');
-						if(vm.myDrop[i].type == str[1]) {
-							isBaghas = true;
-							str[0]++;
+				var bagHas = false;
+				if(vm.myDrop[i].type == 'mat') {
+					for(j in vm.myData.mat) {
+						if(vm.myData.mat[j].code == vm.myDrop[i].code) {
+							vm.myData.mat[j].num++;
+							dropData.push(vm.myData.mat[j]);
+							bagHas = true;
 						}
-						matCode[j] = ',' + str[0] + '#' + str[1];
-						postData.materialCode += matCode[j];
 					}
-					if(!isBaghas) {
-						postData.materialCode = ',' + vm.myData.materialCode + ',1#' + vm.myDrop[i].type;
+					if(!bagHas) {
+						var data = {
+							code: vm.myDrop[i].code,
+							num: 1,
+							type: vm.myDrop[i].type,
+							myacco: vm.myData.myacco
+						}
+						dropData.push(data);
 					}
-					vm.myData.materialCode = postData.materialCode.substr(1);
-					postData.materialCode = vm.myData.materialCode;
 				} else {
-					postData.equiCode += ',0' + vm.myDrop[i].type;
+					var data = {
+						inten: 0,
+						useState: '0',
+						code: vm.myDrop[i].code,
+						type: vm.myDrop[i].type,
+						myacco: vm.myData.myacco
+					}
+					dropData.push(data);
 				}
 			}
-
 		}
 		postData.money = parseInt(vm.myData.money) + parseInt(vm.addMoney);
 		postData.myacco = vm.myData.myacco;
+		postData.dropData = JSON.stringify(dropData);
 		myobj.postajax("/saveData", postData);
 	}
 	/*

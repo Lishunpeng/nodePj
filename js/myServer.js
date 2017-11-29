@@ -74,7 +74,6 @@ http.createServer(function(req, res) {
 		});
 		/*注册页面*/
 	} else if( pathname.indexOf(".png") > 0 || pathname.indexOf(".gif") > 0 || pathname.indexOf(".jpg") > 0) {
-		console.log(req.url)
 		fs.readFile('../img' + req.url, 'binary', function(err, data) {
 			res.writeHead(200, {
 				"Content-type": "image/jpeg"
@@ -118,11 +117,11 @@ http.createServer(function(req, res) {
 						};
 						//初始化背包数据
 						var equiCode = [
-						{myacco: myattr.myacco,code:'000',type:'wea',useState:'0',inten:0},
+						{myacco: myattr.myacco,code:'000',type:'wea',useState:'1',inten:0},
 						{myacco: myattr.myacco,code:'001',type:'wea',useState:'0',inten:0},
-						{myacco: myattr.myacco,code:'100',type:'clo',useState:'0',inten:0},
+						{myacco: myattr.myacco,code:'100',type:'clo',useState:'1',inten:0},
 						{myacco: myattr.myacco,code:'101',type:'clo',useState:'0',inten:0},
-						{myacco: myattr.myacco,code:'200',type:'amu',useState:'0',inten:0},
+						{myacco: myattr.myacco,code:'200',type:'amu',useState:'1',inten:0},
 						{myacco: myattr.myacco,code:'201',type:'amu',useState:'0',inten:0}
 						]
 						var matCode = [
@@ -133,9 +132,9 @@ http.createServer(function(req, res) {
 						]
 						var petCode = [
 						{myacco: myattr.myacco,code:'00',type:'pet',level:5,useState:'0'},
-						{myacco: myattr.myacco,code:'01',type:'pet',level:3,useState:'0'},
-						{myacco: myattr.myacco,code:'02',type:'pet',level:2,useState:'0'},
-						{myacco: myattr.myacco,code:'03',type:'pet',level:10,useState:'0'}
+						{myacco: myattr.myacco,code:'00',type:'pet',level:3,useState:'0'},
+						{myacco: myattr.myacco,code:'02',type:'pet',level:2,useState:'1'},
+						{myacco: myattr.myacco,code:'00',type:'pet',level:10,useState:'0'}
 						]
 						insertData(db, initData, function(result) {
 							db.close();
@@ -195,23 +194,49 @@ http.createServer(function(req, res) {
 			}
 
 		});
-	} else if(pathname == "/useEqui") {
+	} else if(pathname == "/getRole") {
+		var params = url.parse(req.url, true).query;
+			var whereData = {
+				myacco: params.myacco,
+				useState:'1'
+			}
+			MongoClient.connect(DB_CONN_STR, function(err, db) {
+				selectData(db, params, function(result) {
+					backData = result[0];
+					db.close();
+				}, 'personInfo');
+				selectData(db, whereData,function(result) {
+					backData.pet = result;
+					db.close();
+				}, 'bag_pet');
+				selectData(db, params,function(result) {
+					backData.mat = result;
+					db.close();
+				}, 'bag_mat');
+				selectData(db,whereData,function(result) {
+					backData.equi = result;
+					db.close();
+					res.end(JSON.stringify(backData));
+				},'bag_equi');
+		});
+	}else if(pathname == "/useEqui") {
 		req.on('data', function(attr) {
 			myattr = qs.parse(decodeURI(attr));
 			var whereData = {
 				myacco: myattr.myacco,
 				type:myattr.type
 			}
+			myattr.type=='pet' ? linkData = 'bag_pet':linkData = 'bag_equi';
 			var selecData = {"_id" : ObjectId(myattr._id)}
+			
 			var selecUdData = {$set: {useState:'1'}}
 			var udData = {$set: {useState:'0'}}
 			console.log(selecData)
 			MongoClient.connect(DB_CONN_STR, function(err, db) {
-				updateData(db, whereData,udData,function(result) {db.close();}, 'bag_equi');
-				updateData(db, selecData,selecUdData,function(result) {
-					db.close();
-					backData.msg = '使用成功';
-					res.end(JSON.stringify(backData));}, 'bag_equi');
+				updateData(db, whereData,udData,function(result) {db.close();},linkData);
+				updateData(db, selecData,selecUdData,function(result) {db.close();},linkData);
+				backData.msg = '使用成功';
+				res.end(JSON.stringify(backData));
 			});
 		});
 	} else if(pathname == "/saleGoods") {
@@ -255,16 +280,30 @@ http.createServer(function(req, res) {
 	}else if(pathname == "/saveData") {
 		req.on('data', function(attr) {
 			myattr = qs.parse(decodeURI(attr));
-			var whereData = {
-				myacco: myattr.myacco
-			}
-			
+			myattr.dropData = JSON.parse(myattr.dropData);
 			MongoClient.connect(DB_CONN_STR, function(err, db) {
-				updateData(db, whereData, myattr, function(result) {
-					backData.msg = '闯关成功';
-					res.end(JSON.stringify(backData))
-					db.close();
-				}, 'goods');
+				var whereData = {myacco: myattr.myacco}
+				var udBag = {$set:{money: myattr.money}}
+				updateData(db, whereData, udBag, function(result) {db.close();}, 'personInfo');
+				for (i in myattr.dropData) {
+					console.log(i)
+					if (myattr.dropData[i]._id) {
+						console.log(2212121212121)
+						var whereData = {
+							myacco: myattr.myacco,
+							"_id": ObjectId(myattr.dropData[i]._id)
+						}
+						var udBag = {$set:{num:myattr.dropData[i].num}}
+						updateData(db, whereData, udBag, function(result) {db.close();}, 'bag_mat');
+					}else{
+						console.log(11)
+						var dataLink = '';
+						myattr.dropData[i].type == 'mat'?dataLink = 'bag_mat':dataLink = 'bag_equi';
+						insertData(db,myattr.dropData[i], function(result) {db.close();}, dataLink);
+					}		
+				}
+				backData.msg = '闯关成功';
+				res.end(JSON.stringify(backData));
 			});
 		});
 	}
