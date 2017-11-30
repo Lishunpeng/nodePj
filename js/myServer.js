@@ -339,7 +339,15 @@ http.createServer(function(req, res) {
 				}
 			});
 		});
+	}else if(pathname == "/showBut") {
+		req.on('data', function(attr) {
+			myattr = qs.parse(decodeURI(attr));
+			console.log(myattr);
+			/*MongoClient.connect(DB_CONN_STR, function(err, db) {
+			});*/
+		});
 	}
+	
 }).listen(3000);
 var insertData = function(db, mydata, callback, table) {
 	var collection = db.collection(table);

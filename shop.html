@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" type="text/css" href="mui.css" />
+		<link rel="stylesheet" type="text/css" href="public.css" />
+		<title></title>
+	</head>
+
+	<body>
+		<div class="Gamecontant">
+			<ul class="header">
+				<li class="cur">
+					<a href="GameTest.html"><span>主页</span></a>
+				</li>
+				<li>
+					<a href="gameRole.html"><span>角色</span></a>
+				</li>
+				<li>
+					<a href="mybag.html"><span>背包</span></a>
+				</li>
+			</ul>
+		</div>
+		<div class="bagInfo" id="bagInfo">
+			<div class="info">
+				<div class="infoTop">
+					<div class="headerimg">
+						<img src="head2.jpg" />
+					</div>
+					<div class="name" v-text="'角色名：'+myData.name"></div>
+					<div class="name" v-text="'金币：'+myData.money"></div>
+				</div>
+			</div>
+			<ul class="bagClass">
+				<li class="cur"><span></span>材料商店</li>
+				<li><span></span>装备商店</li>
+				<li><span></span>黑市商店</li>
+			</ul>
+			<ol class="bagDetail" id="bagData">
+				<li class="cur">
+					<ul class="bagCont border">
+						<li :class="data.goods.myclass" v-for="data in matData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goods.imgPath+')'}">
+						</li>
+					</ul>
+				</li>
+				<li>
+					<ul class="bagCont border">
+						<li :class="data.goods.myclass" v-for="data in equiData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goods.imgPath+')'}">
+							<span class="intensify" v-text="'+'+data.inten" style="font-weight: bold;color: #FF5053;"></span>
+						</li>
+					</ul>
+				</li>
+				<li>
+					以后再弄~~~
+					<!--<ul class="bagCont border">
+						<li :class="data.goods.myclass" v-for="data in matData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goods.imgPath+')'}">
+						</li>
+					</ul>-->
+				</li>
+			</ol>
+			<div class="clickBox" onclick="myobj.stopClickEqui()">
+				<ul>
+					<li onclick="myobj.clickBox_butIt()">购买</li>
+					<li onclick="myobj.clickBox_detail()">详情</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+	<script src="jquery-2.1.0.js"></script>
+	<script src="vue.min.js"></script>
+	<script src="mui.min.js"></script>
+	<script src="myData.js"></script>
+	<script src="common.js"></script>
+	<script src="fontsize.js"></script>
+	<script>
+		myobj.shopBegin();
+		myobj.changeBag();
+		myobj.clickBoxhide();
+		myobj.getajax("/getGoods?myacco=" + localStorage.acco);
+		if(localStorage.cur) {
+			$('.bagClass li').eq(localStorage.cur).addClass("cur").siblings().removeClass("cur");
+			$(".bagDetail>li").eq(localStorage.cur).addClass("cur").siblings("li").removeClass("cur");
+		}
+	</script>
+
+</html>

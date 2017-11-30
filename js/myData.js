@@ -1,26 +1,15 @@
 
 /*损坏的：broke，普通的:ordin,*/
-//武器
-/*
-var myWeapon =[
-	{type:"00",name:"生锈的铁剑",detail:"一把生锈了许久的铁剑。",addAttr:"3",myclass:"broke",getMoney:"300",judey:'wea'},
-	{type:"01",name:"铁剑",detail:"一把铁剑，比较新。",addAttr:"5",myclass:"ordin",getMoney:"500",judey:'wea'}
-];
-//防具
-var myEqui =[
-	{type:"00",name:"破损的布衣",detail:"一个穷逼穿的衣服。",addAttr:"3",myclass:"broke",getMoney:"300",judey:'clo'},
-	{type:"01",name:"普通的布衣",detail:"普通草民衣服。",addAttr:"5",myclass:"ordin",getMoney:"500",judey:'clo'}
-];
-//首饰
-var myAmulet =[
-	{type:"00",name:"破损的护符",detail:"一个损坏的护身符。",addAttr:"30",myclass:"broke",getMoney:"300",judey:'amu'},
-	{type:"01",name:"普通的护符",detail:"普通家庭的传家符。",addAttr:"50",myclass:"ordin",getMoney:"500",judey:'amu'}
-];
-//药水
-var mymedicine = [
-	{type:"00",name:"神奇的药水",detail:"敬请期待",addAttr:"",myclass:"pink",judey:'med'},
-	{type:"01",name:"红药水",detail:"用于治疗的药水。",addAttr:"50",myclass:"ordin",getMoney:"300",judey:'med'}
-];*/
+var myShop = {
+	matShop:[{code:'05',useMoney:2000,type:'mat'},
+	{code:'06',useMoney:2000,type:'mat'},
+	{code:'07',useMoney:2000,type:'mat'}],
+	equiShop:[
+		{code:'001',useMoney:3000,type:'wea',inten:0},
+		{code:'101',useMoney:3000,type:'clo',inten:0},
+		{code:'201',useMoney:3000,type:'amu',inten:0}
+	]
+	}
 //材料
 var mymaterial = [
 	{type:'mat',code:"00",name:"神奇的石头",detail:"一颗会发光的石头，还不知道有什么用",addAttr:"",myclass:"pink",imgPath:"bag_mat_00.png"},

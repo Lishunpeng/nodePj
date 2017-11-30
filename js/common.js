@@ -72,12 +72,12 @@ myFun.prototype = {
 				if(search == "/GameTest.html" || search == "/beginAdven.html") {
 					console.log(vm.myData)
 				} else if(search == "/mybag.html") {
-					vm.equiData = myobj.getData(myEqui, vm.myData.equiCode, 'equi');
-					vm.petData = myobj.getData(myPet, vm.myData.petCode, 'pet');
-					vm.matData = myobj.getData(mymaterial, vm.myData.matCode, 'mat');
+					vm.equiData = myobj.getData(myEqui, vm.myData.equiCode);
+					vm.petData = myobj.getData(myPet, vm.myData.petCode);
+					vm.matData = myobj.getData(mymaterial, vm.myData.matCode);
 				} else if(search == "/gameRole.html" || search == "/adventTG.html") {
-					vm.equiData = myobj.getData(myEqui, vm.myData.equi, 'equi');
-					vm.petData = myobj.getData(myPet, vm.myData.pet, 'pet');
+					vm.equiData = myobj.getData(myEqui, vm.myData.equi);
+					vm.petData = myobj.getData(myPet, vm.myData.pet);
 					vm.myData.petATK = vm.petData[0].goods.addAttr;
 					vm.myData.petName = vm.petData[0].goods.name;
 					vm.myData.petimgPath = vm.petData[0].goods.imgPath;
@@ -105,7 +105,7 @@ myFun.prototype = {
 		return Object.prototype.toString.call(obj) == '[object Array]';
 	},
 	//数据代码类型转换数据
-	getData: function(dataBase, obj, val) {
+	getData: function(dataBase, obj) {
 		var data = [];
 		if(myobj.isArray(obj)) {
 			for(i in obj) {
@@ -344,6 +344,37 @@ myFun.prototype = {
 			});
 		}
 	},
+	//购买物品
+	clickBox_butIt:function(){
+		var mydata = JSON.parse(localStorage.mydata);
+		var postData = {};
+		if (mydata.type == 'mat') {
+			mui.prompt('请输入你购买的数量',function(e){
+				if(e.index == 0) {
+						return mui.alert('购买失败！');
+					} else if(!re.test(e.value)) {
+						return mui.alert('请输入正确正整数数量')
+					} else if(e.index == 1) {
+							postData.myacco = localStorage.acco;
+							postData.code = mydata.code;
+							postData.num = e.value;
+					}
+			});
+		}else{
+			mui.confirm('是否确定购买？', function(e) {
+				if(e.index == 1) {
+					postData.myacco = localStorage.acco;
+					postData.code = mydata.code;
+					postData.num = 1;
+				} else {
+					return mui.alert('购买失败！')
+				}
+			});
+		}
+		localStorage.getMoney = mydata.useMoney * postData.num;
+		postData.money = parseInt(vm.myData.money) + parseInt(mydata.goods.getMoney * val);
+		myobj.postajax('/showBut', postData);
+	},
 	//冒险关卡选择渲染
 	getAdvendata: function() {
 		vm.tgData = tollGate;
@@ -519,73 +550,13 @@ myFun.prototype = {
 		postData.myacco = vm.myData.myacco;
 		postData.dropData = JSON.stringify(dropData);
 		myobj.postajax("/saveData", postData);
+	},
+	
+	//商品页面初始化
+	shopBegin:function(){
+		vm.matData = myobj.getData(mymaterial,myShop.matShop);
+		vm.equiData = myobj.getData(myEqui,myShop.equiShop);
 	}
-	/*
-	//冒险模式随机产生怪物
-	getMonster: function() {
-		var mydata = {};
-		if(hash == 0) {
-			for(var i = 0; i < vm.allPlace; i++) {
-				var myCount = Math.ceil(Math.random() * 2);
-				if(myCount == 1) {
-					var monsterCount = Math.ceil(Math.random() * easyMonster.length);
-					mydata = easyMonster[monsterCount - 1];
-					mydata.ismon = true;
-				} else {
-					var npcCount = Math.ceil(Math.random() * NPC.length);
-					mydata = NPC[npcCount - 1];
-					mydata.ismon = false;
-				}
-				vm.advent.push(mydata);
-			}
-			console.log(vm.advent);
-		}
-	},
-	//移动
-	moveGrid: function(obj) {
-
-		$(obj).attr("disabled", 'disabled');
-		$('.diceIcon').attr('src', 'dice.gif');
-		$('.diceIcon').show();
-		setTimeout(function() {
-			vm.myCount = Math.ceil(Math.random() * 6);
-			$('.diceIcon').attr('src', 'dice' + vm.myCount + '.png');
-			//点击按钮是否开启
-			$(obj).attr("disabled", false);
-			vm.myPlace += vm.myCount;
-			if(vm.myPlace >= vm.allPlace) {
-				vm.myPlace = vm.allPlace;
-				return mui.alert('闯关完成')
-			}
-			vm.adventData = vm.advent[vm.myPlace - 1]
-			myobj.creatHtml(vm.adventData);
-		}, 1000);
-	},
-	searchMap: function() {
-		$('.advenBox').slideToggle(300);
-	},
-	//闯关页面的HTML
-	creatHtml: function(obj) {
-		$('.advenShow').empty();
-		if(obj.ismon) {
-			var str = '<div class="monsterInfo">你遇到了：<br/>名字：' +
-				obj.name + '<br/>' +
-				'攻击力：' + obj.ATK + '<br/>' +
-				'血量：' + '<span class="monHP">' + obj.HP + '</span>' + '<br/>' +
-				'防御力：' + obj.DEF + '<br/>' +
-				'怪物详情：' + obj.detail + '<br/>' +
-				'难度系数：' + obj.level + '<br/>' +
-				'<ul class = "myOperation" >' +
-				'<li onclick="myobj.attack()">攻击</li><li>使用药水</li><li onclick="myobj.attack()">一键攻击</li>' +
-				'</ul><p class="fightInfo"></p></div>';
-		} else {
-			var str = '<div class="monsterInfo">你遇到了：' +
-				obj.name + '<br/>' +
-				'npc详情：' + obj.detail + '</div>'
-		}
-		$('.advenShow').append(str);
-	},*/
-
 }
 var myobj = new myFun();
 var vm = new Vue({
