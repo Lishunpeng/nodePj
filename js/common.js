@@ -5,7 +5,7 @@ var search = window.location.pathname;
 var hash = window.location.hash.replace("#", "");
 var myFun = function() {}
 myFun.prototype = {
-	//返回首页
+	/*//返回首页
 	back: function() {
 		mui.confirm('是否退出冒险并自动保存', function(e) {
 			if(e.index) {
@@ -15,7 +15,7 @@ myFun.prototype = {
 			}
 			return mui.alert('请继续冒险')
 		})
-	},
+	},*/
 	//post 提交ajax
 	postajax: function(path, mydata) {
 		mui.ajax({
@@ -45,12 +45,18 @@ myFun.prototype = {
 				} else if(search == "/mybag.html") {
 					path == '/saleGoods' ? mui.alert('获取：' + localStorage.getMoney, data.msg, function() {
 						location.reload();
-					}) : "";
-					path == '/useEqui' ? mui.alert(data.msg, function() {
+					}) : mui.alert(data.msg, function() {
 						location.reload();
-					}) : "";
+					});
 				} else if(search == "/adventTG.html") {
-					location.reload();
+					if(path == '/catchPet') {
+						mui.alert(data.msg, function() {
+							data.bool != 0 ? location.reload() : $('.a_catch').attr('disabled', false);
+						})
+					} else {
+						location.reload();
+					}
+
 				}
 			}
 		});
@@ -66,19 +72,21 @@ myFun.prototype = {
 				if(search == "/GameTest.html" || search == "/beginAdven.html") {
 					console.log(vm.myData)
 				} else if(search == "/mybag.html") {
-//					console.log(vm.myData);
 					vm.equiData = myobj.getData(myEqui, vm.myData.equiCode, 'equi');
-					vm.petData = myobj.getData(monster, vm.myData.petCode, 'pet');
+					vm.petData = myobj.getData(myPet, vm.myData.petCode, 'pet');
 					vm.matData = myobj.getData(mymaterial, vm.myData.matCode, 'mat');
 				} else if(search == "/gameRole.html" || search == "/adventTG.html") {
-					console.log(vm.myData)
 					vm.equiData = myobj.getData(myEqui, vm.myData.equi, 'equi');
-					vm.petData = myobj.getData(monster, vm.myData.pet, 'pet');
-					vm.myData.petATK = vm.petData[0].goods.ATK;
-					vm.myData.petDEF = vm.petData[0].goods.DEF;
+					vm.petData = myobj.getData(myPet, vm.myData.pet, 'pet');
+					vm.myData.petATK = vm.petData[0].goods.addAttr;
 					vm.myData.petName = vm.petData[0].goods.name;
 					vm.myData.petimgPath = vm.petData[0].goods.imgPath;
 					//计算总属性
+					if(search == "/adventTG.html") {
+						vm.myData.ballNum = myobj.getOneData(vm.myData.mat,'05');
+						console.log(vm.myData)
+					}
+
 					for(i in vm.equiData) {
 						if(vm.equiData[i].type == 'wea') {
 							vm.myData.ATK = parseInt(vm.equiData[i].goods.addAttr) + parseInt(vm.myData.ATK);
@@ -103,7 +111,7 @@ myFun.prototype = {
 			for(i in obj) {
 				for(j in dataBase) {
 					if(obj[i].code == dataBase[j].code) {
-						var myData ={}
+						var myData = {}
 						myData = obj[i];
 						myData.goods = dataBase[j];
 						data.push(myData);
@@ -121,6 +129,14 @@ myFun.prototype = {
 			}
 		}
 
+	},
+	//数据代码分离出单个值
+	getOneData: function(obj,code) {
+		for(i in obj) {
+			if (obj[i].code == code) {
+				return obj[i].num;
+			}
+		}
 	},
 	/*
 	//背包非装备信息变化
@@ -175,19 +191,21 @@ myFun.prototype = {
 	},
 	//装备查看详细
 	equiUseinfo: function(obj) {
-			var data = JSON.parse($(obj).attr('data-data'));
-			var str1 = "";
-			data.type == 'pet' ? str1 = '<br>宠物等级：' + data.level : str1 = '<br>强化等级：' + data.inten + '<br>' + data.goods.belone + ':+' + data.goods.addAttr + '<br>';
-			var str = '<span class=' + data.goods.myclass + '>' + data.goods.name + '</span><br>' +
-				'详情:' + data.goods.detail;
-			mui.alert(str + str1, '提示信息');
-			$('.mui-popup').addClass('mui-popup-left');
+		var data = JSON.parse($(obj).attr('data-data'));
+		var str1 = "";
+		data.type == 'pet' ? str1 = '<br>宠物等级：' + data.level : str1 = '<br>强化等级：' + data.inten + '<br>' + data.goods.belone + ':+' + data.goods.addAttr + '<br>';
+		var str = '<span class=' + data.goods.myclass + '>' + data.goods.name + '</span><br>' +
+			'详情:' + data.goods.detail;
+		mui.alert(str + str1, '提示信息');
+		$('.mui-popup').addClass('mui-popup-left');
 	},
 	//背包使用显示框
 	equiListClick: function(obj, ev) {
 		var oev = ev || event;
 		oev.cancelBubble = true;
 		localStorage.mydata = $(obj).attr("data-mydata");
+		var mydata = JSON.parse(localStorage.mydata);
+		mydata.type == 'pet' ? vm.isPet = true : vm.isPet = false;
 		$('.clickBox').css({
 			top: oev.clientY,
 			left: oev.clientX,
@@ -207,16 +225,16 @@ myFun.prototype = {
 	clickBox_detail: function() {
 
 		var mydata = JSON.parse(localStorage.mydata);
-		
-			var str1 = "";
-		if (mydata.type!='mat') {
-			mydata.type == 'pet' ? str1 = '<br>宠物等级：' + mydata.level : str1 = '<br>强化等级：' + mydata.inten;	
-		}	
+
+		var str1 = "";
+		if(mydata.type != 'mat') {
+			mydata.type == 'pet' ? str1 = '<br>宠物等级：' + mydata.level : str1 = '<br>强化等级：' + mydata.inten;
+		}
 
 		var str = ""
 		mydata.goods.addAttr ? str = '物品：<span class=' + mydata.goods.myclass + '>' + mydata.goods.name + '</span>\n' + mydata.goods.belone + ':+' + mydata.goods.addAttr + '\n阐述：' + mydata.goods.detail :
 			str = '物品：<span class=' + mydata.goods.myclass + '>' + mydata.goods.name + '</span>\n阐述：' + mydata.goods.detail;
-		mui.alert(str+str1);
+		mui.alert(str + str1);
 		$('.mui-popup-text').addClass("mui-popup-left");
 	},
 	//物品的使用
@@ -260,21 +278,21 @@ myFun.prototype = {
 	},*/
 	//物品出售
 	clickBox_sale: function() {
+		console.log(vm.myData)
+		var isRemove = 1;
 		var mydata = JSON.parse(localStorage.mydata);
-		if(mydata.goodsInfo.getMoney) {
+		if(mydata.goods.getMoney) {
 			if(mydata.useState == 1) {
-				return mui.alert("装备使用中");
-			} else if(mydata.name == 'equi') {
-				var myCode = localStorage.equCode;
+				return mui.alert("物品使用中");
+			} else if(mydata.type != 'mat') {
 				mui.confirm('是否确定出售？', function(e) {
 					if(e.index == 1) {
-						myobj.saleCode(myCode, 1, mydata.name);
+						myobj.saleCode(mydata._id, 1, mydata.type, isRemove);
 					} else {
 						return mui.alert('出售失败')
 					}
 				})
-			} else if(mydata.name == 'mat') {
-				var myCode = localStorage.matCode;
+			} else {
 				var num = parseInt(mydata.num);
 				mui.prompt('请输入丢弃数量', '请输入数量', function(e) {
 					if(e.index == 0) {
@@ -284,7 +302,9 @@ myFun.prototype = {
 					} else if(e.value > num) {
 						return mui.alert('请确定你有没有这么多物品在进行出售');
 					} else if(e.index == 1) {
-						myobj.saleCode(myCode, e.value, mydata.name);
+						e.value == num ? isRemove = 1 : isRemove = 0;
+						num -= e.value;
+						myobj.saleCode(mydata._id, e.value, mydata.type, isRemove, num);
 					}
 				})
 
@@ -294,42 +314,36 @@ myFun.prototype = {
 		}
 	},
 	//生成物品代码串
-	/*saleCode: function(code, val, name) {
+	saleCode: function(_id, val, type, isRemove, num) {
 		var mydata = JSON.parse(localStorage.mydata);
 		var postData = {};
-		var data = code.split(",");
-		var codeString = "";
-		if(name == 'equi') {
-			for(i in data) {
-				if(mydata.code != data[i]) {
-					codeString += ',' + data[i];
-				}
-			}
-		} else {
-			for(i in data) {
-				var str = data[i].split("#");
-				if(mydata.code == data[i]) {
-					str[0] -= val;
-					str = str[0] + '#' + str[1];
-					console.log(str)
-					if(str[0] != 0) {
-						codeString += ',' + str;
-					}
-
-				} else {
-					codeString += ',' + data[i];
-				}
-			}
-		}
-		codeString = codeString.substr(1);
-		postData.name = name;
-		postData.code = codeString;
+		postData.type = type;
+		postData._id = _id;
 		postData.myacco = localStorage.acco;
-		localStorage.getMoney = mydata.goodsInfo.getMoney * val;
-		postData.money = parseInt(vm.myData.money) + parseInt(mydata.goodsInfo.getMoney * val);
-		console.log(postData)
+		postData.num = num;
+		postData.isRemove = isRemove;
+		localStorage.getMoney = mydata.goods.getMoney * val;
+		postData.money = parseInt(vm.myData.money) + parseInt(mydata.goods.getMoney * val);
+		console.log(postData);
 		myobj.postajax('/saleGoods', postData)
-	},*/
+	},
+	clickBox_putDown: function() {
+		var mydata = JSON.parse(localStorage.mydata);
+		if(mydata.useState == 1) {
+			return mui.alert("宠物使用中");
+		} else {
+			mui.confirm('是否确定放生？', function(e) {
+				if(e.index == 1) {
+					var postData = {};
+					postData._id = mydata._id;
+					postData.myacco = localStorage.acco;
+					myobj.postajax('/putdonwPet', postData);
+				} else {
+					return mui.alert('放生失败')
+				}
+			});
+		}
+	},
 	//冒险关卡选择渲染
 	getAdvendata: function() {
 		vm.tgData = tollGate;
@@ -354,15 +368,42 @@ myFun.prototype = {
 		} else {
 			var rd = Math.ceil(Math.random() * val.length);
 			vm.monster = myobj.getData(monster, val[rd - 1]);
+			localStorage.monHp = vm.monster.HP
 			console.log(val[rd - 1])
 		}
 		$('.fightBoard').fadeIn(300);
 	},
 
 	//捕捉
-	catchMon: function() {
-		vm.monster.HP = parseInt(vm.monster.HP);
-		console.log(vm.monster.HP)
+	catchMon: function(obj) {
+//		$(obj).attr('disabled', 'disabled');
+		console.log(vm.myData.ballNum);
+		if(parseInt(vm.myData.ballNum)>0 && vm.myData.ballNum!=undefined){
+			vm.monster.ATK = parseInt(vm.monster.ATK);
+			vm.monster.HP = parseInt(vm.monster.HP);
+			vm.myData.DEF = parseInt(vm.myData.DEF);
+			var myLosehp = vm.monster.ATK - vm.myData.DEF;
+			vm.myData.HP -= myLosehp;
+			myobj.adventInfo(vm.myData.HP,vm.monster.HP,myLosehp,0,0);
+			var isCatch = 0;
+			vm.myData.ballNum--;
+			vm.monster.HP = parseInt(vm.monster.HP);
+		var allHp = parseInt(localStorage.monHp);
+		var str = vm.monster.canCatch.split('#');
+		vm.monster.HP >= (allHp / 2) ? isCatch = myobj.oddsCount(str[0]) : isCatch = myobj.oddsCount(str[1]);
+		isCatch ? isCatch = 1 : isCatch = 0;
+		var postData = {
+			myacco: localStorage.acco,
+			num:vm.myData.ballNum,
+			code: vm.monster.code,
+			isCatch: isCatch
+		};
+		console.log(postData)
+		myobj.postajax('/catchPet', postData);
+		}else{
+			mui.alert('你没有多余的精灵球');
+		}
+		
 	},
 	//攻击
 	attack: function() {
@@ -423,7 +464,6 @@ myFun.prototype = {
 	},
 	//概率计算
 	oddsCount: function(val) {
-		console.log(val)
 		var ramDom = Math.ceil(Math.random() * 100);
 		if(ramDom <= val) {
 			return true;
@@ -556,6 +596,7 @@ var vm = new Vue({
 		allPlace: 30, //定义总数
 		myPlace: 0, //我当前位置
 		isMonster: true, //是否怪
+		isPet: true, //是否宠物
 		advent: [],
 		opassword: "",
 		opasswordag: "",

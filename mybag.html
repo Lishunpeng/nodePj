@@ -44,22 +44,22 @@
 					<ul class="bagCont border">
 						<li :class="data.goods.myclass" v-for="data in equiData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goods.imgPath+')'}">
 							<span :class="data.useState==1?'use':'unuse'"></span>
-							<span class="intensify" v-text="'+'+data.inten"></span>
+							<span class="intensify" v-text="'+'+data.inten" style="font-weight: bold;color: #FF5053;"></span>
 						</li>
 					</ul>
 				</li>
 				<li>
-					<ul class="bagCont">
+					<ul class="bagCont border">
 						<li :class="data.goods.myclass" v-for="data in matData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goods.imgPath+')'}">
-							<span style="float: right;margin-top: .7rem;color: #fff;font-size: .5rem;" v-text="data.num"></span>
+							<span style="float: right;margin-top: .7rem;color: #FF5053;font-weight: bold;" v-text="'×'+data.num"></span>
 						</li>
 					</ul>
 				</li>
 				<li>
-					<ul class="bagCont mui-table-view">
+					<ul class="bagCont border mui-table-view">
 						<li :class="data.goods.myclass" v-for="data in petData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goods.imgPath+')'}">
+							<span class="intensify" v-text="data.level+'级'" style="color: #FF5053;font-weight: bold;"></span>
 							<span :class="data.useState==1?'use':'unuse'"></span>
-							<span class="intensify" v-text="data.level+'级'" style="color: #b26b32;"></span>
 						</li>
 					</ul>
 				</li>
@@ -69,7 +69,8 @@
 				<ul>
 					<li onclick="myobj.clickBox_use()">使用</li>
 					<li onclick="myobj.clickBox_detail()">详情</li>
-					<li onclick="myobj.clickBox_sale()">出售</li>
+					<li onclick="myobj.clickBox_putDown()" v-if="isPet">放生</li>
+					<li onclick="myobj.clickBox_sale()" v-else>出售</li>
 				</ul>
 			</div>
 		</div>

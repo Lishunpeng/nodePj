@@ -128,7 +128,9 @@ http.createServer(function(req, res) {
 						{myacco: myattr.myacco,code:'00',type:'mat',num:5},
 						{myacco: myattr.myacco,code:'01',type:'mat',num:3},
 						{myacco: myattr.myacco,code:'02',type:'mat',num:2},
-						{myacco: myattr.myacco,code:'03',type:'mat',num:10}
+						{myacco: myattr.myacco,code:'05',type:'mat',num:1},
+						{myacco: myattr.myacco,code:'06',type:'mat',num:5},
+						{myacco: myattr.myacco,code:'07',type:'mat',num:5}
 						]
 						var petCode = [
 						{myacco: myattr.myacco,code:'00',type:'pet',level:5,useState:'0'},
@@ -243,38 +245,31 @@ http.createServer(function(req, res) {
 		req.on('data', function(attr) {
 			myattr = qs.parse(decodeURI(attr));
 			console.log(myattr);
-			var whereData = {
-				myacco: myattr.myacco
-			}
-			if(myattr.name == "med") {
-				var udBag = {
-					$set: {
-						medicineCode: myattr.code,
-						money:myattr.money
-					}
-				}
-			}else if(myattr.name == "mat") {
-				var udBag = {
-					$set: {
-						materialCode: myattr.code,
-						money:myattr.money
-					}
-				}
-			}else if(myattr.name == "equi") {
-				var udBag = {
-					$set: {
-						equiCode: myattr.code,
-						money:myattr.money
-					}
-				}
-			}
 			
+			myattr.type == 'mat'?dataLink = 'bag_mat':dataLink = 'bag_equi';
+			var whereData = {
+				myacco: myattr.myacco,
+				_id:ObjectId(myattr._id)
+			}
+			var selemyInfo = {myacco: myattr.myacco}
 			MongoClient.connect(DB_CONN_STR, function(err, db) {
-				updateData(db, whereData, udBag, function(result) {
-					backData.msg = '出售成功';
-					res.end(JSON.stringify(backData))
-					db.close();
-				}, 'goods');
+				var udBag = {$set:{money:myattr.money}}
+				updateData(db, selemyInfo, udBag, function(result) {db.close();},'personInfo');
+				if(myattr.isRemove==1){
+					console.log(whereData,dataLink);
+					delData(db,whereData,function(result){
+						backData.msg = '出售成功';
+						res.end(JSON.stringify(backData))
+						db.close();
+					},dataLink);
+				}else{
+					var udBag = {$set:{num:myattr.num}}
+					updateData(db, whereData, udBag, function(result) {
+						backData.msg = '出售成功';
+						res.end(JSON.stringify(backData))
+						db.close();
+					},dataLink);
+				}
 			});
 		});
 	}else if(pathname == "/saveData") {
@@ -304,6 +299,44 @@ http.createServer(function(req, res) {
 				}
 				backData.msg = '闯关成功';
 				res.end(JSON.stringify(backData));
+			});
+		});
+	}else if(pathname == "/putdonwPet") {
+		req.on('data', function(attr) {
+			myattr = qs.parse(decodeURI(attr));
+			MongoClient.connect(DB_CONN_STR, function(err, db) {
+				var whereData = {myacco: myattr.myacco,_id:ObjectId(myattr._id)}
+				delData(db,whereData,function(result){
+						backData.msg = '放生成功';
+						res.end(JSON.stringify(backData));
+						db.close();
+					},'bag_pet');
+			});
+		});
+	}else if(pathname == "/catchPet") {
+		req.on('data', function(attr) {
+			myattr = qs.parse(decodeURI(attr));
+			MongoClient.connect(DB_CONN_STR, function(err, db) {
+				var whereData = {myacco: myattr.myacco,code:'05'}
+				if (myattr.num==0) {
+					delData(db,whereData,function(result){db.close();},'bag_mat');
+				}else{
+					var udData = {$set:{num:myattr.num}};
+					updateData(db, whereData, udData, function(result) {db.close();}, 'bag_mat');
+				}
+				if (myattr.isCatch!=1) {
+					backData.msg = '没抓住！再接再厉';
+					backData.bool = 0;
+					res.end(JSON.stringify(backData));
+				}else{
+					var insetData = {myacco: myattr.myacco,code:myattr.code,type:'pet',level:1,useState:'0'}
+					insertData(db,insetData,function(result){
+						backData.msg = '抓住了！';
+						backData.bool = 1;
+						res.end(JSON.stringify(backData));
+						db.close();
+					},'bag_pet');
+				}
 			});
 		});
 	}
@@ -341,6 +374,19 @@ var updateData = function(db, whereData, mydata,callback, table) {
 		}
 		callback(result);
 	});
+}
+//删除数据
+ var delData = function(db,whereData,callback,table) {  
+  var collection = db.collection(table);
+  //删除数据
+  collection.remove(whereData, function(err, result) {
+    if(err)
+    {
+      console.log('Error:'+ err);
+      return;
+    }     
+    callback(result);
+  });
 }
 
 // 控制台会输出以下信息

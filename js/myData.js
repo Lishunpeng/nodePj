@@ -26,7 +26,10 @@ var mymaterial = [
 	{type:'mat',code:"00",name:"神奇的石头",detail:"一颗会发光的石头，还不知道有什么用",addAttr:"",myclass:"pink",imgPath:"bag_mat_00.png"},
 	{type:'mat',code:"01",name:"材料2",detail:"我的材料2。",addAttr:"",myclass:"ordin",getMoney:"100",imgPath:"bag_mat_00.png"},
 	{type:'mat',code:"02",name:"死去的蘑菇",detail:"花蘑菇尸体。",addAttr:"",myclass:"ordin",getMoney:"300",imgPath:"bag_mat_00.png"},
-	{type:'mat',code:"03",name:"有毒的蘑菇盖",detail:"毒蘑菇头盖。",addAttr:"",myclass:"ordin",getMoney:"500",imgPath:"bag_mat_00.png"}
+	{type:'mat',code:"03",name:"有毒的蘑菇盖",detail:"毒蘑菇头盖。",addAttr:"",myclass:"ordin",getMoney:"500",imgPath:"bag_mat_00.png"},
+	{type:'mat',code:"05",name:"精灵球",detail:"用于捕捉精灵",addAttr:"",myclass:"ordin",getMoney:"500",imgPath:"bag_mat_05.png"},
+	{type:'mat',code:"06",name:"强化石",detail:"用于强化装备",addAttr:"",myclass:"ordin",getMoney:"500",imgPath:"bag_mat_06.png"},
+	{type:'mat',code:"07",name:"进化石",detail:"用于升级宠物",addAttr:"",myclass:"ordin",getMoney:"500",imgPath:"bag_mat_07.png"},
 ];
 //合并装备
 var myEqui =[
@@ -37,28 +40,35 @@ var myEqui =[
 	{type:'amu',code:"200",belone:'HP',name:"破损的护符",detail:"一个损坏的护身符。",addAttr:"30",myclass:"broke",getMoney:"300",imgPath:"bag_amu_200.png"},
 	{type:'amu',code:"201",belone:'HP',name:"普通的护符",detail:"普通家庭的传家符。",addAttr:"50",myclass:"ordin",getMoney:"500",imgPath:"bag_amu_200.png"}
 ];
-
-
-
-
+//宠物
+var myPet = [
+	{code:"00",name:"花蘑菇",detail:"漂亮的蘑菇",belone:'ATK',addAttr:"15",myclass:"ordin",strong:'1',imgPath:'monster/mon_00.png'},
+	{code:"01",name:"毒蘑菇",detail:"有毒蘑菇",belone:'ATK',addAttr:"17",myclass:"broke",strong:'1',imgPath:'monster/mon_00.png'},
+	{code:"02",name:"毒蘑菇2",detail:"有毒蘑菇",belone:'ATK',addAttr:"17",myclass:"pink",strong:'1',imgPath:'monster/mon_00.png'},
+	{code:"03",name:"毒蘑菇3",detail:"有毒蘑菇",belone:'ATK',addAttr:"17",myclass:"pink",strong:'1',imgPath:'monster/mon_00.png'},
+	{code:"#00",name:"☆毒蘑菇1",detail:"有毒蘑菇",belone:'ATK',addAttr:"30",myclass:"pink",strong:'1',imgPath:'monster/mon_00.png'},
+	{code:"#01",name:"☆毒蘑菇2",detail:"有毒蘑菇",belone:'ATK',addAttr:"30",myclass:"pink",strong:'2',imgPath:'monster/mon_00.png'},
+	{code:"#02",name:"☆毒蘑菇3",detail:"有毒蘑菇",belone:'ATK',addAttr:"30",myclass:"pink",strong:'3',imgPath:'monster/mon_00.png'},
+	{code:"#03",name:"☆毒蘑菇",detail:"有毒蘑菇",belone:'ATK',addAttr:"30",myclass:"pink",strong:'3',imgPath:'monster/mon_00.png'}
+];
 //怪物
 /*掉落装备代码：#号前表示稀有,##代表特别稀有*/
 var monster = [
-	{code:"00",name:"花蘑菇",detail:"漂亮的蘑菇",ATK:"15",DEF:'5',HP:'30',myclass:"ordin",strong:'1',dropMoney:"500",dropGoods:'2',imgPath:'monster/mon_00.png',
+	{code:"00",name:"花蘑菇",detail:"漂亮的蘑菇",ATK:"15",DEF:'5',HP:'30',canCatch:'10#30',myclass:"ordin",strong:'1',dropMoney:"500",dropGoods:'2',imgPath:'monster/mon_00.png',
 	 drop:[{type:'mat',code:'03',odds:'100'},{type:'mat',code:'02',odds:'100'}]},
-	{code:"01",name:"毒蘑菇",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"broke",strong:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
+	{code:"01",name:"毒蘑菇",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',canCatch:'10#30',myclass:"broke",strong:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
 	 drop:[{type:'wea',code:'001',odds:'100'},{type:'amu',code:'200',odds:'100'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
-	 {code:"02",name:"毒蘑菇2",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"pink",strong:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
+	{code:"02",name:"毒蘑菇2",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',canCatch:'10#30',myclass:"pink",strong:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
 	 drop:[{type:'wea',code:'001',odds:'10'},{type:'clo',code:'100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
-	 {code:"03",name:"毒蘑菇3",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',myclass:"pink",strong:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
+	{code:"03",name:"毒蘑菇3",detail:"有毒蘑菇",ATK:"17",DEF:'8',HP:'30',canCatch:'10#30',myclass:"pink",strong:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
 	drop:[{type:'wea',code:'001',odds:'10'},{type:'clo',code:'100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
-	{code:"#00",name:"☆毒蘑菇1",detail:"有毒蘑菇",ATK:"30",DEF:'18',HP:'130',myclass:"pink",strong:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
+	{code:"#00",name:"☆毒蘑菇1",detail:"有毒蘑菇",ATK:"30",DEF:'18',HP:'130',canCatch:'10#30',myclass:"pink",strong:'1',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
 	drop:[{type:'wea',code:'001',odds:'10'},{type:'clo',code:'100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
-	{code:"#01",name:"☆毒蘑菇2",detail:"有毒蘑菇",ATK:"30",DEF:'18',HP:'130',myclass:"pink",strong:'2',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
+	{code:"#01",name:"☆毒蘑菇2",detail:"有毒蘑菇",ATK:"30",DEF:'18',HP:'130',canCatch:'10#30',myclass:"pink",strong:'2',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
 	drop:[{type:'wea',code:'001',odds:'10'},{type:'clo',code:'100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
-	{code:"#02",name:"☆毒蘑菇3",detail:"有毒蘑菇",ATK:"30",DEF:'18',HP:'130',myclass:"pink",strong:'3',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
+	{code:"#02",name:"☆毒蘑菇3",detail:"有毒蘑菇",ATK:"30",DEF:'18',HP:'130',canCatch:'10#30',myclass:"pink",strong:'3',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
 	drop:[{type:'wea',code:'001',odds:'10'},{type:'clo',code:'100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
-	{code:"#03",name:"☆毒蘑菇",detail:"有毒蘑菇",ATK:"30",DEF:'18',HP:'130',myclass:"pink",strong:'3',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
+	{code:"#03",name:"☆毒蘑菇",detail:"有毒蘑菇",ATK:"30",DEF:'18',HP:'130',canCatch:'10#30',myclass:"pink",strong:'3',dropMoney:"500",dropGoods:'3',imgPath:'monster/mon_00.png',
 	drop:[{type:'wea',code:'001',odds:'10'},{type:'clo',code:'100',odds:'10'},{type:'mat',code:'03',odds:'50'},{type:'mat',code:'01',odds:'30'}]},
 ];
 //一些npc内容
@@ -72,7 +82,7 @@ var tollGate = [
 	{name:'荒古草原',detail:'死气沉沉的草原',imgPath:'tollGateImg/tg_f_bg.jpg',
 	tg:[
 		{monsterCode:'00,01,02,#00',imgPath:'tollGateImg/f1.png',name:'太原古店',detail:'荒废已久的古店'},
-		{monsterCode:'02,03,04,#01',imgPath:'tollGateImg/f2.png',name:'草原边际',detail:'一望无际的草原'},
+		{monsterCode:'02,03,01,#01',imgPath:'tollGateImg/f2.png',name:'草原边际',detail:'一望无际的草原'},
 		{monsterCode:'00,01,02,#02',imgPath:'tollGateImg/f3.png',name:'草原中央',detail:'死气层层的草原'},
 		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/f4.png',name:'沼泽之地',detail:'脏兮兮的沼泽'},
 		{monsterCode:'00,01,02,#03',imgPath:'tollGateImg/f5.png',name:'荒古森林',detail:'漆黑恐怕的森林'},

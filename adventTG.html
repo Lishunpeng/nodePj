@@ -49,11 +49,10 @@
 						</div>
 						<div :class="petData.myclass" v-text="myData.petName"></div>
 						<div>ATK&nbsp;:&nbsp;<span v-text="myData.petATK"></span></div>
-						<div>DEF&nbsp;:&nbsp;<span v-text="myData.petDEF"></span></div>
 					</div>
 					<div class="btnBox">
 						<input type="button" value="攻击" onclick="myobj.attack()" class="a_attack" />
-						<input type="button" value="捕捉" onclick="myobj.catchMon()" />
+						<input type="button" value="捕捉" onclick="myobj.catchMon(this)" class="a_catch"/>
 					</div>
 				</div>
 			</div>
