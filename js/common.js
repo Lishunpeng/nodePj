@@ -57,6 +57,10 @@ myFun.prototype = {
 						location.reload();
 					}
 
+				}else if(search == "/shop.html"){
+					mui.alert('花费了：' + localStorage.getMoney, data.msg, function() {
+						location.reload();
+					})
 				}
 			}
 		});
@@ -347,7 +351,6 @@ myFun.prototype = {
 	//购买物品
 	clickBox_butIt:function(){
 		var mydata = JSON.parse(localStorage.mydata);
-		var postData = {};
 		if (mydata.type == 'mat') {
 			mui.prompt('请输入你购买的数量',function(e){
 				if(e.index == 0) {
@@ -355,24 +358,34 @@ myFun.prototype = {
 					} else if(!re.test(e.value)) {
 						return mui.alert('请输入正确正整数数量')
 					} else if(e.index == 1) {
-							postData.myacco = localStorage.acco;
-							postData.code = mydata.code;
-							postData.num = e.value;
+						myobj.butPost(e.value);
 					}
 			});
 		}else{
 			mui.confirm('是否确定购买？', function(e) {
 				if(e.index == 1) {
-					postData.myacco = localStorage.acco;
-					postData.code = mydata.code;
-					postData.num = 1;
+					myobj.butPost(1);
 				} else {
-					return mui.alert('购买失败！')
+					return mui.alert('购买失败！');
 				}
 			});
 		}
-		localStorage.getMoney = mydata.useMoney * postData.num;
-		postData.money = parseInt(vm.myData.money) + parseInt(mydata.goods.getMoney * val);
+	},
+	//生成购买的数据
+	butPost:function(num){
+		var postData = {};
+		var mydata = JSON.parse(localStorage.mydata);
+		localStorage.getMoney = parseInt(mydata.useMoney)*num;
+		postData.money = parseInt(vm.myData.money) - parseInt(localStorage.getMoney);
+		if (postData.money<0) {
+			return	mui.alert('请确定你有没有那么多钱');
+		}
+		postData.myacco = localStorage.acco;
+		postData.code = mydata.code;
+		postData.num = num;
+		postData.type = mydata.type;
+		postData.inten = mydata.inten;
+		console.log(postData)
 		myobj.postajax('/showBut', postData);
 	},
 	//冒险关卡选择渲染

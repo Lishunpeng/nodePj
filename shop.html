@@ -43,6 +43,7 @@
 				<li class="cur">
 					<ul class="bagCont border">
 						<li :class="data.goods.myclass" v-for="data in matData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goods.imgPath+')'}">
+							<span style="font-size: .3rem;float: right;margin-top: .7rem;color: #FF5053;font-weight: bold;" v-text="'$'+data.useMoney"></span>
 						</li>
 					</ul>
 				</li>
@@ -50,6 +51,7 @@
 					<ul class="bagCont border">
 						<li :class="data.goods.myclass" v-for="data in equiData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goods.imgPath+')'}">
 							<span class="intensify" v-text="'+'+data.inten" style="font-weight: bold;color: #FF5053;"></span>
+							<span style="font-size: .3rem;float: right;margin-top: .7rem;color: #FF5053;font-weight: bold;" v-text="'$'+data.useMoney"></span>
 						</li>
 					</ul>
 				</li>

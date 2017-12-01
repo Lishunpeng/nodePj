@@ -113,7 +113,7 @@ http.createServer(function(req, res) {
 							ATK: "10",
 							DEF: "10",
 							HP: "100",
-							money: '1000'
+							money:'9990000'
 						};
 						//初始化背包数据
 						var equiCode = [
@@ -128,9 +128,7 @@ http.createServer(function(req, res) {
 						{myacco: myattr.myacco,code:'00',type:'mat',num:5},
 						{myacco: myattr.myacco,code:'01',type:'mat',num:3},
 						{myacco: myattr.myacco,code:'02',type:'mat',num:2},
-						{myacco: myattr.myacco,code:'05',type:'mat',num:1},
-						{myacco: myattr.myacco,code:'06',type:'mat',num:5},
-						{myacco: myattr.myacco,code:'07',type:'mat',num:5}
+						{myacco: myattr.myacco,code:'05',type:'mat',num:1}
 						]
 						var petCode = [
 						{myacco: myattr.myacco,code:'00',type:'pet',level:5,useState:'0'},
@@ -230,7 +228,6 @@ http.createServer(function(req, res) {
 			}
 			myattr.type=='pet' ? linkData = 'bag_pet':linkData = 'bag_equi';
 			var selecData = {"_id" : ObjectId(myattr._id)}
-			
 			var selecUdData = {$set: {useState:'1'}}
 			var udData = {$set: {useState:'0'}}
 			console.log(selecData)
@@ -281,9 +278,7 @@ http.createServer(function(req, res) {
 				var udBag = {$set:{money: myattr.money}}
 				updateData(db, whereData, udBag, function(result) {db.close();}, 'personInfo');
 				for (i in myattr.dropData) {
-					console.log(i)
 					if (myattr.dropData[i]._id) {
-						console.log(2212121212121)
 						var whereData = {
 							myacco: myattr.myacco,
 							"_id": ObjectId(myattr.dropData[i]._id)
@@ -291,7 +286,6 @@ http.createServer(function(req, res) {
 						var udBag = {$set:{num:myattr.dropData[i].num}}
 						updateData(db, whereData, udBag, function(result) {db.close();}, 'bag_mat');
 					}else{
-						console.log(11)
 						var dataLink = '';
 						myattr.dropData[i].type == 'mat'?dataLink = 'bag_mat':dataLink = 'bag_equi';
 						insertData(db,myattr.dropData[i], function(result) {db.close();}, dataLink);
@@ -322,7 +316,7 @@ http.createServer(function(req, res) {
 					delData(db,whereData,function(result){db.close();},'bag_mat');
 				}else{
 					var udData = {$set:{num:myattr.num}};
-					updateData(db, whereData, udData, function(result) {db.close();}, 'bag_mat');
+					updateData(db, whereData, udData, function(result) {db.close();},'bag_mat');
 				}
 				if (myattr.isCatch!=1) {
 					backData.msg = '没抓住！再接再厉';
@@ -342,9 +336,22 @@ http.createServer(function(req, res) {
 	}else if(pathname == "/showBut") {
 		req.on('data', function(attr) {
 			myattr = qs.parse(decodeURI(attr));
-			console.log(myattr);
-			/*MongoClient.connect(DB_CONN_STR, function(err, db) {
-			});*/
+			MongoClient.connect(DB_CONN_STR, function(err, db) {
+				var whereData = {myacco: myattr.myacco}
+				var udData = {$set:{money:myattr.money}}
+				updateData(db, whereData, udData, function(result) {db.close();}, 'personInfo');
+				if (myattr.type == 'mat') {
+					var whereData = {myacco: myattr.myacco,code:myattr.code,type:myattr.type}
+					myattr.num = parseInt(myattr.num);
+					var udData = {$inc:{num:myattr.num}};
+					upsertData(db, whereData, udData, function(result) {db.close();}, 'bag_mat');
+				}else{
+					var inseData = {myacco: myattr.myacco,code:myattr.code,type:myattr.type,useState:'0',inten:0};
+					insertData(db, inseData, function(result) {db.close();}, 'bag_equi');
+				}
+				backData.msg = '购买成功';
+				res.end(JSON.stringify(backData));
+			});
 		});
 	}
 	
@@ -376,6 +383,18 @@ var updateData = function(db, whereData, mydata,callback, table) {
 	var collection = db.collection(table);
 	//更新数据
 	collection.update(whereData, mydata,{multi:true},function(err, result) {
+		if(err) {
+			console.log('Error:' + err);
+			return;
+		}
+		callback(result);
+	});
+}
+//修改数据如果没有的话增加新数据
+var upsertData = function(db, whereData, mydata,callback, table) {
+	var collection = db.collection(table);
+	//更新数据
+	collection.update(whereData, mydata,{upsert:true},{multi:true},function(err, result) {
 		if(err) {
 			console.log('Error:' + err);
 			return;
