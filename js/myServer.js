@@ -192,7 +192,6 @@ http.createServer(function(req, res) {
 					res.end(JSON.stringify(backData));
 				}, 'bag_pet');
 			}
-
 		});
 	} else if(pathname == "/getRole") {
 		var params = url.parse(req.url, true).query;

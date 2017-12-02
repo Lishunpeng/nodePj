@@ -73,9 +73,10 @@ myFun.prototype = {
 			url: path,
 			success: function(data) {
 				vm.myData = JSON.parse(data);
+				console.log(vm.myData)
 				if(search == "/GameTest.html" || search == "/beginAdven.html") {
 					console.log(vm.myData)
-				} else if(search == "/mybag.html") {
+				} else if(search == "/mybag.html" || search == "/intenEqui.html") {
 					vm.equiData = myobj.getData(myEqui, vm.myData.equiCode);
 					vm.petData = myobj.getData(myPet, vm.myData.petCode);
 					vm.matData = myobj.getData(mymaterial, vm.myData.matCode);
@@ -280,6 +281,15 @@ myFun.prototype = {
 		}
 		return str.substr(1);
 	},*/
+	//强化
+	clickBox_intentPut:function(){
+		var mydata = JSON.parse(localStorage.mydata);
+		if (mydata.useState ==1) {
+			return mui.alert('装备使用中');
+		}else{
+			
+		}
+	},
 	//物品出售
 	clickBox_sale: function() {
 		console.log(vm.myData)

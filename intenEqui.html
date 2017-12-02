@@ -27,9 +27,19 @@
 			</ul>
 			<ol class="bagDetail" id="bagData">
 				<li class="cur">
-					<div class="intenBox"></div>
-					<div style="margin: 0 auto;">
-					<input type="button"  value="强化" class="bagDetail"/>
+					<div class="intenBox">
+						<div class="equi"></div>
+					</div>
+					<div class="intenBtn">
+						强化
+					</div>
+					<div class="myBag">
+						<ul class="mybagCont bagCont border">
+							<li :class="data.goods.myclass" v-for="data in equiData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goods.imgPath+')'}">
+								<span :class="data.useState==1?'use':'unuse'"></span>
+								<span class="intensify" v-text="'+'+data.inten" style="font-weight: bold;color: #FF5053;"></span>
+							</li>
+						</ul>
 					</div>
 				</li>
 				<li>
@@ -50,12 +60,13 @@
 			</ol>
 			<div class="clickBox" onclick="myobj.stopClickEqui()">
 				<ul>
-					<li onclick="myobj.clickBox_use()">使用</li>
+					<li onclick="myobj.clickBox_intentPut()">强化</li>
 					<li onclick="myobj.clickBox_detail()">详情</li>
-					<li onclick="myobj.clickBox_putDown()" v-if="isPet">放生</li>
-					<li onclick="myobj.clickBox_sale()" v-else>出售</li>
 				</ul>
 			</div>
+		</div>
+		<div class="mybackLink">
+			<a href="GameTest.html" style="display: block;height: 100%;width: 100%;"></a>
 		</div>
 	</body>
 	<script src="jquery-2.1.0.js"></script>
