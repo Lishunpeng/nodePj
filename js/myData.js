@@ -115,5 +115,19 @@ var tollGate = [
 	]}
 ];
 
+//依次是强化等级，强化概率，失败出现降级概率，强化加成
+var intenData = [
+	{code:0,odds:100,failOdds:0,failDown:0,intenAttr:1,needMat:1},
+	{code:1,odds:90,failOdds:15,failDown:1,intenAttr:1.3,needMat:2},
+	{code:2,odds:70,failOdds:30,failDown:1,intenAttr:1.8,needMat:3},
+	{code:3,odds:50,failOdds:40,failDown:2,intenAttr:2.5,needMat:4},
+	{code:4,odds:30,failOdds:50,failDown:2,intenAttr:3.4,needMat:5},
+	{code:5,odds:15,failOdds:60,failDown:2,intenAttr:4.5,needMat:6},
+	{code:6,odds:10,failOdds:65,failDown:3,intenAttr:5.8,needMat:7},
+	{code:7,odds:8,failOdds:70,failDown:3,intenAttr:8,needMat:8},
+	{code:8,odds:5,failOdds:70,failDown:4,intenAttr:11.5,needMat:9},
+	{code:9,odds:3,failOdds:75,failDown:5,intenAttr:15,needMat:10},
+	{code:10,intenAttr:20}
+]
 
 

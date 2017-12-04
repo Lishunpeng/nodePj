@@ -352,6 +352,25 @@ http.createServer(function(req, res) {
 				res.end(JSON.stringify(backData));
 			});
 		});
+	}else if(pathname == "/intenEqui") {
+		req.on('data', function(attr) {
+			myattr = qs.parse(decodeURI(attr));
+			console.log(myattr);
+			var whereData = {myacco: myattr.myacco,_id:ObjectId(myattr._id)}
+			MongoClient.connect(DB_CONN_STR, function(err, db) {
+				var udData = {$set:{inten:myattr.inten}}
+				updateData(db, whereData, udData, function(result) {
+					if (myattr.intenState==1) {
+						backData.msg = '强化成功';
+					}else if(myattr.intenState==0){
+						backData.msg = '强化失败,物品等级下降0级';
+					}else{
+						backData.msg = '强化失败,物品等级下降'+myattr.equiDown+'级';
+					}
+					res.end(JSON.stringify(backData));
+				db.close();}, 'bag_equi');
+			});
+		});
 	}
 	
 }).listen(3000);

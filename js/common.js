@@ -61,6 +61,9 @@ myFun.prototype = {
 					mui.alert('花费了：' + localStorage.getMoney, data.msg, function() {
 						location.reload();
 					})
+				}else if(search == "/intenEqui.html"){
+					console.log(data)
+					mui.alert(data.msg, function() {location.reload();})
 				}
 			}
 		});
@@ -80,6 +83,10 @@ myFun.prototype = {
 					vm.equiData = myobj.getData(myEqui, vm.myData.equiCode);
 					vm.petData = myobj.getData(myPet, vm.myData.petCode);
 					vm.matData = myobj.getData(mymaterial, vm.myData.matCode);
+					if(search == "/intenEqui.html") {
+						vm.myData.intenNum = myobj.getOneData(vm.myData.matCode,'06');
+						console.log(vm.myData.intenNum);
+					}
 				} else if(search == "/gameRole.html" || search == "/adventTG.html") {
 					vm.equiData = myobj.getData(myEqui, vm.myData.equi);
 					vm.petData = myobj.getData(myPet, vm.myData.pet);
@@ -127,7 +134,6 @@ myFun.prototype = {
 			return data;
 		} else {
 			for(i in dataBase) {
-				console.log(obj)
 				if(obj == dataBase[i].code) {
 					return dataBase[i];
 				}
@@ -287,7 +293,8 @@ myFun.prototype = {
 		if (mydata.useState ==1) {
 			return mui.alert('装备使用中');
 		}else{
-			
+			$('.intenBox .equi').css('backgroundImage','url('+mydata.goods.imgPath+')');
+			$('.intenBox .intensify').text('+'+mydata.inten);
 		}
 	},
 	//物品出售
@@ -579,6 +586,46 @@ myFun.prototype = {
 	shopBegin:function(){
 		vm.matData = myobj.getData(mymaterial,myShop.matShop);
 		vm.equiData = myobj.getData(myEqui,myShop.equiShop);
+	},
+	//强化
+	intenEqui:function(obj){
+		if ($('.intenBox .intensify').text()=="") {
+			return mui.alert('请放置装备强化');
+		}
+		var mydata = JSON.parse(localStorage.mydata);
+		if (mydata.inten == 10) {
+			return mui.alert('该物品强化等级已经最高级！');
+		}
+		var data =	myobj.getData(intenData,mydata.inten);
+		console.log(vm.myData);
+		if (parseInt(vm.myData.intenNum)<data.needMat||vm.myData.intenNum == undefined ) {
+			return mui.alert('请确认你有没有这么多强化材料！');
+		}
+		if ($(obj).attr('data-bool') == 0) {
+			return;
+		}
+		var postData = {};
+		postData._id = mydata._id;
+		postData.myacco = localStorage.acco;
+		
+		var judey = myobj.oddsCount(data.odds);
+		if (judey) {
+			postData.intenState = 1;
+			postData.inten = parseInt(mydata.inten)+1;
+		}else{
+			var judey = myobj.oddsCount(data.failOdds);
+			if (judey) {
+				postData.intenState = -1;
+				postData.equiDown = data.failDown;
+				postData.inten = parseInt(mydata.inten) - parseInt(data.failDown);
+			}else{
+				postData.intenState = 0;
+				postData.inten = parseInt(mydata.inten);
+			}
+		}
+		console.log(postData);
+		myobj.postajax('/intenEqui',postData);
+		$(obj).attr('data-bool',0);
 	}
 }
 var myobj = new myFun();

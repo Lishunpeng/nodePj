@@ -28,10 +28,12 @@
 			<ol class="bagDetail" id="bagData">
 				<li class="cur">
 					<div class="intenBox">
+						<span class="intensify" style="font-weight: bold;color: #FF5053;"></span>
 						<div class="equi"></div>
 					</div>
-					<div class="intenBtn">
-						强化
+					 
+					<div class="intenBtn" onclick="myobj.intenEqui(this)" data-bool="1">
+						强&nbsp;&nbsp;&nbsp;化
 					</div>
 					<div class="myBag">
 						<ul class="mybagCont bagCont border">
@@ -60,7 +62,7 @@
 			</ol>
 			<div class="clickBox" onclick="myobj.stopClickEqui()">
 				<ul>
-					<li onclick="myobj.clickBox_intentPut()">强化</li>
+					<li onclick="myobj.clickBox_intentPut()">放置</li>
 					<li onclick="myobj.clickBox_detail()">详情</li>
 				</ul>
 			</div>
