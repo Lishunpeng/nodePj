@@ -113,7 +113,7 @@ http.createServer(function(req, res) {
 							ATK: "10",
 							DEF: "10",
 							HP: "100",
-							money:'9990000'
+							money:'1000000'
 						};
 						//初始化背包数据
 						var equiCode = [
@@ -356,19 +356,71 @@ http.createServer(function(req, res) {
 		req.on('data', function(attr) {
 			myattr = qs.parse(decodeURI(attr));
 			console.log(myattr);
-			var whereData = {myacco: myattr.myacco,_id:ObjectId(myattr._id)}
+			var seleData = {myacco: myattr.myacco,_id:ObjectId(myattr._id)}
 			MongoClient.connect(DB_CONN_STR, function(err, db) {
-				var udData = {$set:{inten:myattr.inten}}
-				updateData(db, whereData, udData, function(result) {
+				var udData = {};
+				var whereData ={};
+				var succStr = "";
+				var failStr = "";
+				var failDownStr = "";
+				var dataLink="";
+				if (myattr.type=='equi') {
+					udData = {$set:{inten:myattr.inten}}
+					whereData = {myacco: myattr.myacco,code:'06'}
+					dataLink = "bag_equi";
+					succStr = '强化成功';
+					failStr = '强化失败,物品等级下降0级';
+					failDownStr = '强化失败,物品等级下降'+myattr.equiDown+'级';
+				}else{
+					udData = {$set:{level:myattr.level}}
+					whereData = {myacco: myattr.myacco,code:'07'}
+					dataLink = "bag_pet";
+					succStr = '升级成功';
+					failStr = '升级失败,物品等级下降0级';
+					failDownStr = '升级失败,物品等级下降'+myattr.equiDown+'级';
+				}
+				
+				if (myattr.num==0) {
+					delData(db,whereData,function(result){db.close();},'bag_mat');
+				}else{
+					var update = {$set:{num:myattr.num}};
+					updateData(db, whereData, update, function(result) {db.close();},'bag_mat');
+				}
+				updateData(db, seleData, udData, function(result) {
 					if (myattr.intenState==1) {
-						backData.msg = '强化成功';
+						backData.msg = succStr;
 					}else if(myattr.intenState==0){
-						backData.msg = '强化失败,物品等级下降0级';
+						backData.msg = failStr;
 					}else{
-						backData.msg = '强化失败,物品等级下降'+myattr.equiDown+'级';
+						backData.msg = failDownStr;
 					}
 					res.end(JSON.stringify(backData));
-				db.close();}, 'bag_equi');
+				db.close();},dataLink);
+			});
+		});
+	}else if(pathname == "/changeInten") {
+		req.on('data', function(attr) {
+			myattr = qs.parse(decodeURI(attr));
+			console.log(myattr);
+			var seleData_left = {myacco: myattr.myacco,_id:ObjectId(myattr.left_id)};
+			var seleData_right = {myacco: myattr.myacco,_id:ObjectId(myattr.right_id)};
+			MongoClient.connect(DB_CONN_STR, function(err, db) {
+				var udData = {$set:{money:myattr.money}};
+				var whereData = {myacco:myattr.myacco};
+				updateData(db, whereData, udData, function(result) {db.close();},'personInfo');
+				if (myattr.changeState==1) {
+					backData.msg = '熔铸成功';
+					var udData_left = {$set:{inten:0}};
+					var udData_right = {$set:{inten:myattr.inten}};
+					console.log(myattr.inten);
+					updateData(db,seleData_left,udData_left, function(result) {db.close();},'bag_equi');
+					updateData(db,seleData_right,udData_right, function(result) {db.close();},'bag_equi');
+				}else{
+					backData.msg = '熔铸失败,两件物品都消失了';
+					delData(db, seleData_left, function(result) {db.close();},'bag_equi');
+					delData(db, seleData_right, function(result) {db.close();},'bag_equi');
+				}
+				res.end(JSON.stringify(backData));
 			});
 		});
 	}

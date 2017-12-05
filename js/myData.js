@@ -22,12 +22,12 @@ var mymaterial = [
 ];
 //合并装备
 var myEqui =[
-	{type:'wea',code:"000",belone:'ATK',name:"生锈的铁剑",detail:"一把生锈了许久的铁剑。",addAttr:"3",myclass:"broke",getMoney:"300",imgPath:"bag_wea_000.png"},
-	{type:'wea',code:"001",belone:'ATK',name:"铁剑",detail:"一把铁剑，比较新。",addAttr:"5",myclass:"ordin",getMoney:"500",imgPath:"bag_wea_000.png"},
-	{type:'clo',code:"100",belone:'DEF',name:"破损的布衣",detail:"一个穷逼穿的衣服。",addAttr:"3",myclass:"broke",getMoney:"300",imgPath:"bag_clo_100.png"},
-	{type:'clo',code:"101",belone:'DEF',name:"普通的布衣",detail:"普通草民衣服。",addAttr:"5",myclass:"ordin",getMoney:"500",imgPath:"bag_clo_100.png"},
-	{type:'amu',code:"200",belone:'HP',name:"破损的护符",detail:"一个损坏的护身符。",addAttr:"30",myclass:"broke",getMoney:"300",imgPath:"bag_amu_200.png"},
-	{type:'amu',code:"201",belone:'HP',name:"普通的护符",detail:"普通家庭的传家符。",addAttr:"50",myclass:"ordin",getMoney:"500",imgPath:"bag_amu_200.png"}
+	{type:'wea',code:"000",belone:'ATK',name:"生锈的铁剑",detail:"一把生锈了许久的铁剑。",addAttr:3,myclass:"broke",getMoney:"300",imgPath:"bag_wea_000.png"},
+	{type:'wea',code:"001",belone:'ATK',name:"铁剑",detail:"一把铁剑，比较新。",addAttr:5,myclass:"ordin",getMoney:"500",imgPath:"bag_wea_000.png"},
+	{type:'clo',code:"100",belone:'DEF',name:"破损的布衣",detail:"一个穷逼穿的衣服。",addAttr:3,myclass:"broke",getMoney:"300",imgPath:"bag_clo_100.png"},
+	{type:'clo',code:"101",belone:'DEF',name:"普通的布衣",detail:"普通草民衣服。",addAttr:5,myclass:"ordin",getMoney:"500",imgPath:"bag_clo_100.png"},
+	{type:'amu',code:"200",belone:'HP',name:"破损的护符",detail:"一个损坏的护身符。",addAttr:30,myclass:"broke",getMoney:"300",imgPath:"bag_amu_200.png"},
+	{type:'amu',code:"201",belone:'HP',name:"普通的护符",detail:"普通家庭的传家符。",addAttr:50,myclass:"ordin",getMoney:"500",imgPath:"bag_amu_200.png"}
 ];
 //宠物
 var myPet = [
@@ -116,6 +116,7 @@ var tollGate = [
 ];
 
 //依次是强化等级，强化概率，失败出现降级概率，强化加成
+//为了以后维护方便。先建立两个吧第二个为宠物
 var intenData = [
 	{code:0,odds:100,failOdds:0,failDown:0,intenAttr:1,needMat:1},
 	{code:1,odds:90,failOdds:15,failDown:1,intenAttr:1.3,needMat:2},
@@ -129,5 +130,17 @@ var intenData = [
 	{code:9,odds:3,failOdds:75,failDown:5,intenAttr:15,needMat:10},
 	{code:10,intenAttr:20}
 ]
-
+var levelData = [
+	{code:1,odds:100,failOdds:0,failDown:0,levelAttr:1,needMat:1},
+	{code:2,odds:90,failOdds:15,failDown:1,levelAttr:1.3,needMat:2},
+	{code:3,odds:70,failOdds:30,failDown:1,levelAttr:1.8,needMat:3},
+	{code:4,odds:50,failOdds:40,failDown:2,levelAttr:2.5,needMat:4},
+	{code:5,odds:30,failOdds:50,failDown:2,levelAttr:3.4,needMat:5},
+	{code:6,odds:15,failOdds:60,failDown:2,levelAttr:4.5,needMat:6},
+	{code:7,odds:10,failOdds:65,failDown:3,levelAttr:5.8,needMat:7},
+	{code:8,odds:8,failOdds:70,failDown:3,levelAttr:8,needMat:8},
+	{code:9,odds:5,failOdds:70,failDown:4,levelAttr:11.5,needMat:9},
+	{code:10,odds:3,failOdds:75,failDown:5,levelAttr:15,needMat:10},
+	{code:11,levelAttr:20}
+]
 

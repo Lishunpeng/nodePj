@@ -29,8 +29,10 @@
 				<div class="headerimg">
 					<img src="head2.jpg" />
 				</div>
-				<div class="name" v-text="'角色名：'+myData.name"></div>
-				<div class="name" v-text="'金币：'+myData.money"></div>
+				<div class="nameInfo">
+						<div class="name" v-text="'角色名：'+myData.name"></div>
+						<div class="name money_Box" v-text="'金币：'+myData.money"></div>
+				</div>
 			</div>
 			<div class="infoCent">
 				<div class="cent_nav">主页</div>
@@ -54,8 +56,10 @@
 						</a>
 					</li>
 					<li>
+						<a href="petLevel.html">
 						<img src="petIcon.png" />
 						<p>宠物升级</p>
+						</a>
 					</li>
 					<li>
 						<img src="friendIcon.png" />

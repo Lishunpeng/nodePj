@@ -57,13 +57,14 @@ myFun.prototype = {
 						location.reload();
 					}
 
-				}else if(search == "/shop.html"){
+				} else if(search == "/shop.html") {
 					mui.alert('花费了：' + localStorage.getMoney, data.msg, function() {
 						location.reload();
 					})
-				}else if(search == "/intenEqui.html"){
-					console.log(data)
-					mui.alert(data.msg, function() {location.reload();})
+				} else if(search == "/intenEqui.html" || search == "/petLevel.html") {
+					mui.alert(data.msg, function() {
+						location.reload();
+					})
 				}
 			}
 		});
@@ -79,33 +80,33 @@ myFun.prototype = {
 				console.log(vm.myData)
 				if(search == "/GameTest.html" || search == "/beginAdven.html") {
 					console.log(vm.myData)
-				} else if(search == "/mybag.html" || search == "/intenEqui.html") {
+				} else if(search == "/mybag.html" || search == "/intenEqui.html" || search == '/petLevel.html') {
 					vm.equiData = myobj.getData(myEqui, vm.myData.equiCode);
 					vm.petData = myobj.getData(myPet, vm.myData.petCode);
 					vm.matData = myobj.getData(mymaterial, vm.myData.matCode);
 					if(search == "/intenEqui.html") {
-						vm.myData.intenNum = myobj.getOneData(vm.myData.matCode,'06');
-						console.log(vm.myData.intenNum);
+						vm.myData.intenNum = myobj.getOneData(vm.myData.matCode, '06');
+					}else if(search == "/petLevel.html"){
+						vm.myData.levelNum = myobj.getOneData(vm.myData.matCode, '07');
 					}
 				} else if(search == "/gameRole.html" || search == "/adventTG.html") {
 					vm.equiData = myobj.getData(myEqui, vm.myData.equi);
 					vm.petData = myobj.getData(myPet, vm.myData.pet);
-					vm.myData.petATK = vm.petData[0].goods.addAttr;
+					vm.myData.petATK = vm.petData[0].myAttr;
 					vm.myData.petName = vm.petData[0].goods.name;
 					vm.myData.petimgPath = vm.petData[0].goods.imgPath;
 					//计算总属性
 					if(search == "/adventTG.html") {
-						vm.myData.ballNum = myobj.getOneData(vm.myData.mat,'05');
-						console.log(vm.myData)
+						vm.myData.ballNum = myobj.getOneData(vm.myData.mat, '05');
 					}
-
 					for(i in vm.equiData) {
+
 						if(vm.equiData[i].type == 'wea') {
-							vm.myData.ATK = parseInt(vm.equiData[i].goods.addAttr) + parseInt(vm.myData.ATK);
+							vm.myData.ATK = parseInt(vm.equiData[i].myAttr) + parseInt(vm.myData.ATK);
 						} else if(vm.equiData[i].type == 'clo') {
-							vm.myData.DEF = parseInt(vm.equiData[i].goods.addAttr) + parseInt(vm.myData.DEF);
+							vm.myData.DEF = parseInt(vm.equiData[i].myAttr) + parseInt(vm.myData.DEF);
 						} else if(vm.equiData[i].type == 'amu') {
-							vm.myData.HP = parseInt(vm.equiData[i].goods.addAttr) + parseInt(vm.myData.HP);
+							vm.myData.HP = parseInt(vm.equiData[i].myAttr) + parseInt(vm.myData.HP);
 						}
 					}
 				}
@@ -125,15 +126,26 @@ myFun.prototype = {
 					if(obj[i].code == dataBase[j].code) {
 						var myData = {}
 						myData = obj[i];
+						if(obj[i].inten != undefined) {
+							var myAttr = intenData[parseInt(myData.inten)].intenAttr * dataBase[j].addAttr;
+							myData.myAttr = parseInt(myAttr);
+						}
+						if(obj[i].level != undefined) {
+							var myAttr = levelData[parseInt(myData.level - 1)].levelAttr * dataBase[j].addAttr;
+							myData.myAttr = parseInt(myAttr);
+							console.log(myData.myAttr)
+						}
 						myData.goods = dataBase[j];
 						data.push(myData);
 					}
 				}
+
 			}
 			console.log(data)
 			return data;
 		} else {
 			for(i in dataBase) {
+				console.log(obj);
 				if(obj == dataBase[i].code) {
 					return dataBase[i];
 				}
@@ -142,9 +154,9 @@ myFun.prototype = {
 
 	},
 	//数据代码分离出单个值
-	getOneData: function(obj,code) {
+	getOneData: function(obj, code) {
 		for(i in obj) {
-			if (obj[i].code == code) {
+			if(obj[i].code == code) {
 				return obj[i].num;
 			}
 		}
@@ -204,9 +216,9 @@ myFun.prototype = {
 	equiUseinfo: function(obj) {
 		var data = JSON.parse($(obj).attr('data-data'));
 		var str1 = "";
-		data.type == 'pet' ? str1 = '<br>宠物等级：' + data.level : str1 = '<br>强化等级：' + data.inten + '<br>' + data.goods.belone + ':+' + data.goods.addAttr + '<br>';
+		data.type == 'pet' ? str1 = '<br>宠物等级：' + data.level : str1 = '<br>强化等级：' + data.inten + '<br>';
 		var str = '<span class=' + data.goods.myclass + '>' + data.goods.name + '</span><br>' +
-			'详情:' + data.goods.detail;
+			'详情:' + data.goods.detail + '<br>' + data.goods.belone + ':+' + data.myAttr;
 		mui.alert(str + str1, '提示信息');
 		$('.mui-popup').addClass('mui-popup-left');
 	},
@@ -243,7 +255,7 @@ myFun.prototype = {
 		}
 
 		var str = ""
-		mydata.goods.addAttr ? str = '物品：<span class=' + mydata.goods.myclass + '>' + mydata.goods.name + '</span>\n' + mydata.goods.belone + ':+' + mydata.goods.addAttr + '\n阐述：' + mydata.goods.detail :
+		mydata.myAttr ? str = '物品：<span class=' + mydata.goods.myclass + '>' + mydata.goods.name + '</span>\n' + mydata.goods.belone + ':+' + mydata.myAttr + '\n阐述：' + mydata.goods.detail :
 			str = '物品：<span class=' + mydata.goods.myclass + '>' + mydata.goods.name + '</span>\n阐述：' + mydata.goods.detail;
 		mui.alert(str + str1);
 		$('.mui-popup-text').addClass("mui-popup-left");
@@ -288,13 +300,42 @@ myFun.prototype = {
 		return str.substr(1);
 	},*/
 	//强化
-	clickBox_intentPut:function(){
+	clickBox_intentPut: function() {
 		var mydata = JSON.parse(localStorage.mydata);
-		if (mydata.useState ==1) {
-			return mui.alert('装备使用中');
-		}else{
-			$('.intenBox .equi').css('backgroundImage','url('+mydata.goods.imgPath+')');
-			$('.intenBox .intensify').text('+'+mydata.inten);
+		if(mydata.useState == 1) {
+			return mui.alert('物品使用中');
+		} else {
+			if(localStorage.cur == 0) {
+				$('.intenBox .equi').css('backgroundImage', 'url(' + mydata.goods.imgPath + ')');
+				console.log(search)
+				if (search == "/intenEqui.html") {
+					$('.intenBox .intensify').text('+' + mydata.inten);
+					var data = intenData[mydata.inten];
+					vm.myData.needNum = data.needMat;
+					vm.myData.intenNum == undefined ? vm.myData.intenNum = 0 : "";
+					$('.inten_info').html('需要强化石' + vm.myData.needNum + '<span style="color: #EC971F;">(' + vm.myData.intenNum + ')</span>个').show();
+				}else{
+					$('.intenBox .intensify').text('+' + mydata.level);
+					var data = levelData[mydata.level-1];
+					vm.myData.needNum = data.needMat;
+					vm.myData.levelNum == undefined ? vm.myData.levelNum = 0 : "";
+					$('.inten_info').html('需要升级石' + vm.myData.needNum + '<span style="color: #EC971F;">(' + vm.myData.levelNum + ')</span>个').show();
+				}
+				
+			}else if(localStorage.cur == 1){
+				mui.confirm('放置左边还是右边','提示',['左边','右边'],function(e){
+					if(e.index){
+						$('.change_inten .equi').css('backgroundImage', 'url(' + mydata.goods.imgPath + ')');
+						$('.change_inten .intensify').text('+' + mydata.inten);
+						$('.change_inten .intensify').attr('data-data',localStorage.mydata);
+					}else{
+						$('.put_inten .equi').css('backgroundImage', 'url(' + mydata.goods.imgPath + ')');
+						$('.put_inten .intensify').text('+' + mydata.inten);
+						$('.put_inten .intensify').attr('data-data',localStorage.mydata);
+					}
+				})
+			}
+
 		}
 	},
 	//物品出售
@@ -366,19 +407,19 @@ myFun.prototype = {
 		}
 	},
 	//购买物品
-	clickBox_butIt:function(){
+	clickBox_butIt: function() {
 		var mydata = JSON.parse(localStorage.mydata);
-		if (mydata.type == 'mat') {
-			mui.prompt('请输入你购买的数量',function(e){
+		if(mydata.type == 'mat') {
+			mui.prompt('请输入你购买的数量', function(e) {
 				if(e.index == 0) {
-						return mui.alert('购买失败！');
-					} else if(!re.test(e.value)) {
-						return mui.alert('请输入正确正整数数量')
-					} else if(e.index == 1) {
-						myobj.butPost(e.value);
-					}
+					return mui.alert('购买失败！');
+				} else if(!re.test(e.value)) {
+					return mui.alert('请输入正确正整数数量')
+				} else if(e.index == 1) {
+					myobj.butPost(e.value);
+				}
 			});
-		}else{
+		} else {
 			mui.confirm('是否确定购买？', function(e) {
 				if(e.index == 1) {
 					myobj.butPost(1);
@@ -389,13 +430,13 @@ myFun.prototype = {
 		}
 	},
 	//生成购买的数据
-	butPost:function(num){
+	butPost: function(num) {
 		var postData = {};
 		var mydata = JSON.parse(localStorage.mydata);
-		localStorage.getMoney = parseInt(mydata.useMoney)*num;
+		localStorage.getMoney = parseInt(mydata.useMoney) * num;
 		postData.money = parseInt(vm.myData.money) - parseInt(localStorage.getMoney);
-		if (postData.money<0) {
-			return	mui.alert('请确定你有没有那么多钱');
+		if(postData.money < 0) {
+			return mui.alert('请确定你有没有那么多钱');
 		}
 		postData.myacco = localStorage.acco;
 		postData.code = mydata.code;
@@ -437,34 +478,34 @@ myFun.prototype = {
 
 	//捕捉
 	catchMon: function(obj) {
-//		$(obj).attr('disabled', 'disabled');
+		//		$(obj).attr('disabled', 'disabled');
 		console.log(vm.myData.ballNum);
-		if(parseInt(vm.myData.ballNum)>0 && vm.myData.ballNum!=undefined){
+		if(parseInt(vm.myData.ballNum) > 0 && vm.myData.ballNum != undefined) {
 			vm.monster.ATK = parseInt(vm.monster.ATK);
 			vm.monster.HP = parseInt(vm.monster.HP);
 			vm.myData.DEF = parseInt(vm.myData.DEF);
 			var myLosehp = vm.monster.ATK - vm.myData.DEF;
 			vm.myData.HP -= myLosehp;
-			myobj.adventInfo(vm.myData.HP,vm.monster.HP,myLosehp,0,0);
+			myobj.adventInfo(vm.myData.HP, vm.monster.HP, myLosehp, 0, 0);
 			var isCatch = 0;
 			vm.myData.ballNum--;
 			vm.monster.HP = parseInt(vm.monster.HP);
-		var allHp = parseInt(localStorage.monHp);
-		var str = vm.monster.canCatch.split('#');
-		vm.monster.HP >= (allHp / 2) ? isCatch = myobj.oddsCount(str[0]) : isCatch = myobj.oddsCount(str[1]);
-		isCatch ? isCatch = 1 : isCatch = 0;
-		var postData = {
-			myacco: localStorage.acco,
-			num:vm.myData.ballNum,
-			code: vm.monster.code,
-			isCatch: isCatch
-		};
-		console.log(postData)
-		myobj.postajax('/catchPet', postData);
-		}else{
+			var allHp = parseInt(localStorage.monHp);
+			var str = vm.monster.canCatch.split('#');
+			vm.monster.HP >= (allHp / 2) ? isCatch = myobj.oddsCount(str[0]) : isCatch = myobj.oddsCount(str[1]);
+			isCatch ? isCatch = 1 : isCatch = 0;
+			var postData = {
+				myacco: localStorage.acco,
+				num: vm.myData.ballNum,
+				code: vm.monster.code,
+				isCatch: isCatch
+			};
+			console.log(postData)
+			myobj.postajax('/catchPet', postData);
+		} else {
 			mui.alert('你没有多余的精灵球');
 		}
-		
+
 	},
 	//攻击
 	attack: function() {
@@ -581,51 +622,125 @@ myFun.prototype = {
 		postData.dropData = JSON.stringify(dropData);
 		myobj.postajax("/saveData", postData);
 	},
-	
+
 	//商品页面初始化
-	shopBegin:function(){
-		vm.matData = myobj.getData(mymaterial,myShop.matShop);
-		vm.equiData = myobj.getData(myEqui,myShop.equiShop);
+	shopBegin: function() {
+		vm.matData = myobj.getData(mymaterial, myShop.matShop);
+		vm.equiData = myobj.getData(myEqui, myShop.equiShop);
 	},
-	//强化
-	intenEqui:function(obj){
-		if ($('.intenBox .intensify').text()=="") {
-			return mui.alert('请放置装备强化');
+	//升级
+	levelPet:function(obj){
+		if($(obj).attr('data-bool') == 0) {
+			return;
+		}
+		if($('.intenBox .intensify').text() == "") {
+			return mui.alert('请放置宠物进行升级');
 		}
 		var mydata = JSON.parse(localStorage.mydata);
-		if (mydata.inten == 10) {
-			return mui.alert('该物品强化等级已经最高级！');
+		if(mydata.level == 10) {
+			return mui.alert('该宠物已经是最高级！');
 		}
-		var data =	myobj.getData(intenData,mydata.inten);
+		var data = levelData[mydata.level-1];
+		console.log(data)
 		console.log(vm.myData);
-		if (parseInt(vm.myData.intenNum)<data.needMat||vm.myData.intenNum == undefined ) {
+		if(parseInt(vm.myData.levelNum) < data.needMat || vm.myData.levelNum == undefined) {
 			return mui.alert('请确认你有没有这么多强化材料！');
-		}
-		if ($(obj).attr('data-bool') == 0) {
-			return;
 		}
 		var postData = {};
 		postData._id = mydata._id;
 		postData.myacco = localStorage.acco;
-		
+		postData.num = parseInt(vm.myData.levelNum) - data.needMat;
 		var judey = myobj.oddsCount(data.odds);
-		if (judey) {
+		if(judey) {
 			postData.intenState = 1;
-			postData.inten = parseInt(mydata.inten)+1;
-		}else{
+			postData.level = parseInt(mydata.level) + 1;
+		} else {
 			var judey = myobj.oddsCount(data.failOdds);
-			if (judey) {
+			if(judey) {
+				postData.intenState = -1;
+				postData.equiDown = data.failDown;
+				postData.level = parseInt(mydata.level) - parseInt(data.failDown);
+			} else {
+				postData.intenState = 0;
+				postData.level = parseInt(mydata.level);
+			}
+		}
+		postData.type='pet';
+		console.log(postData);
+		myobj.postajax('/intenEqui', postData);
+		$(obj).attr('data-bool', 0);
+	},
+	//强化
+	intenEqui: function(obj) {
+		if($(obj).attr('data-bool') == 0) {
+			return;
+		}
+		if($('.intenBox .intensify').text() == "") {
+			return mui.alert('请放置装备强化');
+		}
+		var mydata = JSON.parse(localStorage.mydata);
+		if(mydata.inten == 10) {
+			return mui.alert('该物品强化等级已经最高级！');
+		}
+		var data = intenData[mydata.inten];
+		console.log(vm.myData);
+		if(parseInt(vm.myData.intenNum) < data.needMat || vm.myData.intenNum == undefined) {
+			return mui.alert('请确认你有没有这么多强化材料！');
+		}
+		
+		var postData = {};
+		postData._id = mydata._id;
+		postData.myacco = localStorage.acco;
+		postData.num = parseInt(vm.myData.intenNum) - data.needMat;
+		var judey = myobj.oddsCount(data.odds);
+		if(judey) {
+			postData.intenState = 1;
+			postData.inten = parseInt(mydata.inten) + 1;
+		} else {
+			var judey = myobj.oddsCount(data.failOdds);
+			if(judey) {
 				postData.intenState = -1;
 				postData.equiDown = data.failDown;
 				postData.inten = parseInt(mydata.inten) - parseInt(data.failDown);
-			}else{
+			} else {
 				postData.intenState = 0;
 				postData.inten = parseInt(mydata.inten);
 			}
 		}
+		postData.type='equi';		
 		console.log(postData);
-		myobj.postajax('/intenEqui',postData);
-		$(obj).attr('data-bool',0);
+		myobj.postajax('/intenEqui', postData);
+		$(obj).attr('data-bool', 0);
+	},
+	//熔铸
+	change_inten:function(obj){
+		if($(obj).attr('data-bool') == 0) {
+			return;
+		}
+		if (!$('.put_inten .intensify').attr('data-data')||!$('.change_inten .intensify').attr('data-data')) {
+			return mui.alert('框内不能为空');
+		}
+		var mydataLfte =JSON.parse($('.put_inten .intensify').attr('data-data'));
+		var mydataRight =JSON.parse($('.change_inten .intensify').attr('data-data'));
+		console.log(mydataLfte,"mydataLfte")
+		console.log(mydataRight,"mydataRight")
+		if(mydataLfte._id == mydataRight._id){
+			return mui.alert('两者不能是同个装备')
+		}
+		if(parseInt(vm.myData.money) <200000) {
+			return mui.alert('请确认你有没有这么多钱');
+		}
+		var postData = {};
+		postData.money = parseInt(vm.myData.money) - 200000;
+		var judey = myobj.oddsCount(80);
+		judey?postData.changeState = 1:postData.intenState = 0;
+		postData.inten = mydataLfte.inten;
+		postData.left_id = mydataLfte._id;
+		postData.right_id = mydataRight._id;
+		postData.myacco = localStorage.acco;
+		console.log(postData);
+		myobj.postajax('/changeInten',postData);
+		$(obj).attr('data-bool', 0);
 	}
 }
 var myobj = new myFun();

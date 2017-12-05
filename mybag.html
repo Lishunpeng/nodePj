@@ -30,8 +30,10 @@
 					<div class="headerimg">
 						<img src="head2.jpg" />
 					</div>
-					<div class="name" v-text="'角色名：'+myData.name"></div>
-					<div class="name money_Box" v-text="'金币：'+myData.money"></div>
+					<div class="nameInfo">
+						<div class="name" v-text="'角色名：'+myData.name"></div>
+						<div class="name money_Box" v-text="'金币：'+myData.money"></div>
+					</div>
 				</div>
 			</div>
 			<ul class="bagClass">
@@ -44,7 +46,7 @@
 					<ul class="bagCont border">
 						<li :class="data.goods.myclass" v-for="data in equiData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goods.imgPath+')'}">
 							<span :class="data.useState==1?'use':'unuse'"></span>
-							<span class="intensify" v-text="'+'+data.inten" style="font-weight: bold;color: #FF5053;"></span>
+							<span class="intensify" v-text="'+'+data.inten"></span>
 						</li>
 					</ul>
 				</li>
@@ -58,7 +60,7 @@
 				<li>
 					<ul class="bagCont border mui-table-view">
 						<li :class="data.goods.myclass" v-for="data in petData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goods.imgPath+')'}">
-							<span class="intensify" v-text="data.level+'级'" style="color: #FF5053;font-weight: bold;"></span>
+							<span class="intensify" v-text="data.level+'级'"></span>
 							<span :class="data.useState==1?'use':'unuse'"></span>
 						</li>
 					</ul>
@@ -88,6 +90,8 @@
 		if(localStorage.cur) {
 			$('.bagClass li').eq(localStorage.cur).addClass("cur").siblings().removeClass("cur");
 			$(".bagDetail>li").eq(localStorage.cur).addClass("cur").siblings("li").removeClass("cur");
+		}else{
+			localStorage.cur=0;
 		}
 	</script>
 

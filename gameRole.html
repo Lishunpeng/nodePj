@@ -29,20 +29,22 @@
 				<div class="headerimg">
 					<img src="head2.jpg" />
 				</div>
-				<div class="name" v-text="'角色名：'+myData.name"></div>
-				<div class="name" v-text="'金币：'+myData.money"></div>
+				<div class="nameInfo">
+						<div class="name" v-text="'角色名：'+myData.name"></div>
+						<div class="name money_Box" v-text="'金币：'+myData.money"></div>
+					</div>
 			</div>
 			
 		<div class="roleCont">
 				<div class="cent_nav">角色</div>
 				<div class="myInfo">
 				<div class="roleInfo">
-					<div class="ATK" v-text="'角色攻击力:'+myData.ATK"></div>
-					<div class="DEF" v-text="'角色防御力:'+myData.DEF"></div>
-					<div class="HP" v-text="'角色血量:'+myData.HP"></div>
+					<div class="ATK" v-text="'角色攻击力 : '+myData.ATK"></div>
+					<div class="DEF" v-text="'角色防御力 : '+myData.DEF"></div>
+					<div class="HP" v-text="'角色血量 : '+myData.HP"></div>
 				</div>
 				<div class="petInfo">
-					<div class="ATK" v-text="'宠物攻击力:'+myData.petATK"></div>
+					<div class="ATK" v-text="'宠物攻击力 : '+myData.petATK"></div>
 				</div>
 				</div>
 				<div class="roleBorder border">
