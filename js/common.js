@@ -131,7 +131,7 @@ myFun.prototype = {
 							myData.myAttr = parseInt(myAttr);
 						}
 						if(obj[i].level != undefined) {
-							var myAttr = levelData[parseInt(myData.level - 1)].levelAttr * dataBase[j].addAttr;
+							var myAttr = levelData[parseInt(myData.level)-1].levelAttr * dataBase[j].addAttr;
 							myData.myAttr = parseInt(myAttr);
 							console.log(myData.myAttr)
 						}
@@ -325,12 +325,13 @@ myFun.prototype = {
 			}else if(localStorage.cur == 1){
 				mui.confirm('放置左边还是右边','提示',['左边','右边'],function(e){
 					if(e.index){
+						console.log(mydata.level)
 						$('.change_inten .equi').css('backgroundImage', 'url(' + mydata.goods.imgPath + ')');
-						$('.change_inten .intensify').text('+' + mydata.inten);
+						search =="/intenEqui.html"?$('.change_inten .intensify').text('+' + mydata.inten):$('.change_inten .intensify').text(mydata.level+'级');
 						$('.change_inten .intensify').attr('data-data',localStorage.mydata);
 					}else{
 						$('.put_inten .equi').css('backgroundImage', 'url(' + mydata.goods.imgPath + ')');
-						$('.put_inten .intensify').text('+' + mydata.inten);
+						search =="/intenEqui.html"?$('.put_inten .intensify').text('+' + mydata.inten):$('.put_inten .intensify').text(mydata.level+'级');
 						$('.put_inten .intensify').attr('data-data',localStorage.mydata);
 					}
 				})
@@ -733,11 +734,42 @@ myFun.prototype = {
 		var postData = {};
 		postData.money = parseInt(vm.myData.money) - 200000;
 		var judey = myobj.oddsCount(80);
-		judey?postData.changeState = 1:postData.intenState = 0;
+		judey?postData.changeState = 1:postData.changeState = 0;
 		postData.inten = mydataLfte.inten;
 		postData.left_id = mydataLfte._id;
 		postData.right_id = mydataRight._id;
 		postData.myacco = localStorage.acco;
+		postData.type = "equi";
+		myobj.postajax('/changeInten',postData);
+		$(obj).attr('data-bool', 0);
+	},
+	//融合
+	fusePet:function(obj){
+		if($(obj).attr('data-bool') == 0) {
+			return;
+		}
+		if (!$('.put_inten .intensify').attr('data-data')||!$('.change_inten .intensify').attr('data-data')) {
+			return mui.alert('框内不能为空');
+		}
+		var mydataLfte =JSON.parse($('.put_inten .intensify').attr('data-data'));
+		var mydataRight =JSON.parse($('.change_inten .intensify').attr('data-data'));
+		console.log(mydataLfte,"mydataLfte")
+		console.log(mydataRight,"mydataRight")
+		if(mydataLfte._id == mydataRight._id){
+			return mui.alert('两者不能是同个宠物')
+		}
+		if(parseInt(vm.myData.money) <200000) {
+			return mui.alert('请确认你有没有这么多钱');
+		}
+		var postData = {};
+		postData.money = parseInt(vm.myData.money) - 200000;
+		var judey = myobj.oddsCount(80);
+		judey?postData.changeState = 1:postData.changeState = 0;
+		postData.level = mydataLfte.level;
+		postData.left_id = mydataLfte._id;
+		postData.right_id = mydataRight._id;
+		postData.myacco = localStorage.acco;
+		postData.type = "pet";
 		console.log(postData);
 		myobj.postajax('/changeInten',postData);
 		$(obj).attr('data-bool', 0);

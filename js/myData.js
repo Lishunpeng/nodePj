@@ -12,7 +12,7 @@ var myShop = {
 	}
 //材料
 var mymaterial = [
-	{type:'mat',code:"00",name:"神奇的石头",detail:"一颗会发光的石头，还不知道有什么用",addAttr:"",myclass:"pink",imgPath:"bag_mat_00.png"},
+	{type:'mat',code:"00",name:"神奇的石头",detail:"一颗会发光的石头，还不知道有什么用",addAttr:"1000000",myclass:"pink",imgPath:"bag_mat_00.png"},
 	{type:'mat',code:"01",name:"材料2",detail:"我的材料2。",addAttr:"",myclass:"ordin",getMoney:"100",imgPath:"bag_mat_00.png"},
 	{type:'mat',code:"02",name:"死去的蘑菇",detail:"花蘑菇尸体。",addAttr:"",myclass:"ordin",getMoney:"300",imgPath:"bag_mat_00.png"},
 	{type:'mat',code:"03",name:"有毒的蘑菇盖",detail:"毒蘑菇头盖。",addAttr:"",myclass:"ordin",getMoney:"500",imgPath:"bag_mat_00.png"},

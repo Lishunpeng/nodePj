@@ -355,6 +355,7 @@ http.createServer(function(req, res) {
 	}else if(pathname == "/intenEqui") {
 		req.on('data', function(attr) {
 			myattr = qs.parse(decodeURI(attr));
+			myattr.num = parseInt(myattr.num);
 			console.log(myattr);
 			var seleData = {myacco: myattr.myacco,_id:ObjectId(myattr._id)}
 			MongoClient.connect(DB_CONN_STR, function(err, db) {
@@ -404,21 +405,36 @@ http.createServer(function(req, res) {
 			console.log(myattr);
 			var seleData_left = {myacco: myattr.myacco,_id:ObjectId(myattr.left_id)};
 			var seleData_right = {myacco: myattr.myacco,_id:ObjectId(myattr.right_id)};
+			var udData_left = {};
+			var udData_right = {};
+			var dataLink = "";
+			var succStr = "";
+			var failStr = "";
 			MongoClient.connect(DB_CONN_STR, function(err, db) {
 				var udData = {$set:{money:myattr.money}};
 				var whereData = {myacco:myattr.myacco};
 				updateData(db, whereData, udData, function(result) {db.close();},'personInfo');
+				if (myattr.type == "equi") {
+						udData_left = {$set:{inten:0}};
+						udData_right = {$set:{inten:myattr.inten}};
+						succStr = '熔铸成功';
+						failStr = '熔铸失败,两件物品都消失了'
+						dataLink = "bag_equi";
+					}else{
+						udData_left = {$set:{level:1}};
+						udData_right = {$set:{level:myattr.level}};
+						succStr = '融合成功';
+						failStr = '融合失败,宠物都消失了'
+						dataLink = "bag_pet";
+				}
 				if (myattr.changeState==1) {
-					backData.msg = '熔铸成功';
-					var udData_left = {$set:{inten:0}};
-					var udData_right = {$set:{inten:myattr.inten}};
-					console.log(myattr.inten);
-					updateData(db,seleData_left,udData_left, function(result) {db.close();},'bag_equi');
-					updateData(db,seleData_right,udData_right, function(result) {db.close();},'bag_equi');
+					backData.msg = succStr;
+					updateData(db,seleData_left,udData_left, function(result) {db.close();},dataLink);
+					updateData(db,seleData_right,udData_right, function(result) {db.close();},dataLink);
 				}else{
-					backData.msg = '熔铸失败,两件物品都消失了';
-					delData(db, seleData_left, function(result) {db.close();},'bag_equi');
-					delData(db, seleData_right, function(result) {db.close();},'bag_equi');
+					backData.msg = failStr;
+					delData(db, seleData_left, function(result) {db.close();},dataLink);
+					delData(db, seleData_right, function(result) {db.close();},dataLink);
 				}
 				res.end(JSON.stringify(backData));
 			});
