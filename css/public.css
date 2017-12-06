@@ -5,11 +5,20 @@ img{width: 100%;}
 .mui-table-view:before{background: transparent!important;}
 .mui-table-view-cell:after{background: transparent!important;}
 .broke{color: #999999!important;}/*损坏的字体颜色*/
-.ordin{color: #f1f1f1!important;}/*损坏的字体颜色*/
-.pink{color: pink!important;}/*损坏的字体颜色*/
-.border .broke{border: .05rem solid #999999;}
-.border .ordin{border: .05rem solid #f1f1f1;}
-.border .pink{border: .05rem solid pink;}
+.ordin{color: #f1f1f1!important;}/*普通的字体颜色*/
+.green{color: green!important;}/*优秀字体颜色*/
+.blue{color: skyblue!important;}/*稀有的字体颜色*/
+.pink{color: pink!important;}/*史诗的字体颜色*/
+.red{color: red!important;}/*奇特的字体颜色*/
+.purple{color: purple!important;}/*BOSS专属物品的字体颜色*/
+.border .broke{border: .05rem solid #999999!important;}
+.border .ordin{border: .05rem solid #f1f1f1!important;}
+.border .green{border: .05rem solid green!important;}
+.border .blue{border: .05rem solid skyblue!important;}
+.border .ordin{border: .05rem solid #f1f1f1!important;}
+.border .pink{border: .05rem solid pink!important;}
+.border .red{border: .05rem solid red!important;}
+.border .purple{border: .05rem solid purple!important;}
 .border .intensify{font-size: .35rem;position: absolute;top: 0;left: 0;color: #FF5053;font-weight: bold;}
 .backIndex:active{background: #f1f1f1;}
 .backIndex{z-index: 100;height: .8rem;background: #fff;color: #666;display: block;position: fixed;bottom: 0;width: 100%;text-align: center;line-height: .8rem;}
