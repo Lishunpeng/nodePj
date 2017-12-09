@@ -466,7 +466,7 @@ myFun.prototype = {
 		val = val.split(',');
 		var lastVal = val.pop();
 		var rdConut = Math.ceil(Math.random() * 100);
-		if(rdConut <= 3) {
+		if(rdConut <= 5) {
 			vm.monster = myobj.getData(monster, lastVal);
 		} else {
 			var rd = Math.ceil(Math.random() * val.length);
@@ -474,9 +474,38 @@ myFun.prototype = {
 			localStorage.monHp = vm.monster.HP
 			console.log(val[rd - 1])
 		}
+		switch (vm.monster.myclass){
+			case 'broke':myobj.mon_creatAttr(10,20,1,5,1,'20#40');
+				break;
+			case 'ordin':myobj.mon_creatAttr(20,50,3,7,2,'10#25');
+				break;
+			case 'green':myobj.mon_creatAttr(50,100,5,10,2,'5#20');
+				break;
+			case 'blue':myobj.mon_creatAttr(100,150,10,20,3,'5#15');
+				break;
+			case 'pink':myobj.mon_creatAttr(150,300,20,40,4,'2#10');
+				break;
+			case 'red':myobj.mon_creatAttr(300,350,40,80,5,'1#8');
+				break;
+			case 'purple':myobj.mon_creatAttr(350,500,80,100,6,'0#5');
+				break;	
+			default:
+				break;
+		}
+		console.log(vm.monster);
 		$('.fightBoard').fadeIn(300);
 	},
-
+	//怪物属性生成
+	mon_creatAttr:function(minAttr,maxAttr,minMoney,maxMoney,dropGoods,catchOdds){
+		var attrD = maxAttr-minAttr;
+		var moneyD = maxMoney-minMoney;
+		vm.monster.dropGoods = dropGoods;
+		vm.monster.catchOdds = catchOdds;
+		vm.monster.dropMoney = (Math.ceil(Math.random() * attrD) + minMoney)*100;
+		vm.monster.ATK = Math.ceil(Math.random() * attrD) + minAttr;//攻击力生成随机数
+		vm.monster.DEF = Math.ceil(Math.random() * attrD) + minAttr;
+		vm.monster.HP = 10*(Math.ceil(Math.random() * attrD) + minAttr);
+	},
 	//捕捉
 	catchMon: function(obj) {
 		//		$(obj).attr('disabled', 'disabled');
@@ -492,8 +521,8 @@ myFun.prototype = {
 			vm.myData.ballNum--;
 			vm.monster.HP = parseInt(vm.monster.HP);
 			var allHp = parseInt(localStorage.monHp);
-			var str = vm.monster.canCatch.split('#');
-			vm.monster.HP >= (allHp / 2) ? isCatch = myobj.oddsCount(str[0]) : isCatch = myobj.oddsCount(str[1]);
+			var str = vm.monster.catchOdds.split('#');
+			vm.monster.HP >= (allHp / 3.3) ? isCatch = myobj.oddsCount(str[0]) : isCatch = myobj.oddsCount(str[1]);
 			isCatch ? isCatch = 1 : isCatch = 0;
 			var postData = {
 				myacco: localStorage.acco,
@@ -506,7 +535,6 @@ myFun.prototype = {
 		} else {
 			mui.alert('你没有多余的精灵球');
 		}
-
 	},
 	//攻击
 	attack: function() {
