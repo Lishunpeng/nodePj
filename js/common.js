@@ -45,22 +45,31 @@ myFun.prototype = {
 				} else if(search == "/mybag.html") {
 					$('.clickBox').hide();
 					console.log(data)
+					if(path == "/putdonwPet") {
+						for(i in vm.petData) {
+							if(vm.petData[i]._id == data._id) {
+								vm.petData.splice(i, 1);
+							}
+						}
+						return	mui.alert(data.msg);
+					}
+
 					if(path == '/saleGoods') {
-						mui.alert('获取：' + localStorage.getMoney + '元',data.msg);
+						mui.alert('获取：' + localStorage.getMoney + '元', data.msg);
 						vm.myData.money = data.money;
-						$('.money_Box').text('金币：'+data.money);
-						if (localStorage.cur==0||localStorage.cur=="0") {
-							for (i in vm.equiData) {
-								if (vm.equiData[i]._id == data._id) {
-									vm.equiData.splice(i,1);
+						$('.money_Box').text('金币：' + data.money);
+						if(localStorage.cur == 0 || localStorage.cur == "0") {
+							for(i in vm.equiData) {
+								if(vm.equiData[i]._id == data._id) {
+									vm.equiData.splice(i, 1);
 								}
 							}
-						}else if(localStorage.cur==1||localStorage.cur=="1"){
-							for (i in vm.matData) {
-								if (vm.matData[i]._id == data._id) {
-									if (data.isRemove==1||data.isRemove=="1") {
-										vm.matData.splice(i,1);
-									}else{
+						} else if(localStorage.cur == 1 || localStorage.cur == "1") {
+							for(i in vm.matData) {
+								if(vm.matData[i]._id == data._id) {
+									if(data.isRemove == 1 || data.isRemove == "1") {
+										vm.matData.splice(i, 1);
+									} else {
 										vm.matData[i].num = data.num;
 									}
 								}
@@ -69,31 +78,30 @@ myFun.prototype = {
 						console.log(vm.myData)
 					} else {
 						mui.alert(data.msg);
-						if (localStorage.cur==0||localStorage.cur=="0") {
-							for (i in vm.myData.equiCode) {
-								if (vm.myData.equiCode[i].type == data.type) {
-									if (vm.myData.equiCode[i]._id == data._id) {
-										vm.myData.equiCode[i].useState="1";
+						if(localStorage.cur == 0 || localStorage.cur == "0") {
+							for(i in vm.myData.equiCode) {
+								if(vm.myData.equiCode[i].type == data.type) {
+									if(vm.myData.equiCode[i]._id == data._id) {
+										vm.myData.equiCode[i].useState = "1";
 										localStorage.mydata = JSON.stringify(vm.myData.equiCode[i]);
-									}else{
-										vm.myData.equiCode[i].useState="0";
+									} else {
+										vm.myData.equiCode[i].useState = "0";
 									}
 								}
 							}
-						}else{
-							for (i in vm.myData.petCode) {
-								if (vm.myData.petCode[i].type == data.type) {
-									if (vm.myData.petCode[i]._id == data._id) {
-										vm.myData.petCode[i].useState="1";
+						} else {
+							for(i in vm.myData.petCode) {
+								if(vm.myData.petCode[i].type == data.type) {
+									if(vm.myData.petCode[i]._id == data._id) {
+										vm.myData.petCode[i].useState = "1";
 										localStorage.mydata = JSON.stringify(vm.myData.petCode[i]);
-									}else{
-										vm.myData.petCode[i].useState="0";
+									} else {
+										vm.myData.petCode[i].useState = "0";
 									}
 								}
 							}
 						}
 					}
-
 				} else if(search == "/adventTG.html") {
 					if(path == '/catchPet') {
 						mui.alert(data.msg, function() {
@@ -104,9 +112,9 @@ myFun.prototype = {
 					}
 
 				} else if(search == "/shop.html") {
-					mui.alert('花费了：' + localStorage.getMoney + '元', data.msg, function() {
-						location.reload();
-					})
+					console.log(data);
+					vm.myData.money = parseInt(data.money);
+					mui.alert('花费了：' + localStorage.getMoney + '元', data.msg)
 				} else if(search == "/intenEqui.html" || search == "/petLevel.html") {
 					console.log(data)
 					if(localStorage.cur == 1 || localStorage.cur == "1") {
@@ -346,7 +354,7 @@ myFun.prototype = {
 	changeEqui: function(data) {
 		var postData = {};
 		console.log(data)
-		//		postData.code = myobj.searchEqui(data.code);
+			//		postData.code = myobj.searchEqui(data.code);
 		postData.myacco = localStorage.acco;
 		postData.type = data.type;
 		postData._id = data._id;

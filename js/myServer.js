@@ -296,6 +296,7 @@ http.createServer(function(req, res) {
 	}else if(pathname == "/putdonwPet") {
 		req.on('data', function(attr) {
 			myattr = qs.parse(decodeURI(attr));
+			backData = myattr;
 			MongoClient.connect(DB_CONN_STR, function(err, db) {
 				var whereData = {myacco: myattr.myacco,_id:ObjectId(myattr._id)}
 				delData(db,whereData,function(result){
@@ -335,6 +336,7 @@ http.createServer(function(req, res) {
 	}else if(pathname == "/showBut") {
 		req.on('data', function(attr) {
 			myattr = qs.parse(decodeURI(attr));
+			backData.money = myattr.money;
 			MongoClient.connect(DB_CONN_STR, function(err, db) {
 				var whereData = {myacco: myattr.myacco}
 				var udData = {$set:{money:myattr.money}}
