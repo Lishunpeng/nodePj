@@ -117,12 +117,9 @@ http.createServer(function(req, res) {
 						};
 						//初始化背包数据
 						var equiCode = [
-						{myacco: myattr.myacco,code:'000',type:'wea',useState:'1',inten:0},
-						{myacco: myattr.myacco,code:'001',type:'wea',useState:'0',inten:0},
-						{myacco: myattr.myacco,code:'100',type:'clo',useState:'1',inten:0},
-						{myacco: myattr.myacco,code:'101',type:'clo',useState:'0',inten:0},
-						{myacco: myattr.myacco,code:'200',type:'amu',useState:'1',inten:0},
-						{myacco: myattr.myacco,code:'201',type:'amu',useState:'0',inten:0}
+						{myacco: myattr.myacco,code:'000',type:'wea',useState:'1',inten:0,addAttr:3,getMoney:300},
+						{myacco: myattr.myacco,code:'100',type:'clo',useState:'1',inten:0,addAttr:4,getMoney:400},
+						{myacco: myattr.myacco,code:'200',type:'amu',useState:'1',inten:0,addAttr:50,getMoney:500}
 						]
 						var matCode = [
 						{myacco: myattr.myacco,code:'00',type:'mat',num:5},
@@ -131,10 +128,10 @@ http.createServer(function(req, res) {
 						{myacco: myattr.myacco,code:'05',type:'mat',num:1}
 						]
 						var petCode = [
-						{myacco: myattr.myacco,code:'00',type:'pet',level:5,useState:'0'},
-						{myacco: myattr.myacco,code:'00',type:'pet',level:3,useState:'0'},
-						{myacco: myattr.myacco,code:'02',type:'pet',level:2,useState:'1'},
-						{myacco: myattr.myacco,code:'00',type:'pet',level:10,useState:'0'}
+						{myacco: myattr.myacco,code:'000',type:'pet',level:1,useState:'0',addAttr:13},
+						{myacco: myattr.myacco,code:'001',type:'pet',level:1,useState:'0',addAttr:15},
+						{myacco: myattr.myacco,code:'002',type:'pet',level:1,useState:'1',addAttr:18},
+						{myacco: myattr.myacco,code:'003',type:'pet',level:1,useState:'0',addAttr:20}
 						]
 						insertData(db, initData, function(result) {
 							db.close();
@@ -221,6 +218,7 @@ http.createServer(function(req, res) {
 	}else if(pathname == "/useEqui") {
 		req.on('data', function(attr) {
 			myattr = qs.parse(decodeURI(attr));
+			backData = myattr;
 			var whereData = {
 				myacco: myattr.myacco,
 				type:myattr.type
@@ -240,8 +238,7 @@ http.createServer(function(req, res) {
 	} else if(pathname == "/saleGoods") {
 		req.on('data', function(attr) {
 			myattr = qs.parse(decodeURI(attr));
-			console.log(myattr);
-			
+			backData = myattr;
 			myattr.type == 'mat'?dataLink = 'bag_mat':dataLink = 'bag_equi';
 			var whereData = {
 				myacco: myattr.myacco,
@@ -286,7 +283,9 @@ http.createServer(function(req, res) {
 						updateData(db, whereData, udBag, function(result) {db.close();}, 'bag_mat');
 					}else{
 						var dataLink = '';
+						myattr.dropData[i].type == 'amu'?myattr.dropData[i].addAttr = createAttr(myattr.dropData[i].myclass)*10:myattr.dropData[i].addAttr = createAttr(myattr.dropData[i].myclass);
 						myattr.dropData[i].type == 'mat'?dataLink = 'bag_mat':dataLink = 'bag_equi';
+						myattr.dropData[i].type != 'mat'?myattr.dropData[i].getMoney = createAttr(myattr.dropData[i].myclass)*100:"";
 						insertData(db,myattr.dropData[i], function(result) {db.close();}, dataLink);
 					}		
 				}
@@ -323,6 +322,7 @@ http.createServer(function(req, res) {
 					res.end(JSON.stringify(backData));
 				}else{
 					var insetData = {myacco: myattr.myacco,code:myattr.code,type:'pet',level:1,useState:'0'}
+					insetData.addAttr = createAttr(myattr.myclass)+10;
 					insertData(db,insetData,function(result){
 						backData.msg = '抓住了！';
 						backData.bool = 1;
@@ -346,6 +346,8 @@ http.createServer(function(req, res) {
 					upsertData(db, whereData, udData, function(result) {db.close();}, 'bag_mat');
 				}else{
 					var inseData = {myacco: myattr.myacco,code:myattr.code,type:myattr.type,useState:'0',inten:0};
+					myattr.type == 'amu'?inseData.addAttr = createAttr(myattr.myclass)*10:inseData.addAttr = createAttr(myattr.myclass);
+					inseData.getMoney = createAttr(myattr.myclass)*100;
 					insertData(db, inseData, function(result) {db.close();}, 'bag_equi');
 				}
 				backData.msg = '购买成功';
@@ -355,6 +357,7 @@ http.createServer(function(req, res) {
 	}else if(pathname == "/intenEqui") {
 		req.on('data', function(attr) {
 			myattr = qs.parse(decodeURI(attr));
+			backData = myattr;
 			myattr.num = parseInt(myattr.num);
 			console.log(myattr);
 			var seleData = {myacco: myattr.myacco,_id:ObjectId(myattr._id)}
@@ -501,6 +504,32 @@ var upsertData = function(db, whereData, mydata,callback, table) {
     callback(result);
   });
 }
+ 
+var createAttr = function(myclass){
+	switch (myclass){
+			case 'broke':return creatRodom(1,8);
+				break;
+			case 'ordin':return creatRodom(8,15);
+				break;
+			case 'green':return creatRodom(15,25);
+				break;
+			case 'blue':return creatRodom(25,35);
+				break;
+			case 'pink':return creatRodom(35,45);
+				break;
+			case 'red':return creatRodom(45,50);
+				break;
+			case 'purple':return creatRodom(50,55);
+				break;	
+			default:
+				break;
+		}
+}
 
+var creatRodom = function(min,max){
+	var attrD = max - min;
+	var rd = Math.ceil(Math.random() * attrD) + min;
+	return rd;
+}
 // 控制台会输出以下信息
 console.log('Server running at http://127.0.0.1:3000/');

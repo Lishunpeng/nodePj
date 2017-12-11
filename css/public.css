@@ -1,6 +1,6 @@
 *{list-style: none;margin: 0;padding: 0;border: 0;font-size: .4rem;color: #333333;box-sizing: border-box;padding: 0;font-size: .32rem;color: #e1e1e1;}
 div,p,a,h1,h2,h3,h4,h5,h6,i,span,input,ul,li,dd,dl,dt,ol,button{font-size: .32rem;color: #e1e1e1;font-family: "微软雅黑";margin: 0;}
-body,html{width: 100%;height: 100%;background: url(background.jpg); background-size:100% 100%;}
+body,html{width: 100%;height: 100%;background: url(background.jpg);}
 img{width: 100%;}
 .mui-table-view:before{background: transparent!important;}
 .mui-table-view-cell:after{background: transparent!important;}
@@ -29,6 +29,7 @@ img{width: 100%;}
 .infoTop .headerimg{float: left;background: url(headerBorder.png) no-repeat;height: 1.5rem;width: 1.5rem;background-size:100% 100%;box-sizing: border-box;padding: .1rem;margin:0 .25rem;}
 .infoTop .nameInfo{float: left;}
 .infoTop .name{margin-top: .15rem;background: url(nameBorder.jpg) no-repeat;height: .6rem;background-size:100% 100%;line-height: .6rem;padding: 0 .5rem;}
+.bagInfo{overflow: hidden;}
 /*公用头部*/
 .Gamecontant{width: 100%;position: fixed;bottom: 0;left: 0;}
 .header{width: 100%;height: .8rem;margin: 0 auto;display: flex;}
@@ -52,7 +53,7 @@ img{width: 100%;}
 .myInfo{display: flex;}
 .myInfo>div{flex:1}
 /*我的背包页面信息*/
-.bagClass{height: .6rem;width: 100%;display: flex;margin-top: .2rem;}
+.bagClass{width: 100%;display: flex;margin-top: .2rem;}
 .bagClass li{position: relative;height: .8rem;flex: 1;font-size: .35rem;text-align: center;line-height: .8rem;background: url(bagBtn.png) no-repeat;background-size:100% 100%;}
 .bagClass li span{display: none;height: .4rem;width: .4rem;background: url(bagMark.png) no-repeat;background-size:100% 100%;position: absolute;left: .1rem;top: .2rem;}
 .bagClass li.cur span{display: block;}
@@ -105,7 +106,7 @@ img{width: 100%;}
 .choosePass li p,.advenTG li p{position: absolute;bottom: 0px;left: 0px;background: rgba(0,0,0,.7);height: .6rem;line-height: .6rem;width: 100%;text-align: center;}
 
 /*进入关卡*/
-.advenTG{width: 6.8rem;margin: 0 auto;padding: .3rem 0;}
+.advenTG{width: 6.8rem;margin: 0 auto;overflow: hidden;padding: .3rem 0;}
 .advenTG li{position: relative;border:.1rem solid #ccc;width: 3.3rem;height: 2rem;background-color: #777777;float: left;margin-top: .1rem;margin-left: .1rem;background-size:100% 100%;}
 .advenTG li:nth-child(2n+1){margin-left: 0;}
 .fightBoard{z-index: 20;height: 100%;width: 100%;position: fixed;background: rgba(0,0,0,.7);left: 0;top: 0;display: none;}
@@ -134,7 +135,7 @@ img{width: 100%;}
 /*强化厂*/
 .intenBox,.put_inten,.change_inten,.resolveBox{height: 3rem;width: 3rem;background: url(inten_border.png) no-repeat;margin: .3rem auto;background-size:100% 100%;padding: .3rem;position: relative;}
 .intenBox .equi,.put_inten .equi,.change_inten .equi,.resolveBox .equi{background-size:100% 100%;height: 100%;width: 100%;}
-.myBag{height: 3rem;position: fixed;width: 100%;top: 9.5rem;left:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;overflow: auto;background: #333333;}
+.myBag{height: 3rem;position: fixed;width: 100%;bottom: 1rem;left:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;overflow: auto;background: #333333;}
 .myBag .mybagCont{width: 6.5rem;left: calc(50% - 3.25rem);position: absolute;height: auto;overflow-y: auto;padding-bottom: .1rem;}
 .intenBox .intensify,.put_inten .intensify,.change_inten .intensify,.resolveBox .intensify{position: absolute;left: .2rem;top: .2rem;font-size: .5rem;font-weight: bold;color: #FF5053;}
 .needMat{height: 1rem;display: none;}

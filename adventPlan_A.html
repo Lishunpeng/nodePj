@@ -7,25 +7,16 @@
 
 		<link rel="stylesheet" type="text/css" href="mui.css" />
 		<link rel="stylesheet" type="text/css" href="public.css" />
-		<title></title>
+		<title>选择地区</title>
 	</head>
 	<body>
-		<div class="Gamecontant">
-			<ul class="header">
-				<li class="cur">
-					<a href="GameTest.html"><span>主页</span></a>
-				</li>
-				<li>
-					<a href="gameRole.html"><span>角色</span></a>
-				</li>
-				<li>
-					<a href="mybag.html"><span>背包</span></a>
-				</li>
-			</ul>
-		</div>
+		
 		<ul class="choosePass" id="choosePass">
 			<li v-for="(data,index) in tgData" :style="{backgroundImage:'url('+data.imgPath+')'}" @click="myobj.adventLink(index,'adventTG.html')"><p v-text="data.name"></p></li>
 		</ul>
+		<div class="mybackLink">
+			<a href="GameTest.html" style="display: block;height: 100%;width: 100%;"></a>
+		</div>
 	</body>
 	<script src="jquery-2.1.0.js"></script>
 	<script src="vue.min.js"></script>

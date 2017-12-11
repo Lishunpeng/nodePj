@@ -7,23 +7,13 @@
 
 		<link rel="stylesheet" type="text/css" href="mui.css" />
 		<link rel="stylesheet" type="text/css" href="public.css" />
-		<title></title>
+		<title>角色信息</title>
 	</head>
 	<style>
 
 	</style>
 
 	<body>
-		<div class="Gamecontant">
-			<ul class="header">
-				<li><a href="GameTest.html"><span>主页</span></a>
-				</li>
-				<li class="cur"><a href="gameRole.html"><span>角色</span></a>
-				</li>
-				<li><a href="mybag.html"><span>背包</span></a>
-				</li>
-			</ul>
-		</div>
 		<div class="info" id="info">
 			<div class="infoTop">
 				<div class="headerimg">
@@ -50,12 +40,12 @@
 				<div class="roleBorder border">
 					
 					<div v-for="data in equiData">
-						<p :class="data.goods.myclass" :style="{backgroundImage:'url('+data.goods.imgPath+')'}" :data-data="JSON.stringify(data)" onclick="myobj.equiUseinfo(this)">
+						<p :class="data.goods.myclass" :style="{backgroundImage:'url('+data.goods.imgPath+')'}" :data-data="JSON.stringify(data)" onclick="myobj.clickBox_detail(this)">
 						<span class="intensify" v-text="'+'+data.inten"></span>
 					</p>
 					</div>
 					<div v-for="data in petData" style="float: left;">
-						<p :class="data.goods.myclass" :style="{backgroundImage:'url('+data.goods.imgPath+')'}" :data-data="JSON.stringify(data)" onclick="myobj.equiUseinfo(this)">
+						<p :class="data.goods.myclass" :style="{backgroundImage:'url('+data.goods.imgPath+')'}" :data-data="JSON.stringify(data)" onclick="myobj.clickBox_detail(this)">
 							<span class="intensify" v-text="data.level+'级'"></span>
 						</p>
 					</div>
@@ -74,9 +64,12 @@
 						</p>
 					</div>-->
 				</div>
+				
 		</div>
 		</div>
-
+		<div class="mybackLink">
+			<a href="GameTest.html" style="display: block;height: 100%;width: 100%;"></a>
+		</div>
 	</body>
 	<script src="jquery-2.1.0.js"></script>
 	<script src="vue.min.js"></script>

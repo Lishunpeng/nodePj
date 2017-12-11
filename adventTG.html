@@ -7,7 +7,7 @@
 
 		<link rel="stylesheet" type="text/css" href="mui.css" />
 		<link rel="stylesheet" type="text/css" href="public.css" />
-		<title></title>
+		<title>冒险</title>
 	</head>
 
 	<body>
@@ -23,7 +23,7 @@
 						<div :class="monster.myclass" v-text="monster.name"></div>
 						<div>ATK&nbsp;:&nbsp;<span v-text="monster.ATK"></span></div>
 						<div>DEF&nbsp;:&nbsp;<span v-text="monster.DEF"></span></div>
-						<div>HP&nbsp;:&nbsp;<span v-text="monster.HP"></span></div>
+						<div>HP&nbsp;:&nbsp;<span v-text="monster.HP" class="monHp"></span></div>
 					</div>
 					<div class="imgbox">
 						<span class="monLosehp"></span>
@@ -53,6 +53,7 @@
 					<div class="btnBox">
 						<input type="button" value="攻击" onclick="myobj.attack()" class="a_attack" />
 						<input type="button" value="捕捉" onclick="myobj.catchMon(this)" class="a_catch"/>
+						<input type="button" value="逃跑" class="runAway"/>
 					</div>
 				</div>
 			</div>
@@ -92,6 +93,9 @@
 	<script type="text/javascript">
 		myobj.getAdvenCont();
 		myobj.getajax("/getRole?myacco=" + localStorage.acco);
+		$('.runAway').on('click',function(){
+			return mui.alert('你逃跑了',function(){location.reload()});
+		})
 	</script>
 
 </html>
