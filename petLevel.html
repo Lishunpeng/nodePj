@@ -69,25 +69,34 @@
 					</div>
 				</li>
 				<li>
-					敬请期待~
-					<!--<div class="resolveBox">
-						<span class="intensify"></span>
-						<div class="equi"></div>
+					<p>左边框为宠物材料，右边框为生成品</p>
+					<div class="inten_top">
+
+						<div class="put_inten">
+							<span class="intensify"></span>
+							<div class="equi"></div>
+						</div>
+						<div class="change_inten">
+							<span class="intensify"></span>
+							<div class="equi"></div>
+						</div>
 					</div>
 
-					<div class="intenBtn" onclick="myobj.intenEqui(this)" data-bool="1">
-						分&nbsp;&nbsp;&nbsp;解
+					<div class="intenBtn" onclick="myobj.evolutionPet(this)" data-bool="1">
+						合&nbsp;&nbsp;&nbsp;体
 					</div>
-					<div class="resolve_info">
+					<div class="change_info">
+						<!--需要$200000<span style="color: #EC971F;" v-text="'('+myData.money+')'"></span>并且成功率为80%-->
+						<!--<p style="font-size: .25rem;color: #FF0000;">注：失败后两个宠物都会消失</p>-->
 					</div>
 					<div class="myBag">
-						<ul class="mybagCont bagCont border">
-							<li :class="data.goods.myclass" v-for="data in equiData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goods.imgPath+')'}">
+						<ul class="mybagCont bagCont border border">
+							<li :class="data.goods.myclass" v-for="data in petData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goods.imgPath+')'}">
+								<span class="intensify" v-text="data.level+'级'"></span>
 								<span :class="data.useState==1?'use':'unuse'"></span>
-								<span class="intensify" v-text="'+'+data.inten" style="font-weight: bold;color: #FF5053;"></span>
 							</li>
 						</ul>
-					</div>-->
+					</div>
 				</li>
 			</ol>
 			<div class="clickBox" onclick="myobj.stopClickEqui()">

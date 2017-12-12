@@ -399,7 +399,7 @@ myFun.prototype = {
 					$('.inten_info').html('需要升级石' + vm.myData.needNum + '<span style="color: #EC971F;">(' + vm.myData.levelNum + ')</span>个').show();
 				}
 
-			} else if(localStorage.cur == 1) {
+			} else if(localStorage.cur == 1 || localStorage.cur == 2) {
 				mui.confirm('放置左边还是右边', '提示', ['左边', '右边'], function(e) {
 					if(e.index) {
 						console.log(mydata.level)
@@ -770,7 +770,7 @@ myFun.prototype = {
 		console.log(data)
 		console.log(vm.myData);
 		if(parseInt(vm.myData.levelNum) < data.needMat || vm.myData.levelNum == undefined) {
-			return mui.alert('请确认你有没有这么多强化材料！');
+			return mui.alert('请确认你有没有这么多升级材料！');
 		}
 		var postData = {};
 		postData._id = mydata._id;
@@ -898,6 +898,22 @@ myFun.prototype = {
 		console.log(postData);
 		myobj.postajax('/changeInten', postData);
 		$(obj).attr('data-bool', 0);
+	},
+	//宠物合体
+	evolutionPet:function(){
+		if($(obj).attr('data-bool') == 0) {
+			return;
+		}
+		if(!$('.put_inten .intensify').attr('data-data') || !$('.change_inten .intensify').attr('data-data')) {
+			return mui.alert('框内不能为空');
+		}
+		var mydataLfte = JSON.parse($('.put_inten .intensify').attr('data-data'));
+		var mydataRight = JSON.parse($('.change_inten .intensify').attr('data-data'));
+		console.log(mydataLfte, "mydataLfte")
+		console.log(mydataRight, "mydataRight")
+		if(mydataLfte._id == mydataRight._id) {
+			return mui.alert('两者不能是同个宠物')
+		}
 	}
 }
 var myobj = new myFun();

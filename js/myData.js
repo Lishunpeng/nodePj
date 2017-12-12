@@ -690,4 +690,12 @@ var levelData = [
 	{code:10,odds:3,failOdds:75,failDown:5,levelAttr:15,needMat:10},
 	{code:11,levelAttr:20}
 ]
+var evolData = [
+	{myclass:'broke',odds:50,needMoney:10000},
+	{myclass:'ordin',odds:30,needMoney:20000},
+	{myclass:'green',odds:20,needMoney:30000},
+	{myclass:'blue',odds:10,needMoney:50000},
+	{myclass:'pink',odds:8,needMoney:80000},
+	{myclass:'red',odds:5,needMoney:100000}
+]
 
