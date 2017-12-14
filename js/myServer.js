@@ -444,8 +444,56 @@ http.createServer(function(req, res) {
 				res.end(JSON.stringify(backData));
 			});
 		});
+	}else if(pathname == "/evolution") {
+		req.on('data', function(attr) {
+			myattr = qs.parse(decodeURI(attr));
+			console.log(myattr);
+			backData = myattr;
+			var seleData_left = {myacco: myattr.myacco,_id:ObjectId(myattr.left_id)};
+			var seleData_right = {myacco: myattr.myacco,_id:ObjectId(myattr.right_id)};
+			var dataLink = "";
+			var succStr = "";
+			var failStr = "";
+			var inseData = null;
+			MongoClient.connect(DB_CONN_STR, function(err, db) {
+				var udData = {$set:{money:myattr.money}};
+				var whereData = {myacco:myattr.myacco};
+				updateData(db, whereData, udData, function(result) {db.close();},'personInfo');
+				if (myattr.type == "pet") {
+						succStr = '进阶成功';
+						failStr = '进阶失败,宠物都消失了';
+						faillessStr = '进阶失败,宠物没有消失了';
+						dataLink = "bag_pet";
+						inseData = {myacco: myattr.myacco,code:myattr.newCode,type:myattr.type,useState:'0',level:myattr.level};
+						inseData.addAttr = createAttr(myattr.myclass);
+				}else{
+						succStr = '锤炼成功';
+						failStr = '锤炼失败,两件装备都消失了';
+						faillessStr = '锤炼失败,装备没有消失了';
+						dataLink = "bag_equi";
+						inseData = {myacco: myattr.myacco,code:myattr.newCode,type:myattr.type,useState:'0',inten:myattr.inten};
+						myattr.type == 'amu'?inseData.addAttr = createAttr(myattr.myclass)*10:inseData.addAttr = createAttr(myattr.myclass);
+						inseData.getMoney = createAttr(myattr.myclass)*100;
+				}
+				if (myattr.succState==1) {
+					backData.msg = succStr;
+					insertData(db,inseData, function(result) {db.close();},dataLink);
+					delData(db, seleData_left, function(result) {db.close();},dataLink);
+					delData(db, seleData_right, function(result) {db.close();},dataLink);
+				}else{
+					if (myattr.lostState==1) {
+						backData.msg = failStr;
+						delData(db, seleData_left, function(result) {db.close();},dataLink);
+						delData(db, seleData_right, function(result) {db.close();},dataLink);
+					} else{
+						backData.msg = faillessStr;
+					}
+					
+				}
+				res.end(JSON.stringify(backData));
+			});
+		});
 	}
-	
 }).listen(3000);
 var insertData = function(db, mydata, callback, table) {
 	var collection = db.collection(table);

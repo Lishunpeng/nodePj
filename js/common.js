@@ -121,6 +121,16 @@ myFun.prototype = {
 						return mui.alert(data.msg, function() {
 							location.reload()
 						});
+					}else if(localStorage.cur == 2 || localStorage.cur == "2"){
+						if (data.succState==1||data.succState=='1') {
+							return mui.alert(data.msg +'<br>获得了<span class='+data.myclass+'>' +data.name+'<br></span>', function() {
+								location.reload()
+							});
+						}else{
+							return mui.alert(data.msg, function() {
+								location.reload()
+							});
+						}
 					}
 					if(data.type == "equi") {
 						for(i in vm.myData.equiCode) {
@@ -399,7 +409,7 @@ myFun.prototype = {
 					$('.inten_info').html('需要升级石' + vm.myData.needNum + '<span style="color: #EC971F;">(' + vm.myData.levelNum + ')</span>个').show();
 				}
 
-			} else if(localStorage.cur == 1 || localStorage.cur == 2) {
+			} else if(localStorage.cur == 1) {
 				mui.confirm('放置左边还是右边', '提示', ['左边', '右边'], function(e) {
 					if(e.index) {
 						console.log(mydata.level)
@@ -412,7 +422,34 @@ myFun.prototype = {
 						$('.put_inten .intensify').attr('data-data', localStorage.mydata);
 					}
 				})
+			}else if(localStorage.cur == 2) {
+				mui.confirm('放置左边还是右边', '提示', ['左边', '右边'], function(e) {
+					if(!e.index) {
+						$('.left_evo .equi').css('backgroundImage', 'url(' + mydata.goods.imgPath + ')');
+						search == "/intenEqui.html" ? $('.left_evo .intensify').text('+' + mydata.inten) : $('.left_evo .intensify').text(mydata.level + '级');
+						$('.left_evo .intensify').attr('data-data', localStorage.mydata);
+					} else {
+						$('.right_evo .equi').css('backgroundImage', 'url(' + mydata.goods.imgPath + ')');
+						search == "/intenEqui.html" ? $('.right_evo .intensify').text('+' + mydata.inten) : $('.right_evo .intensify').text(mydata.level + '级');
+						$('.right_evo .intensify').attr('data-data', localStorage.mydata);
+					}
+					if($('.left_evo .intensify').text() && $('.right_evo .intensify').text()){
+						var mydataLeft = JSON.parse($('.left_evo .intensify').attr('data-data'));
+						var mydataRight = JSON.parse($('.right_evo .intensify').attr('data-data'));
+						var data = myobj.getData(evolData,mydataLeft.goods.myclass);
+						if (mydataLeft.goods.myclass != mydataRight.goods.myclass) {
+							$('.evo_info').text('两个物品不是同种颜色属性类型');
+						}else{
+							$('.evo_info').html('需要$'+data.needMoney+'元<span style="color: #EC971F;">('+vm.myData.money+')</span>');
+						}
+						
+					}
+				})
+				
+				
+				
 			}
+			
 
 		}
 	},
@@ -900,20 +937,78 @@ myFun.prototype = {
 		$(obj).attr('data-bool', 0);
 	},
 	//宠物合体
-	evolutionPet:function(){
+	evolutionPet:function(obj,val){
 		if($(obj).attr('data-bool') == 0) {
 			return;
 		}
-		if(!$('.put_inten .intensify').attr('data-data') || !$('.change_inten .intensify').attr('data-data')) {
+		if(!$('.left_evo .intensify').attr('data-data') || !$('.right_evo .intensify').attr('data-data')) {
 			return mui.alert('框内不能为空');
 		}
-		var mydataLfte = JSON.parse($('.put_inten .intensify').attr('data-data'));
-		var mydataRight = JSON.parse($('.change_inten .intensify').attr('data-data'));
+		var getEvol = null;
+		var str1="";
+		var str2="";
+		
+		var mydataLfte = JSON.parse($('.left_evo .intensify').attr('data-data'));
+		var mydataRight = JSON.parse($('.right_evo .intensify').attr('data-data'));
 		console.log(mydataLfte, "mydataLfte")
 		console.log(mydataRight, "mydataRight")
-		if(mydataLfte._id == mydataRight._id) {
-			return mui.alert('两者不能是同个宠物')
+		var postData = {};
+		if (val=='pet') {
+			getEvol = myobj.getData(evolData,mydataLfte.goods.myclass);
+			mydataLfte.level>mydataRight.level?postData.level = mydataLfte.level:postData.level = mydataRight.level;
+			str1 = "两者不能是同个宠物";
+		}else{
+			str1 = "两者不能是同类装备";
+			getEvol = myobj.getData(evolData,mydataLfte.goods.myclass);
+			mydataLfte.inten>mydataRight.inten?postData.inten = mydataLfte.inten:postData.inten = mydataRight.inten;
 		}
+		if(mydataLfte._id == mydataRight._id) {
+			return mui.alert(str1)
+		}
+		if(mydataLfte.goods.myclass != mydataRight.goods.myclass) {
+			return mui.alert('两者必须是同种颜色类型的物品')
+		}
+		
+		console.log(getEvol);
+		
+		postData.money = parseInt(vm.myData.money) - getEvol.needMoney;
+		var judey = myobj.oddsCount(getEvol.odds);
+		if (judey) {
+			var myClass = [];
+			postData.succState = 1;
+			postData.lostState = 0;
+			if (val=='pet') {
+				for (i in myPet) {
+					if (myPet[i].myclass==getEvol.nextClass) {
+						myPet[i].type = 'pet';
+						myClass.push(myPet[i]);
+					}
+				}
+			}else{
+				for (i in myEqui) {
+					if (myEqui[i].myclass==getEvol.nextClass) {
+						myClass.push(myEqui[i]);
+					}
+				}
+			}
+
+			var arrCount = Math.round(Math.random()*myClass.length);
+			postData.newCode = myClass[arrCount].code;
+			postData.type = myClass[arrCount].type;
+			postData.myclass = getEvol.nextClass;
+			postData.name = myClass[arrCount].name;
+		}else{
+			postData.type = val;
+			postData.succState = 0;
+			var myjudey = myobj.oddsCount(getEvol.loseOdds);
+			myjudey?postData.lostState = 1:postData.lostState = 0;
+		}
+		postData.left_id = mydataLfte._id;
+		postData.right_id = mydataRight._id;
+		postData.myacco = localStorage.acco;
+		console.log(postData);
+		myobj.postajax('/evolution', postData);
+		$(obj).attr('data-bool', 0);
 	}
 }
 var myobj = new myFun();

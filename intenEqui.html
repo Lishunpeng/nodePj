@@ -14,7 +14,7 @@
 			<ul class="bagClass">
 				<li class="cur"><span></span>强化</li>
 				<li><span></span>转移</li>
-				<li><span></span>分解</li>
+				<li><span></span>锤炼</li>
 			</ul>
 			<ol class="bagDetail" id="bagData">
 				<li class="cur">
@@ -69,17 +69,24 @@
 					</div>
 				</li>
 				<li>
-					敬请期待~
-					<!--<div class="resolveBox">
+					<p>同颜色的装备才能锤炼高阶装备</p>
+					<div class="inten_top">
+					<div class="left_evo">
 						<span class="intensify"></span>
 						<div class="equi"></div>
 					</div>
-
-					<div class="intenBtn" onclick="myobj.intenEqui(this)" data-bool="1">
-						分&nbsp;&nbsp;&nbsp;解
+					<div class="right_evo">
+						<span class="intensify"></span>
+						<div class="equi"></div>
 					</div>
-					<div class="resolve_info">
 					</div>
+					<div class="intenBtn" onclick="myobj.evolutionPet(this,'equi')" data-bool="1">
+						锤&nbsp;&nbsp;&nbsp;炼
+					</div>
+					
+					<div class="evo_info">
+					</div>
+					<p style="font-size: .25rem;color: #FF0000;">注：失败后两件装备都有几率会消失</p>
 					<div class="myBag">
 						<ul class="mybagCont bagCont border">
 							<li :class="data.goods.myclass" v-for="data in equiData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goods.imgPath+')'}">
@@ -87,7 +94,8 @@
 								<span class="intensify" v-text="'+'+data.inten" style="font-weight: bold;color: #FF5053;"></span>
 							</li>
 						</ul>
-					</div>-->
+					</div>
+					
 				</li>
 			</ol>
 			<div class="clickBox" onclick="myobj.stopClickEqui()">

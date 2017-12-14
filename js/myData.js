@@ -691,11 +691,11 @@ var levelData = [
 	{code:11,levelAttr:20}
 ]
 var evolData = [
-	{myclass:'broke',odds:50,needMoney:10000},
-	{myclass:'ordin',odds:30,needMoney:20000},
-	{myclass:'green',odds:20,needMoney:30000},
-	{myclass:'blue',odds:10,needMoney:50000},
-	{myclass:'pink',odds:8,needMoney:80000},
-	{myclass:'red',odds:5,needMoney:100000}
+	{code:'broke',odds:80,needMoney:10000,loseOdds:20,nextClass:'ordin'},
+	{code:'ordin',odds:60,needMoney:20000,loseOdds:30,nextClass:'green'},
+	{code:'green',odds:50,needMoney:30000,loseOdds:40,nextClass:'blue'},
+	{code:'blue',odds:30,needMoney:50000,loseOdds:50,nextClass:'pink'},
+	{code:'pink',odds:20,needMoney:80000,loseOdds:60,nextClass:'red'},
+	{code:'red',odds:10,needMoney:100000,loseOdds:70,nextClass:'purple'}
 ]
 
