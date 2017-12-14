@@ -623,7 +623,7 @@ myFun.prototype = {
 		}
 		console.log(vm.monster);
 		$('.fightBoard').fadeIn(300);
-		$(document.body).css('overflow-y', 'hidden');
+		$(document.body).css('overflow', 'hidden');
 	},
 	//怪物属性生成
 	mon_creatAttr: function(minAttr, maxAttr, minMoney, maxMoney, dropGoods, catchOdds) {
@@ -705,7 +705,12 @@ myFun.prototype = {
 			})
 		} else if(enenyhp <= 0) {
 			$('.a_attack').attr('disabled', 'disabled');
+			
+
 			$(".winnerBox").slideDown(300);
+			var str = $('.winnerBox .winnerBorder').css('height');
+			str =parseInt(str.replace('px',""))/2;
+			$('.winnerBox .winnerBorder').css('top','calc(50% - '+ str +'px)');
 			vm.monster.HP = 0;
 			vm.addMoney += parseInt(vm.monster.dropMoney);
 			for(var i = 0; i < parseInt(vm.monster.dropGoods); i++) {

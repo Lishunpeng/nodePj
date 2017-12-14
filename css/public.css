@@ -124,10 +124,10 @@ img{width: 100%;}
 .fightBoard span{color: #FF0000}
 .winnerBox{height: 100%;width: 100%;position: fixed;z-index: 1000;background: rgba(0,0,0,.5);top: 0;left: 0;display: none;}
 .winnerBox>.imgbox{height: 3rem;width: 100%;margin: .5rem auto;}
-.winnerBox .winnerBorder{position: relative;;height: 11rem;width: 80%;overflow: hidden;background: #000000;border: .1rem solid #ccc;margin: 1rem auto;border-radius:5px ;}
-.winDrop{margin-top: 1rem;}
-.winDrop .list{position: relative;height: 2rem;width: 50%;float: left;}
-.winDrop .list .imgbox{margin: 0 auto;height: 1.5rem;width: 1.5rem;border: .1rem solid #ccc;border-radius:3px;background-color: #777777;background-size:100% 100%;}
+.winnerBox .winnerBorder{position: relative;width: 80%;overflow: hidden;background: #000000;border: .1rem solid #ccc;margin: 0 auto;border-radius:5px;padding-bottom: 2rem;}
+.winDrop{margin-top: .1rem;}
+.winDrop .list{position: relative;height: 1.2rem;width: 33.3%;float: left;}
+.winDrop .list .imgbox{margin: 0 auto;height: .8rem;width: .8rem;border: .05rem solid #ccc;border-radius:3px;background-color: #777777;background-size:100% 100%;}
 .winDrop .list p{text-align: center;}
 .winner_btn{width: 4rem;position: absolute;bottom: .2rem;left: calc(50% - 2rem);}
 .mybackLink{z-index: 1;border-radius:50% ;left: 80%;bottom: .5rem;position: fixed;height: 1rem;width: 1rem;border: .05rem solid #FF5053;background-color: #fff;background-image:url(back.png);background-size:100% 100%;}
