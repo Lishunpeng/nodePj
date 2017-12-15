@@ -140,6 +140,19 @@ img{width: 100%;}
 .intenBox .intensify,.put_inten .intensify,.change_inten .intensify,.resolveBox .intensify,.left_evo .intensify,.right_evo .intensify{position: absolute;left: .2rem;top: .2rem;font-size: .5rem;font-weight: bold;color: #FF5053;}
 .needMat{height: 1rem;display: none;}
 .inten_top{display: flex;}
+
+/*我的好友*/
+.friendList{width: 100%;padding: .2rem;margin-bottom: .5rem;}
+.friendList li{width: 100%;height: 1.5rem;border-bottom:1px solid #666666;}
+.friendList .headerimg{height: 1.3rem;width: 1.3rem;background-image: url(headerBorder.png);padding: .08rem;background-size: 100% 100%;margin: .1rem .3rem 0 0;float: left;}
+.friendList .name,.friendList .money{line-height: .5rem;color: #FFFFFF;font-size: .28rem;}
+.friendList .name{margin-top: .2rem;color: #87CEEB;font-size: .35rem;}
+.friendList button{float: right;margin-right: .5rem;padding: 0;width: 1rem;margin-top: .6rem;}
+.friendInfo{float: left;}
+.searchBox{height: .8rem;width: 100%;width: 6rem;margin: 0 auto;}
+.searchBox input[type=text]{height: .8rem;width: 4rem;padding:.1rem .3rem;display: block;float: left;background: transparent;border-bottom: 1px solid #fff;margin: 0;}
+.searchBox select{height: .6rem;width: .8rem;background: #ccc;float: left;display: block;margin:.2rem 0;padding: 0; background: url(down.png) no-repeat scroll right center transparent;background-size:30% 40%;}
+.searchBox input[type=button]{height: .6rem;width:1rem;float: left;border: 0;padding: 0;margin: .2rem 0;color: #fff;background: #666666;}
 /*效果hpLose*/
 @keyframes Hpmove{
 	0%{transform: translate(0,0);opacity: 1;}

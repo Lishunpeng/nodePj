@@ -1014,6 +1014,11 @@ myFun.prototype = {
 		console.log(postData);
 		myobj.postajax('/evolution', postData);
 		$(obj).attr('data-bool', 0);
+	},
+	//添加好友
+	addFriend:function(){
+		console.log(12121212)
+		console.log($('.searchBox select'));
 	}
 }
 var myobj = new myFun();
@@ -1043,7 +1048,9 @@ var vm = new Vue({
 		myCount: 0, //计算步数
 		tgData: [],
 		matDrop: [], //掉落材料
-		equDrop: [] //装备掉落
+		equDrop: [], //装备掉落
+		friendName:"",//添加好友的名字
+		friendAcco:""//添加好友的账号
 	},
 	methods: {
 		//登录页面

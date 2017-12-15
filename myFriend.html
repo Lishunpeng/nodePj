@@ -7,13 +7,13 @@
 
 		<link rel="stylesheet" type="text/css" href="mui.css" />
 		<link rel="stylesheet" type="text/css" href="public.css" />
-		<title></title>
+		<title>我的好友</title>
 	</head>
 
 	<body>
 		
 		<div class="bagInfo" id="bagInfo">
-			<div class="info">
+			<!--<div class="info">
 				<div class="infoTop">
 					<div class="headerimg">
 						<img src="head2.jpg" />
@@ -23,9 +23,30 @@
 						<div class="name money_Box" v-text="'金币：'+myData.money"></div>
 					</div>
 				</div>
+			</div>-->
+			<p style="text-align: center;color: #fff900;">搜索添加好友：</p>
+			<div class="searchBox">
+				<select>
+					<option value="1">名字</option>
+					<option value="2">账号</option>
+				</select>
+				<input type="text" id="" value=""/>
+				<input type="button" value="添加" onclick="myobj.addFriend()"/>
+				
 			</div>
+			
 			<ul class="friendList">
-				<li></li>
+				<p style="color: #fff900;">您的好友列表：</p>
+				<li>
+					<div class="headerimg">
+						<img src="head2.jpg" />
+					</div>
+					<div class="friendInfo">
+						<div class="name" v-text="'角色名'"></div>
+						<div class="money" v-text="'宠物：'"></div>
+					</div>
+					<button  class="mui-btn mui-btn-royal">决斗</button>
+				</li>
 			</ul>
 			<!--<div class="clickBox" onclick="myobj.stopClickEqui()">
 				<ul>
@@ -33,6 +54,10 @@
 					<li onclick="myobj.clickBox_detail()">详情</li>
 				</ul>
 			</div>-->
+			
+		</div>
+		<div class="mybackLink">
+			<a href="GameTest.html" style="display: block;height: 100%;width: 100%;"></a>
 		</div>
 	</body>
 	<script src="jquery-2.1.0.js"></script>
@@ -42,7 +67,7 @@
 	<script src="common.js"></script>
 	<script src="fontsize.js"></script>
 	<script>
-		myobj.getajax("/getInfo?myacco=" + localStorage.acco);
+//		myobj.getajax("/getInfo?myacco=" + localStorage.acco);
 	</script>
 
 </html>
