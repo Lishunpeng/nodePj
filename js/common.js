@@ -17,7 +17,7 @@ myFun.prototype = {
 		})
 	},*/
 	//post 提交ajax
-	postajax: function(path, mydata) {
+	postajax: function(path, mydata,obj) {
 		mui.ajax({
 			type: "post",
 			url: path,
@@ -111,7 +111,16 @@ myFun.prototype = {
 						location.reload();
 					}
 
-				} else if(search == "/shop.html") {
+				}else if(search == "/myFriend.html") {
+					$(obj).attr('disabled',false);
+					mui.alert(data.msg,function(){
+						if (data.msg=='查找好友不存在'|| data.msg=='您和该用户已是好友') {
+							return;
+						}else{
+							myobj.getajax("/addFriend?myacco=" + localStorage.acco);
+						}
+					});
+				}  else if(search == "/shop.html") {
 					console.log(data);
 					vm.myData.money = parseInt(data.money);
 					mui.alert('花费了：' + localStorage.getMoney + '元', data.msg)
@@ -171,7 +180,6 @@ myFun.prototype = {
 			url: path,
 			success: function(data) {
 				vm.myData = JSON.parse(data);
-				console.log(vm.myData)
 				if(search == "/GameTest.html" || search == "/beginAdven.html") {
 					console.log(vm.myData)
 				} else if(search == "/mybag.html" || search == "/intenEqui.html" || search == '/petLevel.html') {
@@ -203,6 +211,14 @@ myFun.prototype = {
 							vm.myData.HP = parseInt(vm.equiData[i].myAttr) + parseInt(vm.myData.HP);
 						}
 					}
+				}else if(search == '/myFriend.html'){
+					console.log(11111)
+					if (vm.myData.msg) {
+						vm.hasFriend = false;
+					}else{
+						vm.hasFriend = true;
+					}
+//					console.log(data.msg);
 				}
 
 			}
@@ -316,6 +332,21 @@ myFun.prototype = {
 			left: oev.clientX,
 			display: "block"
 		});
+	},
+	//好友列表中显示框
+	friendListClick: function(obj, ev) {
+		var oev = ev || event;
+		oev.cancelBubble = true;
+		localStorage.friendAcco = $(obj).attr('data-acco');
+		$('.clickBox').css({
+			top: oev.clientY,
+			left: oev.clientX,
+			display: "block"
+		});
+	},
+	//查看好友信息
+	searchFriend:function(){
+		window.location.href = "gameRole.html#"+ localStorage.friendAcco;
 	},
 	stopClickEqui: function(ev) {
 		var oev = ev || event;
@@ -1016,15 +1047,58 @@ myFun.prototype = {
 		$(obj).attr('data-bool', 0);
 	},
 	//添加好友
-	addFriend:function(){
-		console.log(12121212)
-		console.log($('.searchBox select'));
-	}
+	addFriend:function(obj){
+		var postData = {};
+		if (!vm.friendInfo) {
+			return mui.alert('信息不能为空');
+		}
+		
+		postData.state = $('.searchBox option:selected').val();
+		for (i in vm.myData) {
+			if (postData.state==2) {
+				if (vm.friendInfo == vm.myData[i].friendName) {
+					return mui.alert('您已添加了该好友');
+				}
+			}else{
+				if (vm.friendInfo == vm.myData[i].friendAcco) {
+					return mui.alert('您已添加了该好友');
+				}
+			}
+		}
+		postData.info = vm.friendInfo;
+		postData.myacco = localStorage.acco;
+		myobj.postajax('/addFriend',postData,obj);
+		$(obj).attr('disabled','disabled');
+	},
+	delFriend:function(obj){
+		var postData = {};
+		postData.friendAcco =  $(obj).attr('data-acco');
+		postData.myacco = localStorage.acco;
+		myobj.postajax('/delFriend',postData,obj);
+		$(obj).attr('disabled','disabled');
+	},
+	deul:function(obj){
+		myobj.onceAjax("/getDeul?myacco =" + localStorage.acco + '&friendAcco = ' + $(obj).attr('data-acco'));
+//		$('.fightBoard').fadeIn(300);
+//		$(document.body).css('overflow', 'hidden');
+	},
+	//二次ajax
+	onceAjax:function(path){
+		mui.ajax({
+			url:path,
+			type:'get',
+			success:function(data){
+				console.log(data)
+			}
+		})
+	},
+	
 }
 var myobj = new myFun();
 var vm = new Vue({
 	el: '#login,#firstLogin,#info,#bagData,#advenContent,#bagInfo,#choosePass,#advenTG',
 	data: {
+		dataPush:[],//ajax请求多次转化数组
 		addMoney: 0, //获取的金币
 		myDrop: [], //掉落物品
 		allPlace: 30, //定义总数
@@ -1049,8 +1123,8 @@ var vm = new Vue({
 		tgData: [],
 		matDrop: [], //掉落材料
 		equDrop: [], //装备掉落
-		friendName:"",//添加好友的名字
-		friendAcco:""//添加好友的账号
+		friendInfo:'',//添加好友的信息
+		hasFriend:false//判断是否有好友数据
 	},
 	methods: {
 		//登录页面

@@ -9,7 +9,6 @@
 		<link rel="stylesheet" type="text/css" href="public.css" />
 		<title>我的好友</title>
 	</head>
-
 	<body>
 		
 		<div class="bagInfo" id="bagInfo">
@@ -27,33 +26,54 @@
 			<p style="text-align: center;color: #fff900;">搜索添加好友：</p>
 			<div class="searchBox">
 				<select>
-					<option value="1">名字</option>
-					<option value="2">账号</option>
+					<option value="1">账号</option>
+					<option value="2">名字</option>
 				</select>
-				<input type="text" id="" value=""/>
-				<input type="button" value="添加" onclick="myobj.addFriend()"/>
+				<input type="text" id="" value="" placeholder="请输入好友名字或账户" v-model="friendInfo"/>
+				<input type="button" value="添加" onclick="myobj.addFriend(this)"/>
 				
 			</div>
 			
-			<ul class="friendList">
+			<ul class="friendList"  v-if="hasFriend">
 				<p style="color: #fff900;">您的好友列表：</p>
-				<li>
-					<div class="headerimg">
+				<li v-for="data in myData">
+					<div class="headerimg" :data-acco="data.friendAcco" onclick="myobj.friendListClick(this)">
 						<img src="head2.jpg" />
 					</div>
 					<div class="friendInfo">
-						<div class="name" v-text="'角色名'"></div>
-						<div class="money" v-text="'宠物：'"></div>
+						<div class="name" v-text="'角色名:'+data.friendName"></div>
+						<div class="money" v-text="'账号:'+data.friendAcco"></div>
 					</div>
-					<button  class="mui-btn mui-btn-royal">决斗</button>
+					<button  class="mui-btn mui-btn-royal" onclick="myobj.deul(this)" :data-acco="data.friendAcco">决斗</button>
+					<button  class="mui-btn mui-btn-danger" onclick="myobj.delFriend(this)" :data-acco="data.friendAcco">删除</button>
 				</li>
 			</ul>
-			<!--<div class="clickBox" onclick="myobj.stopClickEqui()">
+			<div class="fightBoard">
+				<div class="friend">
+					
+				</div>
+				<div class="myData">
+					
+				</div>
+			</div>
+
+			<div class="winnerBox">
+				<div class="winnerBorder">
+					<div class="imgbox">
+						<img src="winner.jpg" />
+					</div>
+					<!--<p style="text-align: center;">你击败了<span :class="monster.myclass" v-text="monster.name"></span></p>-->
+					<div class="winner_btn">
+						<button class="mui-btn mui-btn-block">确定</button>
+					</div>
+				</div>
+			</div>
+			<div class="listNone" v-else="hasFriend" v-text="myData.msg"></div>
+			<div class="clickBox" onclick="myobj.stopClickEqui()">
 				<ul>
-					<li onclick="myobj.clickBox_butIt()">购买</li>
-					<li onclick="myobj.clickBox_detail()">详情</li>
+					<li onclick="myobj.searchFriend()">信息</li>
 				</ul>
-			</div>-->
+			</div>
 			
 		</div>
 		<div class="mybackLink">
@@ -67,7 +87,6 @@
 	<script src="common.js"></script>
 	<script src="fontsize.js"></script>
 	<script>
-//		myobj.getajax("/getInfo?myacco=" + localStorage.acco);
+		myobj.getajax("/addFriend?myacco=" + localStorage.acco);
 	</script>
-
 </html>

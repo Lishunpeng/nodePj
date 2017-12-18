@@ -80,7 +80,7 @@
 	<script type="text/javascript">
 		//		myobj.changeHead();
 		localStorage.removeItem('cur');
-		myobj.getajax("/getRole?myacco=" + localStorage.acco);
+		hash?myobj.getajax("/getRole?myacco=" + hash):myobj.getajax("/getRole?myacco=" + localStorage.acco);
 	</script>
 
 </html>

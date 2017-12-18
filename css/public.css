@@ -30,6 +30,7 @@ img{width: 100%;}
 .infoTop .nameInfo{float: left;}
 .infoTop .name{margin-top: .15rem;background: url(nameBorder.jpg) no-repeat;height: .6rem;background-size:100% 100%;line-height: .6rem;padding: 0 .5rem;}
 .bagInfo{overflow: hidden;}
+.listNone{text-align: center;height: 3rem;width: 3rem;margin: 1rem auto;background: url(listNone.png) no-repeat;background-size:100% 100%;color: red;padding: 1.4rem 0;font-weight: 700;}
 /*公用头部*/
 .Gamecontant{width: 100%;position: fixed;bottom: 0;left: 0;}
 .header{width: 100%;height: .8rem;margin: 0 auto;display: flex;}
@@ -111,7 +112,7 @@ img{width: 100%;}
 .advenTG li:nth-child(2n+1){margin-left: 0;}
 .fightBoard{z-index: 20;height: 100%;width: 100%;position: fixed;background: rgba(0,0,0,.7);left: 0;top: 0;display: none;}
 .fightBoard>div{overflow: hidden;}
-.fightBoard .monData,.fightBoard .myData{height: 50%;width: 100%;}
+.fightBoard .monData,.fightBoard .myData,.fightBoard .friend{height: 50%;width: 100%;}
 .fightBoard .adven_myInfo,.fightBoard .adven_petInfo{height:70%;width: 50%;float: left;margin-top: .8rem;}
 .fightBoard div{text-align: center;}
 .fightBoard .loseHp{color: #FF0000;position: absolute;left: 40%;top: 40%;display: block;animation:Hpmove 0.8s linear both;font-size: .4rem;font-weight: 700;}
@@ -146,8 +147,8 @@ img{width: 100%;}
 .friendList li{width: 100%;height: 1.5rem;border-bottom:1px solid #666666;}
 .friendList .headerimg{height: 1.3rem;width: 1.3rem;background-image: url(headerBorder.png);padding: .08rem;background-size: 100% 100%;margin: .1rem .3rem 0 0;float: left;}
 .friendList .name,.friendList .money{line-height: .5rem;color: #FFFFFF;font-size: .28rem;}
-.friendList .name{margin-top: .2rem;color: #87CEEB;font-size: .35rem;}
-.friendList button{float: right;margin-right: .5rem;padding: 0;width: 1rem;margin-top: .6rem;}
+.friendList .name{margin-top: .2rem;color: #87CEEB;font-size: .28rem;}
+.friendList button{float: right;margin-right: .1rem;padding: 0;width: 1rem;margin-top: .35rem;height: .8rem;}
 .friendInfo{float: left;}
 .searchBox{height: .8rem;width: 100%;width: 6rem;margin: 0 auto;}
 .searchBox input[type=text]{height: .8rem;width: 4rem;padding:.1rem .3rem;display: block;float: left;background: transparent;border-bottom: 1px solid #fff;margin: 0;}

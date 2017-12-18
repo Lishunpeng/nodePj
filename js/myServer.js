@@ -133,6 +133,7 @@ http.createServer(function(req, res) {
 						{myacco: myattr.myacco,code:'002',type:'pet',level:1,useState:'1',addAttr:18},
 						{myacco: myattr.myacco,code:'003',type:'pet',level:1,useState:'0',addAttr:20}
 						]
+//						var friend = {friendAcco: 'a569133352',friendName:'哈哈哈',myacco: myattr.myacco}
 						insertData(db, initData, function(result) {
 							db.close();
 						}, 'personInfo');
@@ -492,6 +493,88 @@ http.createServer(function(req, res) {
 				}
 				res.end(JSON.stringify(backData));
 			});
+		});
+	}else if(pathname == "/addFriend"){
+		if (req.method.toLowerCase() == 'post') {
+			console.log(121212121)
+			req.on('data',function(attr){
+			myattr = qs.parse(decodeURI(attr));
+			if (myattr.state==1) {
+				var seleData = {myacco:myattr.info};
+				var selData = {friendAcco:myattr.info,myacco: myattr.myacco}
+			}else{
+				var seleData = {name:myattr.info};
+				var selData = {friendName:myattr.info,myacco: myattr.myacco}
+			}
+			MongoClient.connect(DB_CONN_STR,function(err,db){
+//				var data = [];
+//				selectData(db,selData,function(result){data = result;db.close();},'myFriend');
+				selectData(db,seleData,function(result){
+//					console.log(data)
+					if(result.length) {
+//						if(data.length){
+//							backData.msg = '好友已存在';
+//							res.end(JSON.stringify(backData));
+//						}else{
+							var insertInfo = {friendAcco: result[0].myacco,friendName:result[0].name,myacco: myattr.myacco};
+							insertData(db,insertInfo,function(result){
+								backData.msg = '添加成功';
+								res.end(JSON.stringify(backData));
+								db.close();
+							},'myFriend');
+//						}
+					} else {
+						backData.msg="查找好友不存在";
+						res.end(JSON.stringify(backData));
+					}
+					db.close();
+				},'personInfo');
+			})
+		})
+		}else{
+			console.log(6678678678)
+			var params = url.parse(req.url, true).query;
+			console.log(params);
+			MongoClient.connect(DB_CONN_STR,function(err,db){
+				selectData(db,params,function(result){
+					if(result.length) {
+						res.end(JSON.stringify(result));
+					} else {
+						backData.msg="您的好友是空的";
+						res.end(JSON.stringify(backData));
+					}
+					db.close();
+				},'myFriend');
+			})
+		}
+	}else if(pathname == "/delFriend"){
+		req.on('data',function(attr){
+			myattr = qs.parse(decodeURI(attr));
+			MongoClient.connect(DB_CONN_STR,function(err,db){
+				delData(db,myattr,function(result){
+						backData.msg = '删除成功';
+						res.end(JSON.stringify(backData));
+						db.close();
+				},'myFriend');
+			})
+		})
+	}else if(pathname == "/getDeul"){
+		var params = url.parse(req.url, true).query;
+		var whereData = {myacco: params.myacco,useState:'1'}
+		MongoClient.connect(DB_CONN_STR, function(err, db) {
+			selectData(db, {myacco: params.myacco}, function(result) {
+				backData = result[0];
+				db.close();
+			}, 'personInfo');
+			selectData(db, whereData,function(result) {
+				backData.pet = result;
+				db.close();
+			}, 'bag_pet');
+			selectData(db,whereData,function(result) {
+				backData.equi = result;
+				db.close();
+				res.end(JSON.stringify(backData));
+			},'bag_equi');
 		});
 	}
 }).listen(3000);
