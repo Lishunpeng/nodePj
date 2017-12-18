@@ -48,6 +48,7 @@
 					<button  class="mui-btn mui-btn-danger" onclick="myobj.delFriend(this)" :data-acco="data.friendAcco">删除</button>
 				</li>
 			</ul>
+			<div class="listNone" v-else="hasFriend" v-text="myData.msg"></div>
 			<div class="fightBoard">
 				<div class="friend">
 					
@@ -68,7 +69,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="listNone" v-else="hasFriend" v-text="myData.msg"></div>
+			
 			<div class="clickBox" onclick="myobj.stopClickEqui()">
 				<ul>
 					<li onclick="myobj.searchFriend()">信息</li>

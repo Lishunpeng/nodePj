@@ -676,6 +676,7 @@ myFun.prototype = {
 			vm.monster.HP = parseInt(vm.monster.HP);
 			vm.myData.DEF = parseInt(vm.myData.DEF);
 			var myLosehp = vm.monster.ATK - vm.myData.DEF;
+			myLosehp>0?myLosehp = myLosehp:myLosehp = 1;
 			vm.myData.HP -= myLosehp;
 			myobj.adventInfo(vm.myData.HP, vm.monster.HP, myLosehp, 0, 0);
 			var isCatch = 0;

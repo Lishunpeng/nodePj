@@ -675,8 +675,9 @@ var intenData = [
 	{code:7,odds:8,failOdds:70,failDown:3,intenAttr:8,needMat:8},
 	{code:8,odds:5,failOdds:70,failDown:4,intenAttr:11.5,needMat:9},
 	{code:9,odds:3,failOdds:75,failDown:5,intenAttr:15,needMat:10},
-	{code:10,intenAttr:20}
+	{code:10,intenAttr:20,needMat:'--'}
 ]
+
 var levelData = [
 	{code:1,odds:100,failOdds:0,failDown:0,levelAttr:1,needMat:1},
 	{code:2,odds:90,failOdds:15,failDown:1,levelAttr:1.3,needMat:2},

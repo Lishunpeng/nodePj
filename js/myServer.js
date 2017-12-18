@@ -560,21 +560,22 @@ http.createServer(function(req, res) {
 		})
 	}else if(pathname == "/getDeul"){
 		var params = url.parse(req.url, true).query;
-		var whereData = {myacco: params.myacco,useState:'1'}
+		var whereData = {myacco: params.myacco}
 		MongoClient.connect(DB_CONN_STR, function(err, db) {
-			selectData(db, {myacco: params.myacco}, function(result) {
-				backData = result[0];
+			selectData(db,whereData, function(result) {
+//				backData = result[0];
+				console.log(result);
 				db.close();
 			}, 'personInfo');
-			selectData(db, whereData,function(result) {
-				backData.pet = result;
-				db.close();
-			}, 'bag_pet');
-			selectData(db,whereData,function(result) {
-				backData.equi = result;
-				db.close();
-				res.end(JSON.stringify(backData));
-			},'bag_equi');
+//			selectData(db, whereData,function(result) {
+//				backData.pet = result;
+//				db.close();
+//			}, 'bag_pet');
+//			selectData(db,whereData,function(result) {
+//				backData.equi = result;
+//				db.close();
+//				res.end(JSON.stringify(backData));
+//			},'bag_equi');
 		});
 	}
 }).listen(3000);
