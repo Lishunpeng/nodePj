@@ -577,6 +577,16 @@ http.createServer(function(req, res) {
 //				res.end(JSON.stringify(backData));
 //			},'bag_equi');
 		});
+	}else if(pathname == "/on_hoon"){
+		req.on('data',function(attr){
+			myattr = qs.parse(decodeURI(attr));
+			console.log(myattr)
+			MongoClient.connect(DB_CONN_STR,function(err,db){
+				var whereData = {myacco: myattr.myacco}
+				var udData = {$set:{money:myattr.money}}
+				updateData(db, whereData, udData, function(result) {db.close();}, 'personInfo');
+			})
+		})
 	}
 }).listen(3000);
 var insertData = function(db, mydata, callback, table) {

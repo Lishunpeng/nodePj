@@ -168,6 +168,8 @@ myFun.prototype = {
 					mui.alert(data.msg, function() {
 						$('.intenBtn').eq(0).attr('data-bool', 1);
 					});
+				}else if(search == '/adventure.html'){
+					console.log(111)
 				}
 			}
 		});
@@ -180,6 +182,7 @@ myFun.prototype = {
 			url: path,
 			success: function(data) {
 				vm.myData = JSON.parse(data);
+				console.log(vm.myData)
 				if(search == "/GameTest.html" || search == "/beginAdven.html") {
 					console.log(vm.myData)
 				} else if(search == "/mybag.html" || search == "/intenEqui.html" || search == '/petLevel.html') {
@@ -191,7 +194,7 @@ myFun.prototype = {
 					} else if(search == "/petLevel.html") {
 						vm.myData.levelNum = myobj.getOneData(vm.myData.matCode, '07');
 					}
-				} else if(search == "/gameRole.html" || search == "/adventTG.html") {
+				} else if(search == "/gameRole.html" || search == "/adventTG.html" || search =='/adventure.html') {
 					vm.equiData = myobj.getData(myEqui, vm.myData.equi);
 					vm.petData = myobj.getData(myPet, vm.myData.pet);
 					vm.myData.petATK = vm.petData[0].myAttr;
@@ -211,6 +214,7 @@ myFun.prototype = {
 							vm.myData.HP = parseInt(vm.equiData[i].myAttr) + parseInt(vm.myData.HP);
 						}
 					}
+					vm.power = (parseInt(vm.myData.ATK)*0.3 +parseInt(vm.myData.petATK)*0.3 + parseInt(vm.myData.DEF)*0.2 +parseInt(vm.myData.HP)*0.02).toFixed(1);
 				}else if(search == '/myFriend.html'){
 					console.log(11111)
 					if (vm.myData.msg) {
@@ -338,6 +342,9 @@ myFun.prototype = {
 		var oev = ev || event;
 		oev.cancelBubble = true;
 		localStorage.friendAcco = $(obj).attr('data-acco');
+		if ($(obj).attr('data-mydata')) {
+			localStorage.mydata = $(obj).attr('data-mydata')
+		}
 		$('.clickBox').css({
 			top: oev.clientY,
 			left: oev.clientX,
@@ -376,6 +383,18 @@ myFun.prototype = {
 		mydata.myAttr ? str = '物品：<span class=' + mydata.goods.myclass + '>' + mydata.goods.name + '</span>\n' + mydata.belone + ':+' + mydata.myAttr + '<span style="color:#f0ad4e">(初始：' + mydata.addAttr + ')</span>' + '\n阐述：' + mydata.goods.detail :
 			str = '物品：<span class=' + mydata.goods.myclass + '>' + mydata.goods.name + '</span>\n阐述：' + mydata.goods.detail;
 		mui.alert(str + str1);
+		$('.mui-popup-text').addClass("mui-popup-left");
+	},
+	//冒险模式查看信息
+	clickBox_searInfo:function(){
+		var mydata= JSON.parse(localStorage.mydata);
+		console.log(mydata)
+		var str = '挂机时间:<span style="color:#d69c33">'+mydata.time+'</span>小时\n'+
+		'进攻次数:<span style="color:#d69c33">'+mydata.limit+'</span>次\n'+
+		'条件（战斗力范围）:<span style="color:#d69c33">'+mydata.if_ATK+'</span>\n'+
+		'所需金币:<span style="color:#d69c33">'+mydata.needMoney+'元</span>\n'+
+		'奖励：<span style="color:#ff0000">'+mydata.detail
+		mui.alert(str)+'</span>';
 		$('.mui-popup-text').addClass("mui-popup-left");
 	},
 	//物品的使用
@@ -1093,6 +1112,45 @@ myFun.prototype = {
 			}
 		})
 	},
+	//挂机地区
+	on_hoon:function(){
+		vm.advent = on_hookData;
+		console.log(vm.myData)
+	},
+	adventChoose:function(){
+		$('.chooseDiff li span').removeClass('true');
+		$('.chooseDiff li span').eq(localStorage.friendAcco).addClass('true');
+	},
+	//选中挂机地区并确定
+	on_hoonEnsure:function(obj){
+		var mydata = null;
+		$('.chooseDiff li span').each(function(index,e){
+			if ($(e).hasClass('true')) {
+			 	mydata = JSON.parse($(e).parents('li').attr('data-mydata'));
+			}
+		})
+		if (!mydata) {
+			return mui.alert('请选择屠杀场地！')
+		}
+		var atkRange = mydata.if_ATK.split('-');
+		if (vm.power<parseInt(atkRange[0])) {
+			return mui.alert('您的战斗力不够');
+		}
+		if(vm.myData.money<mydata.needMoney){
+			return mui.alert('钱不够');
+		}
+		var postData = {};
+		var timestamp = Date.parse(new Date());
+		postData.endtime = mydata.time*3600*1000 + timestamp;
+		postData.nowTime = timestamp;
+		postData.limit = mydata.limit;
+		postData.drop = mydata.drop;
+		postData.myacco = localStorage.acco;
+		postData.money = vm.myData.money - mydata.needMoney;
+		console.log(postData)
+		myobj.postajax('/on_hoon',postData,obj);
+		
+	}
 	
 }
 var myobj = new myFun();
@@ -1125,7 +1183,8 @@ var vm = new Vue({
 		matDrop: [], //掉落材料
 		equDrop: [], //装备掉落
 		friendInfo:'',//添加好友的信息
-		hasFriend:false//判断是否有好友数据
+		hasFriend:false,//判断是否有好友数据
+		power:''//总能力（30%ATK+30%PET+20%DEF+20HP）
 	},
 	methods: {
 		//登录页面

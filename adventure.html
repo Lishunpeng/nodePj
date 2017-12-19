@@ -10,30 +10,24 @@
 		<title></title>
 	</head>
 	<body>
-		<div class="Gamecontant">
-			<ul class="header">
-				<li class="cur">
-					<a href="GameTest.html"><span>主页</span></a>
-				</li>
-				<li>
-					<a href="gameRole.html"><span>角色</span></a>
-				</li>
-				<li>
-					<a href="mybag.html"><span>背包</span></a>
+		<div id="advenTG">
+			<div v-text="'你的总战斗力：'+power" class="advenTop"></div>
+			<div v-text="'你的总金币：'+myData.money+'元'" class="advenTop"></div>
+			<ul class="chooseDiff border">
+				<li  v-for="(data,index) in advent" :class="data.myclass" :data-acco="index" :data-mydata='JSON.stringify(data)' :style="{backgroundImage:'url('+data.imgPath+')'}" v-html="'<span></span>'+data.name" onclick="myobj.friendListClick(this)">
 				</li>
 			</ul>
+			<input type="button" class="mui-btn" value="确定"  style="height: .8rem;width: 4rem;display: block;position: absolute;bottom:2rem;left: calc(50% - 2rem);" onclick="myobj.on_hoonEnsure()"/>
 		</div>
-		<ul class="chooseDiff">
-			<li>
-				<a href="adventPlan_A.html">简单模式<span></span></a>
-			</li>
-			<li>
-				<a href="adventPlan_A.html">困难模式<span></span></a>
-			</li>
-			<li>
-				<a href="adventPlan_A.html">地狱模式<span></span></a>
-			</li>
-		</ul>
+		<div class="mybackLink">
+			<a href="GameTest.html" style="display: block;height: 100%;width: 100%;"></a>
+		</div>
+		<div class="clickBox" onclick="myobj.stopClickEqui()">
+				<ul>
+					<li onclick="myobj.adventChoose()">选中</li>
+					<li onclick="myobj.clickBox_searInfo()">信息</li>
+				</ul>
+			</div>
 	</body>
 	<script src="jquery-2.1.0.js"></script>
 	<script src="vue.min.js"></script>
@@ -42,6 +36,9 @@
 	<script src="common.js"></script>
 	<script src="fontsize.js"></script>
 	<script type="text/javascript">
+			myobj.on_hoon();
+			myobj.clickBoxhide();
+			myobj.getajax("/getRole?myacco=" + localStorage.acco);
 	</script>
 
 </html>

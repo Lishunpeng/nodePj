@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="mui.css" />
+		<link rel="stylesheet" type="text/css" href="public.css" />
+		<title></title>
+	</head>
+
+	<body>
+		<div class="onHook" id="bagInfo">
+			<ul>
+				<li></li>
+			</ul>
+		</div>
+		<div class="mybackLink">
+			<a href="GameTest.html" style="display: block;height: 100%;width: 100%;"></a>
+		</div>
+	</body>
+	<script src="jquery-2.1.0.js"></script>
+	<script src="vue.min.js"></script>
+	<script src="mui.min.js"></script>
+	<script src="myData.js"></script>
+	<script src="common.js"></script>
+	<script src="fontsize.js"></script>
+	<script>
+		myobj.getajax("/getRole?myacco=" + localStorage.acco);
+	</script>
+</html>
