@@ -1,7 +1,9 @@
 *{list-style: none;margin: 0;padding: 0;border: 0;font-size: .4rem;color: #333333;box-sizing: border-box;padding: 0;font-size: .32rem;color: #e1e1e1;}
 div,p,a,h1,h2,h3,h4,h5,h6,i,span,input,ul,li,dd,dl,dt,ol,button{font-size: .32rem;color: #e1e1e1;font-family: "微软雅黑";margin: 0;}
-body,html{width: 100%;height: 100%;background: url(background.jpg);}
+body,html{width: 100%;height: 100%;background: url(background.jpg) #000000;}
 img{width: 100%;}
+.loading{position: fixed;background:transparent;height: 100%;width: 100%;z-index: 1000000;top: 0;left: 0;}
+.loading img{display: block;height: 1rem;width: 1rem;position: absolute;top: calc(50% - .5rem);left: calc(50% - .5rem);}
 .mui-table-view:before{background: transparent!important;}
 .mui-table-view-cell:after{background: transparent!important;}
 .broke{color: #999999!important;}/*损坏的字体颜色*/
@@ -58,7 +60,7 @@ img{width: 100%;}
 .bagClass li span{display: none;height: .4rem;width: .4rem;background: url(bagMark.png) no-repeat;background-size:100% 100%;position: absolute;left: .1rem;top: .2rem;}
 .bagClass li.cur span{display: block;}
 /*.bagClass li.cur{border-bottom: .05rem solid brown;}*/
-.bagDetail{height: auto;width: 100%;margin: .5rem auto;overflow: hidden;}
+.bagDetail{height: auto;width: 100%;margin: .1rem auto;overflow: hidden;}
 .bagDetail>li{height: auto;width: 6.5rem;display: none;margin: 0 auto;}
 .bagDetail>li.cur{display: block;}
 .bagDetail li li{position: relative;margin-top: .1rem;margin-left: .1rem;float: left;border: 1px solid #F1F1F1;height: 1.2rem;width: 1.2rem;background-color: rgba(0,0,0,.6);background-size:100% 100%;}
@@ -100,6 +102,7 @@ img{width: 100%;}
 .chooseDiff li:active{background-size:130% 130%;}
 .chooseDiff li{position: relative;transition: background-size 0.3s;font-size: .35rem;font-weight: bolder;padding: .1rem;width: 100%;background: transparent;height: 2.2rem;line-height: 2.2rem;width: 2.2rem;text-align: center;float: left;margin-left: .2rem;margin-top: .2rem;box-sizing: border-box;background-size:100% 100%;}
 .chooseDiff li span{position: absolute;display: block;width: .4rem;height: .4rem;background-size: 100% 100%;border-radius:50%;padding: .05rem;}
+.chooseDiff li p{color: red;font-weight: normal;height: .6rem;width: 100%;background-color: rgba(0,0,0,.5);padding: 0 .1rem;line-height: .6rem;position: absolute;bottom: 0rem;left: 0;}
 .chooseDiff li .true{background-image: url(true.png)!important;background-color: #00ff2c;}
 .chooseDiff li:nth-child(3n+1){margin-left: 0;}
 .advenTop{color: #F0AD4E;padding-left: .3rem;}
@@ -136,7 +139,7 @@ img{width: 100%;}
 .mybackLink{z-index: 1;border-radius:50% ;left: 80%;bottom: .5rem;position: fixed;height: 1rem;width: 1rem;border: .05rem solid #FF5053;background-color: #fff;background-image:url(back.png);background-size:100% 100%;}
 .mybackLink:active{background-color: #ccc;}
 /*强化厂*/
-.intenBox,.put_inten,.change_inten,.resolveBox,.left_evo,.right_evo{height: 3rem;width: 3rem;background: url(inten_border.png) no-repeat;margin: .3rem auto;background-size:100% 100%;padding: .3rem;position: relative;}
+.intenBox,.put_inten,.change_inten,.resolveBox,.left_evo,.right_evo{height: 3rem;width: 3rem;background: url(inten_border.png) no-repeat;margin: .1rem auto;background-size:100% 100%;padding: .3rem;position: relative;}
 .intenBox .equi,.put_inten .equi,.change_inten .equi,.resolveBox .equi,.left_evo .equi,.right_evo .equi{background-size:100% 100%;height: 100%;width: 100%;}
 .myBag{height: 3rem;position: fixed;width: 100%;bottom: 1rem;left:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;overflow: auto;background: #333333;}
 .myBag .mybagCont{width: 6.5rem;left: calc(50% - 3.25rem);position: absolute;height: auto;overflow-y: auto;padding-bottom: .1rem;}

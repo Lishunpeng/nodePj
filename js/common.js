@@ -4,6 +4,7 @@ var equiTypecount = 1; //定义装备判断数字位置
 var search = window.location.pathname;
 var hash = window.location.hash.replace("#", "");
 var myFun = function() {}
+var mytimer = null;
 myFun.prototype = {
 	/*//返回首页
 	back: function() {
@@ -17,7 +18,7 @@ myFun.prototype = {
 		})
 	},*/
 	//post 提交ajax
-	postajax: function(path, mydata,obj) {
+	postajax: function(path, mydata, obj) {
 		mui.ajax({
 			type: "post",
 			url: path,
@@ -51,7 +52,7 @@ myFun.prototype = {
 								vm.petData.splice(i, 1);
 							}
 						}
-						return	mui.alert(data.msg);
+						return mui.alert(data.msg);
 					}
 
 					if(path == '/saleGoods') {
@@ -111,16 +112,16 @@ myFun.prototype = {
 						location.reload();
 					}
 
-				}else if(search == "/myFriend.html") {
-					$(obj).attr('disabled',false);
-					mui.alert(data.msg,function(){
-						if (data.msg=='查找好友不存在'|| data.msg=='您和该用户已是好友') {
+				} else if(search == "/myFriend.html") {
+					$(obj).attr('disabled', false);
+					mui.alert(data.msg, function() {
+						if(data.msg == '查找好友不存在' || data.msg == '您和该用户已是好友') {
 							return;
-						}else{
+						} else {
 							myobj.getajax("/addFriend?myacco=" + localStorage.acco);
 						}
 					});
-				}  else if(search == "/shop.html") {
+				} else if(search == "/shop.html") {
 					console.log(data);
 					vm.myData.money = parseInt(data.money);
 					mui.alert('花费了：' + localStorage.getMoney + '元', data.msg)
@@ -130,12 +131,12 @@ myFun.prototype = {
 						return mui.alert(data.msg, function() {
 							location.reload()
 						});
-					}else if(localStorage.cur == 2 || localStorage.cur == "2"){
-						if (data.succState==1||data.succState=='1') {
-							return mui.alert(data.msg +'<br>获得了<span class='+data.myclass+'>' +data.name+'<br></span>', function() {
+					} else if(localStorage.cur == 2 || localStorage.cur == "2") {
+						if(data.succState == 1 || data.succState == '1') {
+							return mui.alert(data.msg + '<br>获得了<span class=' + data.myclass + '>' + data.name + '<br></span>', function() {
 								location.reload()
 							});
-						}else{
+						} else {
 							return mui.alert(data.msg, function() {
 								location.reload()
 							});
@@ -168,8 +169,16 @@ myFun.prototype = {
 					mui.alert(data.msg, function() {
 						$('.intenBtn').eq(0).attr('data-bool', 1);
 					});
-				}else if(search == '/adventure.html'){
-					console.log(111)
+				} else if(search == '/adventure.html') {
+					console.log(data)
+					vm.myData.money = data.money;
+					vm.myData.isStart = true;
+					$(obj).val('屠杀中...');
+					data.val = parseInt(data.val);
+					var p = $('.chooseDiff li').eq(data.val).children('p');
+					console.log(p)
+					myobj.timeAuto(data.time, 0, 0, p);
+					return mui.toast(data.msg);
 				}
 			}
 		});
@@ -181,6 +190,7 @@ myFun.prototype = {
 			type: "get",
 			url: path,
 			success: function(data) {
+				path = path.split('?')[0];
 				vm.myData = JSON.parse(data);
 				console.log(vm.myData)
 				if(search == "/GameTest.html" || search == "/beginAdven.html") {
@@ -194,39 +204,64 @@ myFun.prototype = {
 					} else if(search == "/petLevel.html") {
 						vm.myData.levelNum = myobj.getOneData(vm.myData.matCode, '07');
 					}
-				} else if(search == "/gameRole.html" || search == "/adventTG.html" || search =='/adventure.html') {
-					vm.equiData = myobj.getData(myEqui, vm.myData.equi);
-					vm.petData = myobj.getData(myPet, vm.myData.pet);
-					vm.myData.petATK = vm.petData[0].myAttr;
-					vm.myData.petName = vm.petData[0].goods.name;
-					vm.myData.petimgPath = vm.petData[0].goods.imgPath;
-					//计算总属性
-					if(search == "/adventTG.html") {
-						vm.myData.ballNum = myobj.getOneData(vm.myData.mat, '05');
-					}
-					for(i in vm.equiData) {
-
-						if(vm.equiData[i].type == 'wea') {
-							vm.myData.ATK = parseInt(vm.equiData[i].myAttr) + parseInt(vm.myData.ATK);
-						} else if(vm.equiData[i].type == 'clo') {
-							vm.myData.DEF = parseInt(vm.equiData[i].myAttr) + parseInt(vm.myData.DEF);
-						} else if(vm.equiData[i].type == 'amu') {
-							vm.myData.HP = parseInt(vm.equiData[i].myAttr) + parseInt(vm.myData.HP);
+				} else if(search == "/gameRole.html") {
+					myobj.generateData();
+				} else if(search == "/adventTG.html") {
+					myobj.generateData();
+					vm.myData.ballNum = myobj.getOneData(vm.myData.mat, '05');
+				} else if(search == '/adventure.html') {
+					myobj.generateData();
+					if(vm.myData.time) {
+						var data = vm.myData.time;
+						var timestamp = Date.parse(new Date());
+						var endTime = parseInt(data.endtime);
+						var timeD = endTime - timestamp;
+						if(timeD < 0) {
+							return mui.alert('时间到');
+						} else {
+							vm.myData.isStart = true;
+							var index = parseInt(data.val);
+							var needTime = myobj.secondChange(timeD/1000);
+							needTime = needTime.split(':');
+							console.log(needTime)
+							$('.adventBtn').attr('disabled','disabled').val('屠杀中...');
+							var p = $('.chooseDiff li').eq(index).children('p');
+							$('.chooseDiff li').eq(index).children('span').addClass('true');
+							myobj.timeAuto(needTime[0],needTime[1],needTime[2],p);
 						}
+						console.log(true);
+					} else {
+						console.log(false);
 					}
-					vm.power = (parseInt(vm.myData.ATK)*0.3 +parseInt(vm.myData.petATK)*0.3 + parseInt(vm.myData.DEF)*0.2 +parseInt(vm.myData.HP)*0.02).toFixed(1);
-				}else if(search == '/myFriend.html'){
-					console.log(11111)
-					if (vm.myData.msg) {
+				} else if(search == '/myFriend.html') {
+					if(vm.myData.msg) {
 						vm.hasFriend = false;
-					}else{
+					} else {
 						vm.hasFriend = true;
 					}
-//					console.log(data.msg);
+					//					console.log(data.msg);
 				}
 
 			}
 		})
+	},
+	//生成总数据（ATK,DEF,HP,PET）
+	generateData: function() {
+		vm.equiData = myobj.getData(myEqui, vm.myData.equi);
+		vm.petData = myobj.getData(myPet, vm.myData.pet);
+		vm.myData.petATK = vm.petData[0].myAttr;
+		vm.myData.petName = vm.petData[0].goods.name;
+		vm.myData.petimgPath = vm.petData[0].goods.imgPath;
+		for(i in vm.equiData) {
+			if(vm.equiData[i].type == 'wea') {
+				vm.myData.ATK = parseInt(vm.equiData[i].myAttr) + parseInt(vm.myData.ATK);
+			} else if(vm.equiData[i].type == 'clo') {
+				vm.myData.DEF = parseInt(vm.equiData[i].myAttr) + parseInt(vm.myData.DEF);
+			} else if(vm.equiData[i].type == 'amu') {
+				vm.myData.HP = parseInt(vm.equiData[i].myAttr) + parseInt(vm.myData.HP);
+			}
+		}
+		vm.power = (parseInt(vm.myData.ATK) * 0.3 + parseInt(vm.myData.petATK) * 0.3 + parseInt(vm.myData.DEF) * 0.2 + parseInt(vm.myData.HP) * 0.02).toFixed(1);
 	},
 	isArray: function(obj) {
 		return Object.prototype.toString.call(obj) == '[object Array]';
@@ -253,7 +288,7 @@ myFun.prototype = {
 					}
 				}
 			}
-			console.log(data)
+			//			console.log(data)
 			return data;
 		} else {
 			for(i in dataBase) {
@@ -273,49 +308,7 @@ myFun.prototype = {
 			}
 		}
 	},
-	/*
-	//背包非装备信息变化
-	bagData: function(dataBase, obj, val) {
-
-		var data = [];
-		var str = "";
-		obj = obj.split(',');
-		for(i in obj) {
-			var mydata = {};
-			mydata.code = obj[i];
-			mydata.name = val;
-			if(val == 'mat') {
-				str = obj[i].split("#");
-				mydata.num = str[0];
-				obj[i] = str[1]
-			}
-			mydata.goodsInfo = myobj.getData(dataBase, obj[i]);
-			data.push(mydata)
-		}
-		return data;
-	},
-	//背包信息中的装备栏及宠物
-	bagEqui: function(obj, val) {
-		obj = obj.split(',');
-		console.log(obj)
-		var data = [];
-		var strF = "";
-		var strL = "";
-		for(i in obj) {
-			var mydata = {};
-			mydata.name = val
-			strF = obj[i].substr(0, 1);
-			strL = obj[i].substr(1).split('&');
-			mydata.useState = strF;
-			mydata.code = obj[i];
-			val == 'equi' ? mydata.goodsInfo = myobj.getData(myEqui, strL[0]) : mydata.goodsInfo = myobj.getData(monster, strL[0]);
-			mydata.intensify = strL[1];
-			data.push(mydata);
-		}
-		console.log(data)
-		return data;
-	},
-	*/
+	//切换背包
 	changeBag: function() {
 		$(".bagClass li").on("click", function() {
 			console.log($(this).index());
@@ -342,7 +335,7 @@ myFun.prototype = {
 		var oev = ev || event;
 		oev.cancelBubble = true;
 		localStorage.friendAcco = $(obj).attr('data-acco');
-		if ($(obj).attr('data-mydata')) {
+		if($(obj).attr('data-mydata')) {
 			localStorage.mydata = $(obj).attr('data-mydata')
 		}
 		$('.clickBox').css({
@@ -352,8 +345,8 @@ myFun.prototype = {
 		});
 	},
 	//查看好友信息
-	searchFriend:function(){
-		window.location.href = "gameRole.html#"+ localStorage.friendAcco;
+	searchFriend: function() {
+		window.location.href = "gameRole.html#" + localStorage.friendAcco;
 	},
 	stopClickEqui: function(ev) {
 		var oev = ev || event;
@@ -386,15 +379,15 @@ myFun.prototype = {
 		$('.mui-popup-text').addClass("mui-popup-left");
 	},
 	//冒险模式查看信息
-	clickBox_searInfo:function(){
-		var mydata= JSON.parse(localStorage.mydata);
+	clickBox_searInfo: function() {
+		var mydata = JSON.parse(localStorage.mydata);
 		console.log(mydata)
-		var str = '挂机时间:<span style="color:#d69c33">'+mydata.time+'</span>小时\n'+
-		'进攻次数:<span style="color:#d69c33">'+mydata.limit+'</span>次\n'+
-		'条件（战斗力范围）:<span style="color:#d69c33">'+mydata.if_ATK+'</span>\n'+
-		'所需金币:<span style="color:#d69c33">'+mydata.needMoney+'元</span>\n'+
-		'奖励：<span style="color:#ff0000">'+mydata.detail
-		mui.alert(str)+'</span>';
+		var str = '挂机时间:<span style="color:#d69c33">' + mydata.time + '</span>小时\n' +
+			'进攻次数:<span style="color:#d69c33">' + mydata.limit + '</span>次\n' +
+			'条件（战斗力范围）:<span style="color:#d69c33">' + mydata.if_ATK + '</span>\n' +
+			'所需金币:<span style="color:#d69c33">' + mydata.needMoney + '元</span>\n' +
+			'奖励：<span style="color:#ff0000">' + mydata.detail
+		mui.alert(str) + '</span>';
 		$('.mui-popup-text').addClass("mui-popup-left");
 	},
 	//物品的使用
@@ -414,7 +407,7 @@ myFun.prototype = {
 	changeEqui: function(data) {
 		var postData = {};
 		console.log(data)
-			//		postData.code = myobj.searchEqui(data.code);
+		//		postData.code = myobj.searchEqui(data.code);
 		postData.myacco = localStorage.acco;
 		postData.type = data.type;
 		postData._id = data._id;
@@ -472,7 +465,7 @@ myFun.prototype = {
 						$('.put_inten .intensify').attr('data-data', localStorage.mydata);
 					}
 				})
-			}else if(localStorage.cur == 2) {
+			} else if(localStorage.cur == 2) {
 				mui.confirm('放置左边还是右边', '提示', ['左边', '右边'], function(e) {
 					if(!e.index) {
 						$('.left_evo .equi').css('backgroundImage', 'url(' + mydata.goods.imgPath + ')');
@@ -483,23 +476,20 @@ myFun.prototype = {
 						search == "/intenEqui.html" ? $('.right_evo .intensify').text('+' + mydata.inten) : $('.right_evo .intensify').text(mydata.level + '级');
 						$('.right_evo .intensify').attr('data-data', localStorage.mydata);
 					}
-					if($('.left_evo .intensify').text() && $('.right_evo .intensify').text()){
+					if($('.left_evo .intensify').text() && $('.right_evo .intensify').text()) {
 						var mydataLeft = JSON.parse($('.left_evo .intensify').attr('data-data'));
 						var mydataRight = JSON.parse($('.right_evo .intensify').attr('data-data'));
-						var data = myobj.getData(evolData,mydataLeft.goods.myclass);
-						if (mydataLeft.goods.myclass != mydataRight.goods.myclass) {
+						var data = myobj.getData(evolData, mydataLeft.goods.myclass);
+						if(mydataLeft.goods.myclass != mydataRight.goods.myclass) {
 							$('.evo_info').text('两个物品不是同种颜色属性类型');
-						}else{
-							$('.evo_info').html('需要$'+data.needMoney+'元<span style="color: #EC971F;">('+vm.myData.money+')</span>');
+						} else {
+							$('.evo_info').html('需要$' + data.needMoney + '元<span style="color: #EC971F;">(' + vm.myData.money + ')</span>');
 						}
-						
+
 					}
 				})
-				
-				
-				
+
 			}
-			
 
 		}
 	},
@@ -695,7 +685,7 @@ myFun.prototype = {
 			vm.monster.HP = parseInt(vm.monster.HP);
 			vm.myData.DEF = parseInt(vm.myData.DEF);
 			var myLosehp = vm.monster.ATK - vm.myData.DEF;
-			myLosehp>0?myLosehp = myLosehp:myLosehp = 1;
+			myLosehp > 0 ? myLosehp = myLosehp : myLosehp = 1;
 			vm.myData.HP -= myLosehp;
 			myobj.adventInfo(vm.myData.HP, vm.monster.HP, myLosehp, 0, 0);
 			var isCatch = 0;
@@ -756,12 +746,11 @@ myFun.prototype = {
 			})
 		} else if(enenyhp <= 0) {
 			$('.a_attack').attr('disabled', 'disabled');
-			
 
 			$(".winnerBox").slideDown(300);
 			var str = $('.winnerBox .winnerBorder').css('height');
-			str =parseInt(str.replace('px',""))/2;
-			$('.winnerBox .winnerBorder').css('top','calc(50% - '+ str +'px)');
+			str = parseInt(str.replace('px', "")) / 2;
+			$('.winnerBox .winnerBorder').css('top', 'calc(50% - ' + str + 'px)');
 			vm.monster.HP = 0;
 			vm.addMoney += parseInt(vm.monster.dropMoney);
 			for(var i = 0; i < parseInt(vm.monster.dropGoods); i++) {
@@ -993,7 +982,7 @@ myFun.prototype = {
 		$(obj).attr('data-bool', 0);
 	},
 	//宠物合体
-	evolutionPet:function(obj,val){
+	evolutionPet: function(obj, val) {
 		if($(obj).attr('data-bool') == 0) {
 			return;
 		}
@@ -1001,22 +990,22 @@ myFun.prototype = {
 			return mui.alert('框内不能为空');
 		}
 		var getEvol = null;
-		var str1="";
-		var str2="";
-		
+		var str1 = "";
+		var str2 = "";
+
 		var mydataLfte = JSON.parse($('.left_evo .intensify').attr('data-data'));
 		var mydataRight = JSON.parse($('.right_evo .intensify').attr('data-data'));
 		console.log(mydataLfte, "mydataLfte")
 		console.log(mydataRight, "mydataRight")
 		var postData = {};
-		if (val=='pet') {
-			getEvol = myobj.getData(evolData,mydataLfte.goods.myclass);
-			mydataLfte.level>mydataRight.level?postData.level = mydataLfte.level:postData.level = mydataRight.level;
+		if(val == 'pet') {
+			getEvol = myobj.getData(evolData, mydataLfte.goods.myclass);
+			mydataLfte.level > mydataRight.level ? postData.level = mydataLfte.level : postData.level = mydataRight.level;
 			str1 = "两者不能是同个宠物";
-		}else{
+		} else {
 			str1 = "两者不能是同类装备";
-			getEvol = myobj.getData(evolData,mydataLfte.goods.myclass);
-			mydataLfte.inten>mydataRight.inten?postData.inten = mydataLfte.inten:postData.inten = mydataRight.inten;
+			getEvol = myobj.getData(evolData, mydataLfte.goods.myclass);
+			mydataLfte.inten > mydataRight.inten ? postData.inten = mydataLfte.inten : postData.inten = mydataRight.inten;
 		}
 		if(mydataLfte._id == mydataRight._id) {
 			return mui.alert(str1)
@@ -1024,40 +1013,40 @@ myFun.prototype = {
 		if(mydataLfte.goods.myclass != mydataRight.goods.myclass) {
 			return mui.alert('两者必须是同种颜色类型的物品')
 		}
-		
+
 		console.log(getEvol);
-		
+
 		postData.money = parseInt(vm.myData.money) - getEvol.needMoney;
 		var judey = myobj.oddsCount(getEvol.odds);
-		if (judey) {
+		if(judey) {
 			var myClass = [];
 			postData.succState = 1;
 			postData.lostState = 0;
-			if (val=='pet') {
-				for (i in myPet) {
-					if (myPet[i].myclass==getEvol.nextClass) {
+			if(val == 'pet') {
+				for(i in myPet) {
+					if(myPet[i].myclass == getEvol.nextClass) {
 						myPet[i].type = 'pet';
 						myClass.push(myPet[i]);
 					}
 				}
-			}else{
-				for (i in myEqui) {
-					if (myEqui[i].myclass==getEvol.nextClass) {
+			} else {
+				for(i in myEqui) {
+					if(myEqui[i].myclass == getEvol.nextClass) {
 						myClass.push(myEqui[i]);
 					}
 				}
 			}
 
-			var arrCount = Math.round(Math.random()*myClass.length);
+			var arrCount = Math.round(Math.random() * myClass.length);
 			postData.newCode = myClass[arrCount].code;
 			postData.type = myClass[arrCount].type;
 			postData.myclass = getEvol.nextClass;
 			postData.name = myClass[arrCount].name;
-		}else{
+		} else {
 			postData.type = val;
 			postData.succState = 0;
 			var myjudey = myobj.oddsCount(getEvol.loseOdds);
-			myjudey?postData.lostState = 1:postData.lostState = 0;
+			myjudey ? postData.lostState = 1 : postData.lostState = 0;
 		}
 		postData.left_id = mydataLfte._id;
 		postData.right_id = mydataRight._id;
@@ -1067,97 +1056,137 @@ myFun.prototype = {
 		$(obj).attr('data-bool', 0);
 	},
 	//添加好友
-	addFriend:function(obj){
+	addFriend: function(obj) {
 		var postData = {};
-		if (!vm.friendInfo) {
+		if(!vm.friendInfo) {
 			return mui.alert('信息不能为空');
 		}
-		
+
 		postData.state = $('.searchBox option:selected').val();
-		for (i in vm.myData) {
-			if (postData.state==2) {
-				if (vm.friendInfo == vm.myData[i].friendName) {
+		for(i in vm.myData) {
+			if(postData.state == 2) {
+				if(vm.friendInfo == vm.myData[i].friendName) {
 					return mui.alert('您已添加了该好友');
 				}
-			}else{
-				if (vm.friendInfo == vm.myData[i].friendAcco) {
+			} else {
+				if(vm.friendInfo == vm.myData[i].friendAcco) {
 					return mui.alert('您已添加了该好友');
 				}
 			}
 		}
 		postData.info = vm.friendInfo;
 		postData.myacco = localStorage.acco;
-		myobj.postajax('/addFriend',postData,obj);
-		$(obj).attr('disabled','disabled');
+		myobj.postajax('/addFriend', postData, obj);
+		$(obj).attr('disabled', 'disabled');
 	},
-	delFriend:function(obj){
+	delFriend: function(obj) {
 		var postData = {};
-		postData.friendAcco =  $(obj).attr('data-acco');
+		postData.friendAcco = $(obj).attr('data-acco');
 		postData.myacco = localStorage.acco;
-		myobj.postajax('/delFriend',postData,obj);
-		$(obj).attr('disabled','disabled');
+		myobj.postajax('/delFriend', postData, obj);
+		$(obj).attr('disabled', 'disabled');
 	},
-	deul:function(obj){
+	deul: function(obj) {
 		myobj.onceAjax("/getDeul?myacco =" + localStorage.acco + '&friendAcco = ' + $(obj).attr('data-acco'));
-//		$('.fightBoard').fadeIn(300);
-//		$(document.body).css('overflow', 'hidden');
+		//		$('.fightBoard').fadeIn(300);
+		//		$(document.body).css('overflow', 'hidden');
 	},
 	//二次ajax
-	onceAjax:function(path){
+	onceAjax: function(path) {
 		mui.ajax({
-			url:path,
-			type:'get',
-			success:function(data){
+			url: path,
+			type: 'get',
+			success: function(data) {
 				console.log(data)
 			}
 		})
 	},
 	//挂机地区
-	on_hoon:function(){
+	on_hoon: function() {
 		vm.advent = on_hookData;
 		console.log(vm.myData)
 	},
-	adventChoose:function(){
+	adventChoose: function() {
+		if(vm.myData.isStart) {
+			return mui.alert('屠杀还在进行中...');
+		}
 		$('.chooseDiff li span').removeClass('true');
 		$('.chooseDiff li span').eq(localStorage.friendAcco).addClass('true');
 	},
 	//选中挂机地区并确定
-	on_hoonEnsure:function(obj){
+	on_hoonEnsure: function(obj) {
 		var mydata = null;
-		$('.chooseDiff li span').each(function(index,e){
-			if ($(e).hasClass('true')) {
-			 	mydata = JSON.parse($(e).parents('li').attr('data-mydata'));
+		$('.chooseDiff li span').each(function(index, e) {
+			if($(e).hasClass('true')) {
+				mydata = JSON.parse($(e).parents('li').attr('data-mydata'));
 			}
 		})
-		if (!mydata) {
+		if(!mydata) {
 			return mui.alert('请选择屠杀场地！')
 		}
 		var atkRange = mydata.if_ATK.split('-');
-		if (vm.power<parseInt(atkRange[0])) {
+		if(vm.power < parseInt(atkRange[0])) {
 			return mui.alert('您的战斗力不够');
 		}
-		if(vm.myData.money<mydata.needMoney){
+		if(vm.myData.money < mydata.needMoney) {
 			return mui.alert('钱不够');
 		}
+		$(obj).attr('disabled', 'disabled').val('屠杀中...');
 		var postData = {};
 		var timestamp = Date.parse(new Date());
-		postData.endtime = mydata.time*3600*1000 + timestamp;
+		postData.endtime = mydata.time * 3600 * 1000 + timestamp;
 		postData.nowTime = timestamp;
 		postData.limit = mydata.limit;
 		postData.drop = mydata.drop;
+		postData.time = mydata.time;
+		postData.val = mydata.val;
 		postData.myacco = localStorage.acco;
 		postData.money = vm.myData.money - mydata.needMoney;
 		console.log(postData)
-		myobj.postajax('/on_hoon',postData,obj);
-		
+		myobj.postajax('/on_hoon', postData, obj);
+	},
+	//时间走动
+	timeAuto: function(h, m, s, obj) {
+		mytimer = setInterval(function() {
+			if(s == 0) {
+				if(m == 0) {
+					if(h == 0) {
+						clearInterval(mytimer);
+						return mui.alert('时间到');
+					}
+					h--;
+					m = 60;
+				}
+				m--;
+				s = 60;
+			}
+			s--;
+			var str = h + ':' + m + ':' + s;
+			$(obj).text(str);
+		}, 1000);
+	},
+	//秒转化成时分秒
+	secondChange: function(val) {
+		var s = parseInt(val);
+		var m = 0;
+		var h = 0;
+		if(s > 60) {
+			m = parseInt(s / 60);
+			s = parseInt(s % 60);
+			if(m > 60) {
+				h = parseInt(m / 60);
+				m = parseInt(m % 60);
+			}
+		}
+		return h+':'+m+':'+s;
 	}
-	
+
 }
 var myobj = new myFun();
 var vm = new Vue({
 	el: '#login,#firstLogin,#info,#bagData,#advenContent,#bagInfo,#choosePass,#advenTG',
 	data: {
-		dataPush:[],//ajax请求多次转化数组
+		dataPush: [], //ajax请求多次转化数组
 		addMoney: 0, //获取的金币
 		myDrop: [], //掉落物品
 		allPlace: 30, //定义总数
@@ -1182,9 +1211,9 @@ var vm = new Vue({
 		tgData: [],
 		matDrop: [], //掉落材料
 		equDrop: [], //装备掉落
-		friendInfo:'',//添加好友的信息
-		hasFriend:false,//判断是否有好友数据
-		power:''//总能力（30%ATK+30%PET+20%DEF+20HP）
+		friendInfo: '', //添加好友的信息
+		hasFriend: false, //判断是否有好友数据
+		power: '' //总能力（30%ATK+30%PET+20%DEF+20HP）
 	},
 	methods: {
 		//登录页面

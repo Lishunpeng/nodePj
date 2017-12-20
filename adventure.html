@@ -9,15 +9,15 @@
 		<link rel="stylesheet" type="text/css" href="public.css" />
 		<title></title>
 	</head>
-	<body>
+	<body><div class="loading"><img src="loading.gif"/></div>
 		<div id="advenTG">
 			<div v-text="'你的总战斗力：'+power" class="advenTop"></div>
 			<div v-text="'你的总金币：'+myData.money+'元'" class="advenTop"></div>
 			<ul class="chooseDiff border">
-				<li  v-for="(data,index) in advent" :class="data.myclass" :data-acco="index" :data-mydata='JSON.stringify(data)' :style="{backgroundImage:'url('+data.imgPath+')'}" v-html="'<span></span>'+data.name" onclick="myobj.friendListClick(this)">
+				<li  v-for="(data,index) in advent" :class="data.myclass" :data-acco="index" :data-mydata='JSON.stringify(data)' :style="{backgroundImage:'url('+data.imgPath+')'}" v-html="'<span></span>'+data.name+'<p>未开启</p>'" onclick="myobj.friendListClick(this)">
 				</li>
 			</ul>
-			<input type="button" class="mui-btn" value="确定"  style="height: .8rem;width: 4rem;display: block;position: absolute;bottom:2rem;left: calc(50% - 2rem);" onclick="myobj.on_hoonEnsure()"/>
+			<input type="button" class="adventBtn mui-btn" value="确定"  style="height: .8rem;width: 4rem;display: block;position: absolute;bottom:2rem;left: calc(50% - 2rem);" onclick="myobj.on_hoonEnsure(this)"/>
 		</div>
 		<div class="mybackLink">
 			<a href="GameTest.html" style="display: block;height: 100%;width: 100%;"></a>
@@ -38,7 +38,7 @@
 	<script type="text/javascript">
 			myobj.on_hoon();
 			myobj.clickBoxhide();
-			myobj.getajax("/getRole?myacco=" + localStorage.acco);
+			myobj.getajax("/on_hoon?myacco=" + localStorage.acco);
 	</script>
 
 </html>

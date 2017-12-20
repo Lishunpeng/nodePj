@@ -578,15 +578,48 @@ http.createServer(function(req, res) {
 //			},'bag_equi');
 		});
 	}else if(pathname == "/on_hoon"){
-		req.on('data',function(attr){
-			myattr = qs.parse(decodeURI(attr));
-			console.log(myattr)
+		if (req.method.toLowerCase() == 'post') {
+			req.on('data',function(attr){
+				myattr = qs.parse(decodeURI(attr));
+				backData.money = myattr.money;
+				backData.time = myattr.time;
+				backData.val = myattr.val;
+				MongoClient.connect(DB_CONN_STR,function(err,db){
+					var whereData = {myacco: myattr.myacco};
+					var udData = {$set:{money:myattr.money}};
+					var setData = myattr;
+					updateData(db, whereData, udData, function(result) {db.close();}, 'personInfo');
+					insertData(db,setData,function(result) {db.close();}, 'onHoonData');
+					backData.msg = '设定成功'
+					res.end(JSON.stringify(backData));
+				})
+			})	
+		}else{
+			var params = url.parse(req.url, true).query;
+			var whereData = {
+				myacco: params.myacco,
+				useState:'1'
+			}
 			MongoClient.connect(DB_CONN_STR,function(err,db){
-				var whereData = {myacco: myattr.myacco}
-				var udData = {$set:{money:myattr.money}}
-				updateData(db, whereData, udData, function(result) {db.close();}, 'personInfo');
+				selectData(db, params, function(result) {
+					backData = result[0];
+					db.close();
+				}, 'personInfo');
+				selectData(db, whereData,function(result) {
+					backData.pet = result;
+					db.close();
+				}, 'bag_pet');
+				selectData(db,whereData,function(result) {
+					backData.equi = result;
+					db.close();
+				},'bag_equi');
+				selectData(db,params, function(result) {
+					backData.time = result[0];
+					res.end(JSON.stringify(backData));
+					db.close();
+				}, 'onHoonData');
 			})
-		})
+		}
 	}
 }).listen(3000);
 var insertData = function(db, mydata, callback, table) {

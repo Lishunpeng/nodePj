@@ -701,11 +701,11 @@ var evolData = [
 ]
 
 var on_hookData = [
-	{imgPath:'monster/006.png',myclass:'broke',if_ATK:'10-30',limit:100,time:6,name:'简单模式',detail:'更多金币材料及低级装备,有几率获得稀有材料',needMoney:20000,drop:20},
-	{imgPath:'monster/162.png',myclass:'ordin',if_ATK:'30-60',limit:120,time:8,name:'普通模式',detail:'海量金币材料及低阶装备,有几率获得稀有材料',needMoney:40000,drop:40},
-	{imgPath:'monster/023.png',myclass:'green',if_ATK:'60-110',limit:150,time:10,name:'困难模式',detail:'海量金币材料及中阶装备,有几率获得稀有材料和高阶装备',needMoney:60000,drop:60},
-	{imgPath:'monster/126.png',myclass:'blue',if_ATK:'110-150',limit:180,time:12,name:'大师模式',detail:'海量金币材料及中阶装备,有几率获得稀有材料和高阶装备',needMoney:80000,drop:80},
-	{imgPath:'monster/144.png',myclass:'pink',if_ATK:'150-250',limit:200,time:16,name:'恐怖模式',detail:'海量金币材料及中阶装备,有几率获得稀有材料和高阶装备',needMoney:100000,drop:100},
-	{imgPath:'monster/156.png',myclass:'red',if_ATK:'250-350',limit:230,time:20,name:'地狱模式',detail:'海量金币材料及中阶装备,有几率获得超稀有材料和最高阶装备',needMoney:150000,drop:120},
-	{imgPath:'monster/142.png',myclass:'purple',if_ATK:'350-？',limit:250,time:24,name:'死亡模式',detail:'海量金币材料及中阶装备,有几率获得超稀有材料和最高阶装备',needMoney:200000,drop:150}
+	{imgPath:'monster/006.png',myclass:'broke',if_ATK:'10-30',limit:100,time:6,name:'简单模式',detail:'更多金币材料及低级装备,有几率获得稀有材料',needMoney:20000,drop:20,val:0},
+	{imgPath:'monster/162.png',myclass:'ordin',if_ATK:'30-60',limit:120,time:8,name:'普通模式',detail:'海量金币材料及低阶装备,有几率获得稀有材料',needMoney:40000,drop:40,val:1},
+	{imgPath:'monster/023.png',myclass:'green',if_ATK:'60-110',limit:150,time:10,name:'困难模式',detail:'海量金币材料及中阶装备,有几率获得稀有材料和高阶装备',needMoney:60000,drop:60,val:2},
+	{imgPath:'monster/126.png',myclass:'blue',if_ATK:'110-150',limit:180,time:12,name:'大师模式',detail:'海量金币材料及中阶装备,有几率获得稀有材料和高阶装备',needMoney:80000,drop:80,val:3},
+	{imgPath:'monster/144.png',myclass:'pink',if_ATK:'150-250',limit:200,time:16,name:'恐怖模式',detail:'海量金币材料及中阶装备,有几率获得稀有材料和高阶装备',needMoney:100000,drop:100,val:4},
+	{imgPath:'monster/156.png',myclass:'red',if_ATK:'250-350',limit:230,time:20,name:'地狱模式',detail:'海量金币材料及中阶装备,有几率获得超稀有材料和最高阶装备',needMoney:150000,drop:120,val:5},
+	{imgPath:'monster/142.png',myclass:'purple',if_ATK:'350-？',limit:250,time:24,name:'死亡模式',detail:'海量金币材料及中阶装备,有几率获得超稀有材料和最高阶装备',needMoney:200000,drop:150,val:6}
 ]

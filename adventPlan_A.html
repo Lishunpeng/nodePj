@@ -9,7 +9,7 @@
 		<link rel="stylesheet" type="text/css" href="public.css" />
 		<title>选择地区</title>
 	</head>
-	<body>
+	<body><div class="loading"><img src="loading.gif"/></div>
 		
 		<ul class="choosePass" id="choosePass">
 			<li v-for="(data,index) in tgData" :style="{backgroundImage:'url('+data.imgPath+')'}" @click="myobj.adventLink(index,'adventTG.html')"><p v-text="data.name"></p></li>

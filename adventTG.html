@@ -10,7 +10,7 @@
 		<title>冒险</title>
 	</head>
 
-	<body>
+	<body><div class="loading"><img src="loading.gif"/></div>
 		<div id="advenTG">
 			<ul class="advenTG">
 				<li v-for="data in tgData" :style="{backgroundImage:'url('+data.imgPath+')'}" @click="myobj.fightBoard(data.monsterCode)">
