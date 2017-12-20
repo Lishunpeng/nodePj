@@ -190,6 +190,7 @@ myFun.prototype = {
 			type: "get",
 			url: path,
 			success: function(data) {
+				$('.loading').remove();
 				path = path.split('?')[0];
 				vm.myData = JSON.parse(data);
 				console.log(vm.myData)
@@ -1245,3 +1246,5 @@ var vm = new Vue({
 		},
 	}
 });
+
+$('.loading').css('background',"transparent");

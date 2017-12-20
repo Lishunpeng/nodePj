@@ -213,9 +213,12 @@ http.createServer(function(req, res) {
 				selectData(db,whereData,function(result) {
 					backData.equi = result;
 					db.close();
+					console.log(backData)
 					res.end(JSON.stringify(backData));
 				},'bag_equi');
+				
 		});
+		
 	}else if(pathname == "/useEqui") {
 		req.on('data', function(attr) {
 			myattr = qs.parse(decodeURI(attr));
