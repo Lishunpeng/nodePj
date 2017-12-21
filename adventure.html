@@ -17,7 +17,7 @@
 				<li  v-for="(data,index) in advent" :class="data.myclass" :data-acco="index" :data-mydata='JSON.stringify(data)' :style="{backgroundImage:'url('+data.imgPath+')'}" v-html="'<span></span>'+data.name+'<p>未开启</p>'" onclick="myobj.friendListClick(this)">
 				</li>
 			</ul>
-			<input type="button" class="adventBtn mui-btn" value="确定"  style="height: .8rem;width: 4rem;display: block;position: absolute;bottom:2rem;left: calc(50% - 2rem);" onclick="myobj.on_hoonEnsure(this)"/>
+			<input type="button" class="adventBtn mui-btn" value="开始屠杀"  style="height: .8rem;width: 4rem;display: block;position: absolute;bottom:2rem;left: calc(50% - 2rem);" onclick="myobj.on_hoonEnsure(this)"/>
 		</div>
 		<div class="mybackLink">
 			<a href="GameTest.html" style="display: block;height: 100%;width: 100%;"></a>

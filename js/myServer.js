@@ -26,6 +26,7 @@ http.createServer(function(req, res) {
 						if(result[0].mypassword == myattr.mypassword) {
 							backData.msg="登录成功";
 							backData.myacco=result[0].myacco;
+							backData.name=result[0].name;
 							res.end(JSON.stringify(backData));
 						} else {
 							backData.msg="密码错误";
@@ -113,13 +114,13 @@ http.createServer(function(req, res) {
 							ATK: "10",
 							DEF: "10",
 							HP: "100",
-							money:'1000000'
+							money:'10000000'
 						};
 						//初始化背包数据
 						var equiCode = [
-						{myacco: myattr.myacco,code:'000',type:'wea',useState:'1',inten:0,addAttr:3,getMoney:300},
-						{myacco: myattr.myacco,code:'100',type:'clo',useState:'1',inten:0,addAttr:4,getMoney:400},
-						{myacco: myattr.myacco,code:'200',type:'amu',useState:'1',inten:0,addAttr:50,getMoney:500}
+						{myacco: myattr.myacco,code:'000',type:'wea',useState:'1',inten:8,addAttr:30,getMoney:300},
+						{myacco: myattr.myacco,code:'100',type:'clo',useState:'1',inten:8,addAttr:30,getMoney:400},
+						{myacco: myattr.myacco,code:'200',type:'amu',useState:'1',inten:8,addAttr:300,getMoney:500}
 						]
 						var matCode = [
 						{myacco: myattr.myacco,code:'00',type:'mat',num:5},
@@ -130,7 +131,7 @@ http.createServer(function(req, res) {
 						var petCode = [
 						{myacco: myattr.myacco,code:'000',type:'pet',level:1,useState:'0',addAttr:13},
 						{myacco: myattr.myacco,code:'001',type:'pet',level:1,useState:'0',addAttr:15},
-						{myacco: myattr.myacco,code:'002',type:'pet',level:1,useState:'1',addAttr:18},
+						{myacco: myattr.myacco,code:'002',type:'pet',level:10,useState:'1',addAttr:18},
 						{myacco: myattr.myacco,code:'003',type:'pet',level:1,useState:'0',addAttr:20}
 						]
 //						var friend = {friendAcco: 'a569133352',friendName:'哈哈哈',myacco: myattr.myacco}
@@ -276,6 +277,11 @@ http.createServer(function(req, res) {
 			MongoClient.connect(DB_CONN_STR, function(err, db) {
 				var whereData = {myacco: myattr.myacco}
 				var udBag = {$set:{money: myattr.money}}
+				backData.msg = '闯关成功';
+				if (myattr.saveState) {
+					backData.msg = '屠杀成功';
+					delData(db, whereData, function(result) {db.close();}, 'onHoonData');
+				}
 				updateData(db, whereData, udBag, function(result) {db.close();}, 'personInfo');
 				for (i in myattr.dropData) {
 					if (myattr.dropData[i]._id) {
@@ -293,7 +299,6 @@ http.createServer(function(req, res) {
 						insertData(db,myattr.dropData[i], function(result) {db.close();}, dataLink);
 					}		
 				}
-				backData.msg = '闯关成功';
 				res.end(JSON.stringify(backData));
 			});
 		});
@@ -563,22 +568,38 @@ http.createServer(function(req, res) {
 		})
 	}else if(pathname == "/getDeul"){
 		var params = url.parse(req.url, true).query;
-		var whereData = {myacco: params.myacco}
+		var whereAttr = {
+				$or: [{
+					myacco: params.myacco
+				}, {
+					aaa: params.friendAcco
+				}]
+			}
+		var selData = {
+				"useState":"1",
+				$or: [{
+					myacco: params.myacco
+				}, {
+					aaa: params.friendAcco
+				}]
+			}
+			console.log(whereAttr,'whereAttr');
+			console.log(selData,'selData');
 		MongoClient.connect(DB_CONN_STR, function(err, db) {
 			selectData(db,whereData, function(result) {
-//				backData = result[0];
-				console.log(result);
+				backData = result;
 				db.close();
 			}, 'personInfo');
-//			selectData(db, whereData,function(result) {
-//				backData.pet = result;
-//				db.close();
-//			}, 'bag_pet');
-//			selectData(db,whereData,function(result) {
-//				backData.equi = result;
-//				db.close();
-//				res.end(JSON.stringify(backData));
-//			},'bag_equi');
+			selectData(db, selData,function(result) {
+//				console.log(result)
+				backData.pet = result;
+				db.close();
+			}, 'bag_pet');
+			selectData(db,selData,function(result) {
+				backData.equi = result;
+				db.close();
+				res.end(JSON.stringify(backData));
+			},'bag_equi');
 		});
 	}else if(pathname == "/on_hoon"){
 		if (req.method.toLowerCase() == 'post') {
@@ -616,6 +637,10 @@ http.createServer(function(req, res) {
 					backData.equi = result;
 					db.close();
 				},'bag_equi');
+				selectData(db,params,function(result) {
+					backData.mat = result;
+					db.close();
+				},'bag_mat');
 				selectData(db,params, function(result) {
 					backData.time = result[0];
 					res.end(JSON.stringify(backData));

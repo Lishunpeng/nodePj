@@ -22,6 +22,13 @@ var mymaterial = [
 	{type:'mat',code:"05",name:"精灵球",detail:"用于捕捉精灵",addAttr:"",myclass:"ordin",getMoney:"500",imgPath:"bag_mat_05.png"},
 	{type:'mat',code:"06",name:"强化石",detail:"用于强化装备",addAttr:"",myclass:"ordin",getMoney:"500",imgPath:"bag_mat_06.png"},
 	{type:'mat',code:"07",name:"进化石",detail:"用于升级宠物",addAttr:"",myclass:"ordin",getMoney:"500",imgPath:"bag_mat_07.png"},
+	{type:'mat',code:"08",name:"神奇的石头",detail:"一颗会发光的石头，还不知道有什么用",addAttr:"1000000",myclass:"pink",imgPath:"bag_mat_00.png"},
+	{type:'mat',code:"09",name:"材料2",detail:"我的材料2。",addAttr:"",myclass:"red",getMoney:"100",imgPath:"bag_mat_00.png"},
+	{type:'mat',code:"10",name:"死去的蘑菇",detail:"花蘑菇尸体。",addAttr:"",myclass:"purple",getMoney:"300",imgPath:"bag_mat_00.png"},
+	{type:'mat',code:"11",name:"有毒的蘑菇盖",detail:"毒蘑菇头盖。",addAttr:"",myclass:"pink",getMoney:"500",imgPath:"bag_mat_00.png"},
+	{type:'mat',code:"12",name:"精灵球",detail:"用于捕捉精灵",addAttr:"",myclass:"pink",getMoney:"500",imgPath:"bag_mat_05.png"},
+	{type:'mat',code:"13",name:"强化石",detail:"用于强化装备",addAttr:"",myclass:"purple",getMoney:"500",imgPath:"bag_mat_06.png"},
+	{type:'mat',code:"14",name:"进化石",detail:"用于升级宠物",addAttr:"",myclass:"red",getMoney:"500",imgPath:"bag_mat_07.png"},
 ];
 //合并装备
 var myEqui =[
@@ -229,9 +236,9 @@ var myPet = [
 /*掉落装备代码：#号前表示稀有,##代表特别稀有*/
 var monster = [
 {code:"000",name:"青蛙",myclass:"broke",imgPath:"monster/000.png",
-"drop":[{type:"mat",code:"05",odds:"30"},{type:"wea",code:"000",odds:"100"}]},
+"drop":[{type:"mat",code:"05",odds:"100"},{type:"wea",code:"000",odds:"100"}]},
 {code:"001",name:"山鸡",myclass:"broke",imgPath:"monster/001.png",
-"drop":[{type:"clo",code:"100",odds:"10"},{type:"mat",code:"07",odds:"30"},{type:"mat",code:"06",odds:"30"}]},
+"drop":[{type:"clo",code:"100",odds:"10"},{type:"mat",code:"07",odds:"100"},{type:"mat",code:"06",odds:"100"}]},
 {code:"002",name:"水生物",myclass:"broke",imgPath:"monster/002.png",
 "drop":[{type:"wea",code:"001",odds:"10"},{type:"clo",code:"100",odds:"10"},{type:"mat",code:"03",odds:"50"},{type:"mat",code:"01",odds:"30"}]},
 {code:"003",name:"鹰狮",myclass:"broke",imgPath:"monster/003.png",
@@ -708,4 +715,14 @@ var on_hookData = [
 	{imgPath:'monster/144.png',myclass:'pink',if_ATK:'150-250',limit:200,time:16,name:'恐怖模式',detail:'海量金币材料及中阶装备,有几率获得稀有材料和高阶装备',needMoney:100000,drop:100,val:4},
 	{imgPath:'monster/156.png',myclass:'red',if_ATK:'250-350',limit:230,time:20,name:'地狱模式',detail:'海量金币材料及中阶装备,有几率获得超稀有材料和最高阶装备',needMoney:150000,drop:120,val:5},
 	{imgPath:'monster/142.png',myclass:'purple',if_ATK:'350-？',limit:250,time:24,name:'死亡模式',detail:'海量金币材料及中阶装备,有几率获得超稀有材料和最高阶装备',needMoney:200000,drop:150,val:6}
+]
+
+var on_hoonDrop = [
+	{equi:10,mat:50,rareEqui:0,rareMat:0,equiClass:'broke,ordin'},
+	{equi:15,mat:60,rareEqui:0,rareMat:0,equiClass:'ordin'},
+	{equi:20,mat:50,rareEqui:0.2,rareMat:0.8,rareclass:'pink',equiClass:'green,broke'},
+	{equi:30,mat:50,rareEqui:0.3,rareMat:1,rareclass:'pink',equiClass:'green,ordin'},
+	{equi:30,mat:50,rareEqui:0.5,rareMat:1.2,rareclass:'pink',equiClass:'green'},
+	{equi:30,mat:50,rareEqui:0.2,rareMat:1.5,rareclass:'red',equiClass:'green,blue'},
+	{equi:30,mat:50,rareEqui:0.2,rareMat:1.5,rareclass:'purple',equiClass:'blue'}
 ]

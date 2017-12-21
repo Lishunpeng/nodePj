@@ -6,24 +6,20 @@ var hash = window.location.hash.replace("#", "");
 var myFun = function() {}
 var mytimer = null;
 myFun.prototype = {
-	/*//返回首页
-	back: function() {
-		mui.confirm('是否退出冒险并自动保存', function(e) {
-			if(e.index) {
-				myobj.saveData();
-				return
-				//				return window.location.href = "GameTest.html"
-			}
-			return mui.alert('请继续冒险')
-		})
-	},*/
 	//post 提交ajax
 	postajax: function(path, mydata, obj) {
+		$('.loading').css({
+			'display': 'block',
+			'background': "transparent"
+		});
 		mui.ajax({
 			type: "post",
 			url: path,
 			data: mydata,
 			success: function(data) {
+				$('.loading').css({
+					'display': 'none'
+				});
 				var data = JSON.parse(data)
 				if(search == "/login.html") {
 					if(data.msg == "注册成功") {
@@ -37,6 +33,7 @@ myFun.prototype = {
 					if(data.msg == "登录成功") {
 						return mui.alert(data.msg, function() {
 							localStorage.acco = data.myacco;
+							localStorage.myname = data.name;
 							window.location.href = "/GameTest.html";
 						});
 					} else {
@@ -170,6 +167,11 @@ myFun.prototype = {
 						$('.intenBtn').eq(0).attr('data-bool', 1);
 					});
 				} else if(search == '/adventure.html') {
+					if(path == '/saveData') {
+						console.log(data)
+						$(".adventBtn").val('开始屠杀').attr('disabled', false);
+						return;
+					}
 					console.log(data)
 					vm.myData.money = data.money;
 					vm.myData.isStart = true;
@@ -186,11 +188,15 @@ myFun.prototype = {
 	//get 提交ajax
 	getajax: function(path) {
 		console.log(path);
+		$('.loading').css({
+			'display': 'block',
+			'background': "transparent"
+		});
 		mui.ajax({
 			type: "get",
 			url: path,
 			success: function(data) {
-				$('.loading').remove();
+				$('.loading').css('display', 'none');
 				path = path.split('?')[0];
 				vm.myData = JSON.parse(data);
 				console.log(vm.myData)
@@ -218,17 +224,18 @@ myFun.prototype = {
 						var endTime = parseInt(data.endtime);
 						var timeD = endTime - timestamp;
 						if(timeD < 0) {
-							return mui.alert('时间到');
+							myobj.onhoonSave();
+							return mui.alert('屠杀成功！');
 						} else {
 							vm.myData.isStart = true;
 							var index = parseInt(data.val);
-							var needTime = myobj.secondChange(timeD/1000);
+							var needTime = myobj.secondChange(timeD / 1000);
 							needTime = needTime.split(':');
 							console.log(needTime)
-							$('.adventBtn').attr('disabled','disabled').val('屠杀中...');
+							$('.adventBtn').attr('disabled', 'disabled').val('屠杀中...');
 							var p = $('.chooseDiff li').eq(index).children('p');
 							$('.chooseDiff li').eq(index).children('span').addClass('true');
-							myobj.timeAuto(needTime[0],needTime[1],needTime[2],p);
+							myobj.timeAuto(needTime[0], needTime[1], needTime[2], p);
 						}
 						console.log(true);
 					} else {
@@ -248,6 +255,11 @@ myFun.prototype = {
 	},
 	//生成总数据（ATK,DEF,HP,PET）
 	generateData: function() {
+		if(!vm.myData.pet || !vm.myData.equi || !vm.myData.mat) {
+			return mui.alert('数据异常，系统自动刷新', function() {
+				location.reload()
+			});
+		}
 		vm.equiData = myobj.getData(myEqui, vm.myData.equi);
 		vm.petData = myobj.getData(myPet, vm.myData.pet);
 		vm.myData.petATK = vm.petData[0].myAttr;
@@ -790,8 +802,6 @@ myFun.prototype = {
 	saveData: function() {
 		var postData = {};
 		var dropData = [];
-		console.log(vm.myDrop)
-		console.log(vm.myData)
 		if(vm.myDrop.length) {
 			for(i in vm.myDrop) {
 				var bagHas = false;
@@ -826,7 +836,8 @@ myFun.prototype = {
 				}
 			}
 		}
-		postData.money = parseInt(vm.myData.money) + parseInt(vm.addMoney);
+		search == "/adventure.html" ? postData.saveState = 1 : "";
+		postData.money = parseInt(vm.myData.money) + parseInt(vm.addMoney)
 		postData.myacco = vm.myData.myacco;
 		postData.dropData = JSON.stringify(dropData);
 		myobj.postajax("/saveData", postData);
@@ -1062,17 +1073,13 @@ myFun.prototype = {
 		if(!vm.friendInfo) {
 			return mui.alert('信息不能为空');
 		}
-
+		if(vm.friendInfo == localStorage.myname || vm.friendInfo == localStorage.acco) {
+			return mui.alert('不能添加自己为好友');
+		}
 		postData.state = $('.searchBox option:selected').val();
 		for(i in vm.myData) {
-			if(postData.state == 2) {
-				if(vm.friendInfo == vm.myData[i].friendName) {
-					return mui.alert('您已添加了该好友');
-				}
-			} else {
-				if(vm.friendInfo == vm.myData[i].friendAcco) {
-					return mui.alert('您已添加了该好友');
-				}
+			if(vm.friendInfo == vm.myData[i].friendName || vm.friendInfo == vm.myData[i].friendAcco) {
+				return mui.alert('您已添加了该好友');
 			}
 		}
 		postData.info = vm.friendInfo;
@@ -1088,6 +1095,7 @@ myFun.prototype = {
 		$(obj).attr('disabled', 'disabled');
 	},
 	deul: function(obj) {
+		console.log(obj)
 		myobj.onceAjax("/getDeul?myacco =" + localStorage.acco + '&friendAcco = ' + $(obj).attr('data-acco'));
 		//		$('.fightBoard').fadeIn(300);
 		//		$(document.body).css('overflow', 'hidden');
@@ -1105,7 +1113,6 @@ myFun.prototype = {
 	//挂机地区
 	on_hoon: function() {
 		vm.advent = on_hookData;
-		console.log(vm.myData)
 	},
 	adventChoose: function() {
 		if(vm.myData.isStart) {
@@ -1123,28 +1130,36 @@ myFun.prototype = {
 			}
 		})
 		if(!mydata) {
-			return mui.alert('请选择屠杀场地！')
+			return mui.toast('请选择屠杀场地！')
 		}
-		var atkRange = mydata.if_ATK.split('-');
-		if(vm.power < parseInt(atkRange[0])) {
-			return mui.alert('您的战斗力不够');
-		}
-		if(vm.myData.money < mydata.needMoney) {
-			return mui.alert('钱不够');
-		}
-		$(obj).attr('disabled', 'disabled').val('屠杀中...');
-		var postData = {};
-		var timestamp = Date.parse(new Date());
-		postData.endtime = mydata.time * 3600 * 1000 + timestamp;
-		postData.nowTime = timestamp;
-		postData.limit = mydata.limit;
-		postData.drop = mydata.drop;
-		postData.time = mydata.time;
-		postData.val = mydata.val;
-		postData.myacco = localStorage.acco;
-		postData.money = vm.myData.money - mydata.needMoney;
-		console.log(postData)
-		myobj.postajax('/on_hoon', postData, obj);
+		mui.confirm('确定要选择该地区进行屠杀吗？', function(e) {
+			if(e.index == 1) {
+
+				var atkRange = mydata.if_ATK.split('-');
+				if(vm.power < parseInt(atkRange[0])) {
+					return mui.toast('您的战斗力不够');
+				}
+				if(vm.myData.money < mydata.needMoney) {
+					return mui.toast('钱不够');
+				}
+				$(obj).attr('disabled', 'disabled').val('屠杀中...');
+				var postData = {};
+				var timestamp = Date.parse(new Date());
+				postData.endtime = mydata.time * 3600 * 1000 + timestamp;
+				postData.nowTime = timestamp;
+				postData.limit = mydata.limit;
+				postData.drop = mydata.drop;
+				postData.time = mydata.time;
+				postData.val = mydata.val;
+				postData.myacco = localStorage.acco;
+				postData.money = vm.myData.money - mydata.needMoney;
+				console.log(postData)
+				myobj.postajax('/on_hoon', postData, obj);
+			}else{
+				mui.toast('屠杀失败');
+			}
+		})
+
 	},
 	//时间走动
 	timeAuto: function(h, m, s, obj) {
@@ -1153,7 +1168,8 @@ myFun.prototype = {
 				if(m == 0) {
 					if(h == 0) {
 						clearInterval(mytimer);
-						return mui.alert('时间到');
+						myobj.onhoonSave();
+						return mui.alert('屠杀成功');
 					}
 					h--;
 					m = 60;
@@ -1179,10 +1195,67 @@ myFun.prototype = {
 				m = parseInt(m % 60);
 			}
 		}
-		return h+':'+m+':'+s;
+		return h + ':' + m + ':' + s;
+	},
+	//挂机成功后自动保存
+	onhoonSave: function() {
+		console.log(vm.myData);
+		vm.myDrop = [];
+		var valMin = (parseInt(vm.myData.time.val) + 1) * 2;
+		var valMax = (parseInt(vm.myData.time.val) + 1) * 4;
+		var forInt = parseInt(vm.myData.time.drop);
+		vm.addMoney = myobj.creatRodom(valMin, valMax) * parseInt(vm.myData.time.limit);
+		for(var i = 0; i < forInt; i++) {
+			var result = myobj.onhoonDrop(parseInt(vm.myData.time.val));
+			console.log()
+			if(result == null || result == undefined || result == "") {
+				console.log(1);
+			} else {
+				vm.myDrop.push(result);
+			}
+		}
+		console.log(vm.myDrop);
+		myobj.saveData();
+	},
+	//随机生成
+	creatRodom: function(min, max) {
+		var attrD = max - min;
+		var rd = Math.round(Math.random() * attrD) + min;
+		return rd * 100;
+	},
+	//挂机完成掉落物品
+	onhoonDrop: function(val) {
+
+		var data = on_hoonDrop[val];
+		var result = null;
+		var rd = Math.round(Math.random() * 1000);
+		if(rd < data.rareEqui * 10) {
+			result = myobj.getclassData(myEqui, data.rareclass);
+		} else if(rd < data.rareMat * 10 + data.rareEqui * 10) {
+			result = myobj.getclassData(mymaterial, data.rareclass);
+		} else if(rd < data.equi * 10 + data.rareMat * 10 + data.rareEqui * 10) {
+			result = myobj.getclassData(myEqui, data.equiClass);
+		} else if(rd < data.mat * 10 + data.equi * 10 + data.rareMat * 10 + data.rareEqui * 10) {
+			result = myobj.getclassData(mymaterial, 'ordin');
+		}
+		return result;
+	},
+	//根据Class属性获取所有数据并返回一个随机的
+	getclassData: function(dataBase, myClass) {
+		var data = [];
+		myClass = myClass.split(',');
+		myClass = myClass[Math.floor(Math.random() * myClass.length)]
+		for(i in dataBase) {
+			if(dataBase[i].myclass == myClass) {
+				data.push(dataBase[i]);
+			}
+		}
+		data = data[Math.floor(Math.random() * data.length)]
+		return data;
 	}
 
 }
+
 var myobj = new myFun();
 var vm = new Vue({
 	el: '#login,#firstLogin,#info,#bagData,#advenContent,#bagInfo,#choosePass,#advenTG',
@@ -1247,4 +1320,4 @@ var vm = new Vue({
 	}
 });
 
-$('.loading').css('background',"transparent");
+$('.loading').css('background', "transparent");

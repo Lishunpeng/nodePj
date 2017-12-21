@@ -2,7 +2,7 @@
 div,p,a,h1,h2,h3,h4,h5,h6,i,span,input,ul,li,dd,dl,dt,ol,button{font-size: .32rem;color: #e1e1e1;font-family: "微软雅黑";margin: 0;}
 body,html{width: 100%;height: 100%;background: url(background.jpg);}
 img{width: 100%;}
-.loading{position: fixed;background:#fff;height: 100%;width: 100%;z-index: 1000000;top: 0;left: 0;}
+.loading{position: fixed;background:#000;height: 100%;width: 100%;z-index: 1000000;top: 0;left: 0;}
 .loading img{display: block;height: 1rem;width: 1rem;position: absolute;top: calc(50% - .5rem);left: calc(50% - .5rem);}
 .mui-table-view:before{background: transparent!important;}
 .mui-table-view-cell:after{background: transparent!important;}
