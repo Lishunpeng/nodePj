@@ -836,10 +836,28 @@ myFun.prototype = {
 				}
 			}
 		}
+		var a = {}
+		var b = []
+		console.log(dropData);
+		for (i in dropData) {
+			if (dropData[i].type=='mat') {
+				if (!a[dropData[i].code]) {
+					a[dropData[i].code] = dropData[i];
+				}else{
+					a[dropData[i].code].num++;
+				}
+			}else{
+				b.push(dropData[i]);
+			}
+		}
+		for (i in a) {
+			b.push(a[i])
+		}
+		console.log(b);
 		search == "/adventure.html" ? postData.saveState = 1 : "";
 		postData.money = parseInt(vm.myData.money) + parseInt(vm.addMoney)
 		postData.myacco = vm.myData.myacco;
-		postData.dropData = JSON.stringify(dropData);
+		postData.dropData = JSON.stringify(b);
 		myobj.postajax("/saveData", postData);
 	},
 
