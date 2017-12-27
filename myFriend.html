@@ -12,17 +12,6 @@
 	<body><div class="loading"><img src="loading.gif"/></div>
 		
 		<div class="bagInfo" id="bagInfo">
-			<!--<div class="info">
-				<div class="infoTop">
-					<div class="headerimg">
-						<img src="head2.jpg" />
-					</div>
-					<div class="nameInfo">
-						<div class="name" v-text="'角色名：'+myData.name"></div>
-						<div class="name money_Box" v-text="'金币：'+myData.money"></div>
-					</div>
-				</div>
-			</div>-->
 			<p style="text-align: center;color: #fff900;">搜索添加好友：</p>
 			<div class="searchBox">
 				<select>
@@ -36,9 +25,9 @@
 			
 			<ul class="friendList"  v-if="hasFriend">
 				<p style="color: #fff900;">您的好友列表：</p>
-				<li v-for="data in myData">
+				<li v-for="data in friendData">
 					<div class="headerimg" :data-acco="data.friendAcco" onclick="myobj.friendListClick(this)">
-						<img src="head2.jpg" />
+						<img :src="data.headPath" />
 					</div>
 					<div class="friendInfo">
 						<div class="name" v-text="'角色名:'+data.friendName"></div>

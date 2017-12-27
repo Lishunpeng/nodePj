@@ -28,6 +28,8 @@
 					<div class="imgbox">
 						<span class="monLosehp"></span>
 						<img :src="monster.imgPath" />
+						<span class="attackEffect" style="display: none;"></span>
+						<span class="attackEffect monEffect" style="display: none;"></span>
 					</div>
 
 				</div>
@@ -35,7 +37,8 @@
 					<div class="adven_myInfo" style="margin-bottom: .3rem;">
 						<div class="imgbox">
 							<span class="myLosehp"></span>
-							<img src="head2.jpg" />
+							<img :src="myData.headPath" />
+							<span class="attackEffect monEffect" style="display: none;"></span>
 						</div>
 						<div v-text="myData.name"></div>
 						<div>ATK&nbsp;:&nbsp;<span v-text="myData.ATK"></span></div>

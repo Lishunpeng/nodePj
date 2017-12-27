@@ -3,6 +3,7 @@ var re = /^[1-9]+\d*$/; //允许数字
 var equiTypecount = 1; //定义装备判断数字位置
 var search = window.location.pathname;
 var hash = window.location.hash.replace("#", "");
+var headCount = 23;//现有头像数量
 var myFun = function() {}
 var mytimer = null;
 myFun.prototype = {
@@ -168,9 +169,16 @@ myFun.prototype = {
 					});
 				} else if(search == '/adventure.html') {
 					if(path == '/saveData') {
-						console.log(data)
+						var dropData = myobj.combineEqui(vm.myDrop);
+						var str1 = "";
+						var str2 = "";
+						for(i in dropData) {
+							dropData[i].type == 'mat' ? str2 = "<span class='gold'>×" + dropData[i].num + '</span>' : "";
+							console.log(str2)
+							str1 += '<span class=' + dropData[i].myclass + '>' + dropData[i].name + '</span>' + str2 + '<br>';
+						}
 						$(".adventBtn").val('开始屠杀').attr('disabled', false);
-						return;
+						return mui.alert("<span class='gold'>获得了：" + vm.addMoney + '元</span><br>' + str1, '屠杀成功，获得了：');
 					}
 					console.log(data)
 					vm.myData.money = data.money;
@@ -225,7 +233,7 @@ myFun.prototype = {
 						var timeD = endTime - timestamp;
 						if(timeD < 0) {
 							myobj.onhoonSave();
-							return mui.alert('屠杀成功！');
+							return;
 						} else {
 							vm.myData.isStart = true;
 							var index = parseInt(data.val);
@@ -242,10 +250,17 @@ myFun.prototype = {
 						console.log(false);
 					}
 				} else if(search == '/myFriend.html') {
-					if(vm.myData.msg) {
-						vm.hasFriend = false;
+					console.log(path)
+					if(path=='/addFriend') {
+						vm.friendData = vm.myData;
+						console.log(vm.friendData)
+						if(vm.myData.msg) {
+							vm.hasFriend = false;
+						} else {
+							vm.hasFriend = true;
+						}
 					} else {
-						vm.hasFriend = true;
+						vm.duelData = vm.myData;
 					}
 					//					console.log(data.msg);
 				}
@@ -427,21 +442,6 @@ myFun.prototype = {
 		console.log(postData)
 		myobj.postajax('/useEqui', postData);
 	},
-	//查询装备类型并转化
-	/*searchEqui: function(code) {
-		var myCode = localStorage.equCode.split(",");
-		var str = "";
-		for(i in myCode) {
-			if(myCode[i][equiTypecount] == code[equiTypecount] && myCode[i][0] == 1) {
-				myCode[i] = '0' + myCode[i].substr(1);
-			}
-			if(myCode[i] == code) {
-				myCode[i] = '1' + myCode[i].substr(1);
-			}
-			str += ',' + myCode[i];
-		}
-		return str.substr(1);
-	},*/
 	//强化
 	clickBox_intentPut: function() {
 		var mydata = JSON.parse(localStorage.mydata);
@@ -739,6 +739,18 @@ myFun.prototype = {
 				location.reload();
 			});
 		} else {
+			var count = 0;
+			var timer = setInterval(function() {
+				++count;
+				$('.attackEffect').css({
+					'background-position-x': -count + "00px"
+				});
+				if(count > 5) {
+					clearInterval(timer);
+				}
+			}, 50);
+			$('.attackEffect').show();
+			$('.attackEffect').fadeOut(300);
 			var myAttack = vm.myData.ATK - vm.monster.DEF;
 			var petAttack = vm.myData.petATK - vm.monster.DEF;
 			petAttack > 0 ? petAttack = petAttack : petAttack = 1;
@@ -836,31 +848,35 @@ myFun.prototype = {
 				}
 			}
 		}
-		var a = {}
-		var b = []
-		console.log(dropData);
-		for (i in dropData) {
-			if (dropData[i].type=='mat') {
-				if (!a[dropData[i].code]) {
-					a[dropData[i].code] = dropData[i];
-				}else{
-					a[dropData[i].code].num++;
-				}
-			}else{
-				b.push(dropData[i]);
-			}
-		}
-		for (i in a) {
-			b.push(a[i])
-		}
-		console.log(b);
+
 		search == "/adventure.html" ? postData.saveState = 1 : "";
 		postData.money = parseInt(vm.myData.money) + parseInt(vm.addMoney)
 		postData.myacco = vm.myData.myacco;
-		postData.dropData = JSON.stringify(b);
+		postData.dropData = JSON.stringify(myobj.combineEqui(dropData));
+		console.log(postData);
 		myobj.postajax("/saveData", postData);
 	},
-
+	//合并所有掉落物品并合并相同的材料
+	combineEqui: function(dropData) {
+		var obj = {} //假对象
+		var result = [] //结果
+		console.log(dropData);
+		for(i in dropData) {
+			if(dropData[i].type == 'mat') {
+				if(!obj[dropData[i].code]) {
+					obj[dropData[i].code] = dropData[i];
+				} else {
+					obj[dropData[i].code].num++;
+				}
+			} else {
+				result.push(dropData[i]);
+			}
+		}
+		for(i in obj) {
+			result.push(obj[i])
+		}
+		return result;
+	},
 	//商品页面初始化
 	shopBegin: function() {
 		vm.matData = myobj.getData(mymaterial, myShop.matShop);
@@ -1173,7 +1189,7 @@ myFun.prototype = {
 				postData.money = vm.myData.money - mydata.needMoney;
 				console.log(postData)
 				myobj.postajax('/on_hoon', postData, obj);
-			}else{
+			} else {
 				mui.toast('屠杀失败');
 			}
 		})
@@ -1187,7 +1203,7 @@ myFun.prototype = {
 					if(h == 0) {
 						clearInterval(mytimer);
 						myobj.onhoonSave();
-						return mui.alert('屠杀成功');
+						return;
 					}
 					h--;
 					m = 60;
@@ -1217,7 +1233,6 @@ myFun.prototype = {
 	},
 	//挂机成功后自动保存
 	onhoonSave: function() {
-		console.log(vm.myData);
 		vm.myDrop = [];
 		var valMin = (parseInt(vm.myData.time.val) + 1) * 2;
 		var valMax = (parseInt(vm.myData.time.val) + 1) * 4;
@@ -1225,10 +1240,8 @@ myFun.prototype = {
 		vm.addMoney = myobj.creatRodom(valMin, valMax) * parseInt(vm.myData.time.limit);
 		for(var i = 0; i < forInt; i++) {
 			var result = myobj.onhoonDrop(parseInt(vm.myData.time.val));
-			console.log()
-			if(result == null || result == undefined || result == "") {
-				console.log(1);
-			} else {
+			if(result != null && result != undefined && result != "") {
+				result.type == 'mat' ? result.num = 1 : "";
 				vm.myDrop.push(result);
 			}
 		}
@@ -1270,6 +1283,24 @@ myFun.prototype = {
 		}
 		data = data[Math.floor(Math.random() * data.length)]
 		return data;
+	},
+	//切换头像
+	changeHead:function(){
+		vm.headerImg = [];
+		for(var i = 0;i<headCount;i++){
+			var str = "";
+			i>=10?str = 'headImg/0'+i+'.jpg':str = 'headImg/00'+i+'.jpg';
+			vm.headerImg.push(str);
+		}
+		$('.headContainer').show();
+		$('.headerBox').show(300);
+	},
+	//隐藏盒子
+	headBoxHide:function(){
+		$('.headerBox').hide(300,function(){
+			$('.headContainer').hide();
+		});
+		
 	}
 
 }
@@ -1305,7 +1336,10 @@ var vm = new Vue({
 		equDrop: [], //装备掉落
 		friendInfo: '', //添加好友的信息
 		hasFriend: false, //判断是否有好友数据
-		power: '' //总能力（30%ATK+30%PET+20%DEF+20HP）
+		power: '', //总能力（30%ATK+30%PET+20%DEF+20HP）
+		friendData: [], //好友的数据
+		duelData: [], //决斗数据
+		headerImg:[]//头像
 	},
 	methods: {
 		//登录页面

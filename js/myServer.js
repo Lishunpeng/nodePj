@@ -111,6 +111,7 @@ http.createServer(function(req, res) {
 						var initData = {
 							myacco: myattr.myacco,
 							name: myattr.name,
+							headPath:'headImg/000.jpg',
 							ATK: "10",
 							DEF: "10",
 							HP: "100",
@@ -279,6 +280,7 @@ http.createServer(function(req, res) {
 				var udBag = {$set:{money: myattr.money}}
 				backData.msg = '闯关成功';
 				if (myattr.saveState) {
+					backData.data = myattr.dropData;
 					backData.msg = '屠杀成功';
 					delData(db, whereData, function(result) {db.close();}, 'onHoonData');
 				}

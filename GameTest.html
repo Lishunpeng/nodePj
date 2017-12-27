@@ -26,12 +26,26 @@
 		</div>
 		<div class="info" id="info">
 			<div class="infoTop">
-				<div class="headerimg">
-					<img src="head2.jpg" />
+				<div class="headerimg changeHead" onclick="myobj.changeHead()">
+					<img :src="myData.headPath"/>
+					<span>点击换头像</span>
 				</div>
 				<div class="nameInfo">
 						<div class="name" v-text="'角色名：'+myData.name"></div>
 						<div class="name money_Box" v-text="'金币：'+myData.money"></div>
+				</div>
+			</div>
+			<div class="headContainer" onclick="myobj.headBoxHide()">
+				<div class="myBag headerBox">
+					<ul class="mybagCont bagCont border">
+						<li v-for="data in headerImg" :style="{backgroundImage:'url('+data+')'}">
+							<!--<span :class="data.useState==1?'use':'unuse'"></span>-->
+							<!--<span class="intensify" v-text="'+'+data.inten"></span>-->
+						</li>
+						<div style="overflow: hidden;width: 100%;float: left;border-top:1px dashed #fff;margin-top: .1rem;">
+							<input type="button" value="确定" class="headerBtn"/>
+						</div>
+					</ul>
 				</div>
 			</div>
 			<div class="infoCent">
