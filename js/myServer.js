@@ -115,13 +115,13 @@ http.createServer(function(req, res) {
 							ATK: "10",
 							DEF: "10",
 							HP: "100",
-							money:'10000000'
+							money:'100000000'
 						};
 						//初始化背包数据
 						var equiCode = [
-						{myacco: myattr.myacco,code:'000',type:'wea',useState:'1',inten:8,addAttr:30,getMoney:300},
-						{myacco: myattr.myacco,code:'100',type:'clo',useState:'1',inten:8,addAttr:30,getMoney:400},
-						{myacco: myattr.myacco,code:'200',type:'amu',useState:'1',inten:8,addAttr:300,getMoney:500}
+						{myacco: myattr.myacco,code:'000',type:'wea',useState:'1',inten:0,addAttr:3,getMoney:300},
+						{myacco: myattr.myacco,code:'100',type:'clo',useState:'1',inten:0,addAttr:3,getMoney:400},
+						{myacco: myattr.myacco,code:'200',type:'amu',useState:'1',inten:0,addAttr:30,getMoney:500}
 						]
 						var matCode = [
 						{myacco: myattr.myacco,code:'00',type:'mat',num:5},
@@ -132,7 +132,7 @@ http.createServer(function(req, res) {
 						var petCode = [
 						{myacco: myattr.myacco,code:'000',type:'pet',level:1,useState:'0',addAttr:13},
 						{myacco: myattr.myacco,code:'001',type:'pet',level:1,useState:'0',addAttr:15},
-						{myacco: myattr.myacco,code:'002',type:'pet',level:10,useState:'1',addAttr:18},
+						{myacco: myattr.myacco,code:'002',type:'pet',level:1,useState:'1',addAttr:18},
 						{myacco: myattr.myacco,code:'003',type:'pet',level:1,useState:'0',addAttr:20}
 						]
 //						var friend = {friendAcco: 'a569133352',friendName:'哈哈哈',myacco: myattr.myacco}

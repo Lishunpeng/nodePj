@@ -1285,8 +1285,10 @@ myFun.prototype = {
 		return data;
 	},
 	//切换头像
-	changeHead:function(){
+	changeHead:function(ev){
 		vm.headerImg = [];
+		var oev = ev || event;
+		oev.cancelBubble = true;
 		for(var i = 0;i<headCount;i++){
 			var str = "";
 			i>=10?str = 'headImg/0'+i+'.jpg':str = 'headImg/00'+i+'.jpg';
@@ -1300,7 +1302,6 @@ myFun.prototype = {
 		$('.headerBox').hide(300,function(){
 			$('.headContainer').hide();
 		});
-		
 	}
 
 }
