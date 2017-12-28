@@ -3,7 +3,7 @@ var re = /^[1-9]+\d*$/; //允许数字
 var equiTypecount = 1; //定义装备判断数字位置
 var search = window.location.pathname;
 var hash = window.location.hash.replace("#", "");
-var headCount = 23;//现有头像数量
+var headCount = 23; //现有头像数量
 var myFun = function() {}
 var mytimer = null;
 myFun.prototype = {
@@ -251,7 +251,7 @@ myFun.prototype = {
 					}
 				} else if(search == '/myFriend.html') {
 					console.log(path)
-					if(path=='/addFriend') {
+					if(path == '/addFriend') {
 						vm.friendData = vm.myData;
 						console.log(vm.friendData)
 						if(vm.myData.msg) {
@@ -1285,23 +1285,27 @@ myFun.prototype = {
 		return data;
 	},
 	//切换头像
-	changeHead:function(ev){
+	changeHead: function() {
 		vm.headerImg = [];
-		var oev = ev || event;
-		oev.cancelBubble = true;
-		for(var i = 0;i<headCount;i++){
+		for(var i = 0; i < headCount; i++) {
 			var str = "";
-			i>=10?str = 'headImg/0'+i+'.jpg':str = 'headImg/00'+i+'.jpg';
+			i >= 10 ? str = 'headImg/0' + i + '.jpg' : str = 'headImg/00' + i + '.jpg';
 			vm.headerImg.push(str);
 		}
 		$('.headContainer').show();
 		$('.headerBox').show(300);
 	},
 	//隐藏盒子
-	headBoxHide:function(){
-		$('.headerBox').hide(300,function(){
-			$('.headContainer').hide();
-		});
+	headBoxHide: function() {
+		$('.headContainer').click(function(ev) {
+			var oev = ev || event;
+			if(oev.target == this) {
+				$('.headerBox').hide(300, function() {
+					$('.headContainer').hide();
+				});
+			}
+		})
+
 	}
 
 }
@@ -1340,7 +1344,7 @@ var vm = new Vue({
 		power: '', //总能力（30%ATK+30%PET+20%DEF+20HP）
 		friendData: [], //好友的数据
 		duelData: [], //决斗数据
-		headerImg:[]//头像
+		headerImg: [] //头像
 	},
 	methods: {
 		//登录页面

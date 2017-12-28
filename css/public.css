@@ -52,6 +52,7 @@ img{width: 100%;}
 .infoCent ul li p{text-align: center;}
 .headerBox{height: 6rem!important;bottom: 0;top: 2.5rem;display: none;}
 .headerBox .headerBtn{height: .6rem;width: 2rem;margin: 0 auto;display: block;margin-top: .1rem;}
+.headContainer .true{}
 /*角色页面*/
 .roleBorder{height: 6.5rem;width: 100%;background: url(myRole.png);background-size:100% 100%;}
 .roleBorder>div p{position: relative;height: 2rem;width: 2rem;margin: .1rem;border: .1rem solid #777777;background-color: #333333;background-size:100% 100%;}

@@ -35,10 +35,11 @@
 						<div class="name money_Box" v-text="'金币：'+myData.money"></div>
 				</div>
 			</div>
-			<div class="headContainer" onclick="myobj.headBoxHide()">
+			<div class="headContainer">
 				<div class="myBag headerBox">
 					<ul class="mybagCont bagCont border">
 						<li v-for="data in headerImg" :style="{backgroundImage:'url('+data+')'}">
+							<span class="true"></span>
 						</li>
 						<div style="overflow: hidden;width: 100%;float: left;border-top:1px dashed #fff;margin-top: .1rem;">
 							<input type="button" value="确定" class="headerBtn"/>
@@ -100,6 +101,7 @@
 	<script src="fontsize.js"></script>
 	<script type="text/javascript">
 		localStorage.removeItem('cur');
+		myobj.headBoxHide();
 		myobj.getajax("/getInfo?myacco=" + localStorage.acco);
 	</script>
 
