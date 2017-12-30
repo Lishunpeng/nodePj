@@ -517,16 +517,9 @@ http.createServer(function(req, res) {
 				var selData = {friendName:myattr.info,myacco: myattr.myacco}
 			}
 			MongoClient.connect(DB_CONN_STR,function(err,db){
-//				var data = [];
-//				selectData(db,selData,function(result){data = result;db.close();},'myFriend');
 				selectData(db,seleData,function(result){
-//					console.log(data)
 					if(result.length) {
-//						if(data.length){
-//							backData.msg = '好友已存在';
-//							res.end(JSON.stringify(backData));
-//						}else{
-							var insertInfo = {friendAcco: result[0].myacco,friendName:result[0].name,myacco: myattr.myacco};
+							var insertInfo = {friendAcco: result[0].myacco,friendName:result[0].name,myacco: myattr.myacco,friendImg:result[0].headPath};
 							insertData(db,insertInfo,function(result){
 								backData.msg = '添加成功';
 								res.end(JSON.stringify(backData));
@@ -650,6 +643,18 @@ http.createServer(function(req, res) {
 				}, 'onHoonData');
 			})
 		}
+	}else if(pathname=='/headImg'){
+		req.on('data',function(attr){
+				myattr = qs.parse(decodeURI(attr));
+				MongoClient.connect(DB_CONN_STR,function(err,db){
+					var whereData = {myacco: myattr.myacco};
+					var udData = {$set:{headPath:myattr.headPath}};
+					updateData(db, whereData, udData, function(result) {
+						backData.msg = '修改成功'
+						res.end(JSON.stringify(backData));
+						db.close();}, 'personInfo');
+				})
+			})	
 	}
 }).listen(3000);
 var insertData = function(db, mydata, callback, table) {

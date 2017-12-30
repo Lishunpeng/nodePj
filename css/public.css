@@ -52,7 +52,7 @@ img{width: 100%;}
 .infoCent ul li p{text-align: center;}
 .headerBox{height: 6rem!important;bottom: 0;top: 2.5rem;display: none;}
 .headerBox .headerBtn{height: .6rem;width: 2rem;margin: 0 auto;display: block;margin-top: .1rem;}
-.headContainer .true{}
+.headerBox .headerList{border: .03rem solid goldenrod;}
 /*角色页面*/
 .roleBorder{height: 6.5rem;width: 100%;background: url(myRole.png);background-size:100% 100%;}
 .roleBorder>div p{position: relative;height: 2rem;width: 2rem;margin: .1rem;border: .1rem solid #777777;background-color: #333333;background-size:100% 100%;}
@@ -65,7 +65,6 @@ img{width: 100%;}
 .bagClass li{position: relative;height: .8rem;flex: 1;font-size: .35rem;text-align: center;line-height: .8rem;background: url(bagBtn.png) no-repeat;background-size:100% 100%;}
 .bagClass li span{display: none;height: .4rem;width: .4rem;background: url(bagMark.png) no-repeat;background-size:100% 100%;position: absolute;left: .1rem;top: .2rem;}
 .bagClass li.cur span{display: block;}
-/*.bagClass li.cur{border-bottom: .05rem solid brown;}*/
 .bagDetail{height: auto;width: 100%;margin: .1rem auto;overflow: hidden;}
 .bagDetail>li{height: auto;width: 6.5rem;display: none;margin: 0 auto;}
 .bagDetail>li.cur{display: block;}
@@ -85,31 +84,13 @@ img{width: 100%;}
 .loginhead{height: .8rem;line-height: .8rem;text-align: center;background: #ccc;font-size: .4rem;margin: 0 0 .5rem 0;}
 .intenBtn{font-weight: bold;font-size: .4rem;display: block;width: 100%;background: url(inten_unclick.png) no-repeat;background-size:100% 100%;background-color: transparent;margin: .1rem auto;width: 40%;height: 1rem;text-align: center;line-height: 1rem;margin-bottom: 0;}
 .intenBtn:active{background-image: url(inten_click.png)}
-/*冒险模式*/
-/*
-.monsterInfo{padding: .1rem .3rem;}
-.monsterInfo p{text-align: left;}
-.myOperation{display: flex;}
-.myOperation li{flex: 1;text-align: center;height: .6rem;line-height: .6rem;background: #fff;color: #FF5053;}
-.advenBox{background: rgba(0,0,0,.6);width: 100%;padding: 0 2% 1rem 2%;overflow: hidden;display: none;z-index: 10;position: absolute;left: 0;top: .6rem;}
-.advenBox li{height: .5rem;width:49%;text-align: center;line-height: .5rem;background: #fff;font-size: .25rem;float: left;border-radius:.1rem;margin-top: 2%;}
-.advenBox li:nth-child(2n){margin-left:2%;}
-.searchMap{text-align: center;width: 100%;background: #fff;height: .6rem;line-height: .6rem;}
-.searchMap:active{background: #ccc;}
-.showAdven{width: 100%;padding: .1rem .2rem;overflow: hidden;}
-.countGrid{float: right;margin-left: .2rem;background: #fff;width: 3rem;height: .6rem;line-height: .6rem;padding: 0;}
-.btnDice{height: .6rem;line-height: .6rem;padding: 0;width: 1.5rem;font-size: .3rem;}
-.diceIcon{display: none;}
-.myPlace{height: .4rem!important;line-height: .4rem!important;width: 1rem!important;border: 0!important;margin: 0!important;padding: 0!important;text-align: right!important;}
-.myOperation li:active{background: #E1E1E1;}
-.fightInfo{color: #CF2D28;}*/
 /*冒险难度选择*/
 .chooseDiff{width: 7rem;margin: 0 auto;}
 .chooseDiff li:active{background-size:130% 130%;}
 .chooseDiff li{position: relative;transition: background-size 0.3s;font-size: .35rem;font-weight: bolder;padding: .1rem;width: 100%;background: transparent;height: 2.2rem;line-height: 2.2rem;width: 2.2rem;text-align: center;float: left;margin-left: .2rem;margin-top: .2rem;box-sizing: border-box;background-size:100% 100%;}
-.chooseDiff li span{position: absolute;display: block;width: .4rem;height: .4rem;background-size: 100% 100%;border-radius:50%;padding: .05rem;}
+.chooseDiff li span,.headContainer span{position: absolute;display: block;width: .4rem;height: .4rem;background-size: 100% 100%;border-radius:50%;padding: .05rem;}
 .chooseDiff li p{color: red;font-weight: normal;height: .6rem;width: 100%;background-color: rgba(0,0,0,.5);padding: 0 .1rem;line-height: .6rem;position: absolute;bottom: 0rem;left: 0;}
-.chooseDiff li .true{background-image: url(true.png)!important;background-color: #00ff2c;}
+.chooseDiff li .true,.headContainer .true{background-image: url(true.png)!important;background-color: #00ff2c;}
 .chooseDiff li:nth-child(3n+1){margin-left: 0;}
 .advenTop{color: #F0AD4E;padding-left: .3rem;}
 /*冒险模式关卡选择*/

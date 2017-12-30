@@ -6,6 +6,7 @@ var hash = window.location.hash.replace("#", "");
 var headCount = 23; //现有头像数量
 var myFun = function() {}
 var mytimer = null;
+var headerData = "";
 myFun.prototype = {
 	//post 提交ajax
 	postajax: function(path, mydata, obj) {
@@ -41,7 +42,16 @@ myFun.prototype = {
 						return mui.alert(data.msg);
 					}
 
-				} else if(search == "/mybag.html") {
+				}else if(search == "/GameTest.html") {
+					$(obj).attr('disabled',false);
+					$('.headerimg img').attr('src',headerData);
+					return mui.alert(data.msg,function(){
+						$('.headerBox').hide(300, function() {
+							$('.headContainer').hide();
+						});
+					});
+				} 
+				else if(search == "/mybag.html") {
 					$('.clickBox').hide();
 					console.log(data)
 					if(path == "/putdonwPet") {
@@ -1294,6 +1304,7 @@ myFun.prototype = {
 		}
 		$('.headContainer').show();
 		$('.headerBox').show(300);
+		
 	},
 	//隐藏盒子
 	headBoxHide: function() {
@@ -1306,6 +1317,22 @@ myFun.prototype = {
 			}
 		})
 
+	},
+	//头像选中
+	headerListClick:function(obj){
+		headerData = $(obj).attr('data-data');
+		$(obj).siblings('li').children('span').removeClass('true');
+		$(obj).children('span').addClass('true');
+	},
+	postHeader:function(obj){
+		if (headerData=="") {
+			return mui.alert('请选择一个头像');
+		}
+		var postData = {}
+		postData.myacco = localStorage.acco;
+		postData.headPath = headerData;
+		myobj.postajax('/headImg',postData,obj);
+		$(obj).attr('disabled','disabled');
 	}
 
 }

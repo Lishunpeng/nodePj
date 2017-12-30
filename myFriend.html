@@ -27,7 +27,7 @@
 				<p style="color: #fff900;">您的好友列表：</p>
 				<li v-for="data in friendData">
 					<div class="headerimg" :data-acco="data.friendAcco" onclick="myobj.friendListClick(this)">
-						<img :src="data.headPath" />
+						<img :src="data.friendImg" />
 					</div>
 					<div class="friendInfo">
 						<div class="name" v-text="'角色名:'+data.friendName"></div>
