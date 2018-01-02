@@ -221,6 +221,7 @@ myFun.prototype = {
 				if(search == "/GameTest.html" || search == "/beginAdven.html") {
 					console.log(vm.myData)
 				} else if(search == "/mybag.html" || search == "/intenEqui.html" || search == '/petLevel.html') {
+					myobj.getGoodsClass();
 					vm.equiData = myobj.getData(myEqui, vm.myData.equiCode);
 					vm.petData = myobj.getData(myPet, vm.myData.petCode);
 					vm.matData = myobj.getData(mymaterial, vm.myData.matCode);
@@ -233,7 +234,7 @@ myFun.prototype = {
 					myobj.generateData();
 				} else if(search == "/adventTG.html") {
 					myobj.generateData();
-					vm.myData.ballNum = myobj.getOneData(vm.myData.mat, '05');
+					vm.myData.ballNum = myobj.getOneData(vm.myData.matCode, '05');
 				} else if(search == '/adventure.html') {
 					myobj.generateData();
 					if(vm.myData.time) {
@@ -280,13 +281,14 @@ myFun.prototype = {
 	},
 	//生成总数据（ATK,DEF,HP,PET）
 	generateData: function() {
-		if(!vm.myData.pet || !vm.myData.equi || !vm.myData.mat) {
+		if(!vm.myData.goods) {
 			return mui.alert('数据异常，系统自动刷新', function() {
 				location.reload()
 			});
 		}
-		vm.equiData = myobj.getData(myEqui, vm.myData.equi);
-		vm.petData = myobj.getData(myPet, vm.myData.pet);
+		myobj.getGoodsClass();
+		vm.equiData = myobj.getData(myEqui, vm.myData.equiCode);
+		vm.petData = myobj.getData(myPet, vm.myData.petCode);
 		vm.myData.petATK = vm.petData[0].myAttr;
 		vm.myData.petName = vm.petData[0].goods.name;
 		vm.myData.petimgPath = vm.petData[0].goods.imgPath;
@@ -299,7 +301,24 @@ myFun.prototype = {
 				vm.myData.HP = parseInt(vm.equiData[i].myAttr) + parseInt(vm.myData.HP);
 			}
 		}
-		vm.power = (parseInt(vm.myData.ATK) * 0.3 + parseInt(vm.myData.petATK) * 0.3 + parseInt(vm.myData.DEF) * 0.2 + parseInt(vm.myData.HP) * 0.02).toFixed(1);
+		vm.power = (parseInt(vm.myData.ATK) * 0.2 + parseInt(vm.myData.petATK) * 0.2 + parseInt(vm.myData.DEF) * 0.1 + parseInt(vm.myData.HP) * 0.01
+			+ parseInt(vm.myData.HIT) * 0.1 + parseInt(vm.myData.DOD) * 0.1 + parseInt(vm.myData.CRI) * 0.1 + parseInt(vm.myData.TOU) * 0.1).toFixed(1);
+	},
+	//分类物品
+	getGoodsClass:function(){
+		var goods = vm.myData.goods;
+		vm.myData.matCode =[];
+		vm.myData.equiCode =[];
+		vm.myData.petCode =[];
+		for (i in goods) {
+			if (goods[i].type=='mat') {
+				vm.myData.matCode.push(goods[i]);
+			}else if(goods[i].type=='pet'){
+				vm.myData.petCode.push(goods[i]);
+			}else{
+				vm.myData.equiCode.push(goods[i]);
+			}
+		}
 	},
 	isArray: function(obj) {
 		return Object.prototype.toString.call(obj) == '[object Array]';
@@ -735,13 +754,30 @@ myFun.prototype = {
 	attack: function() {
 		$('.monData .imgbox').remove('span');
 		$('.myData .imgbox').remove('span');
+		//上限命中和暴击及最低命中及暴击及起始闪避和暴击
+		var HIT_START = 60;
+		var HIT_MAX = 100;
+		var HIT_MIN = 20;
+		var CRI_START = 40;
+		var CRI_MAX = 80;
+		var CRI_MIN = 0;
 		//敌方信息
 		vm.monster.ATK = parseInt(vm.monster.ATK);
 		vm.monster.DEF = parseInt(vm.monster.DEF);
 		vm.monster.HP = parseInt(vm.monster.HP);
+		vm.monster.CRI = parseInt(vm.monster.HP);//暴击率
+		vm.monster.DOD = parseInt(vm.monster.HP);//闪避
+		vm.monster.HIT = parseInt(vm.monster.HP);//命中
+		vm.monster.TOU = parseInt(vm.monster.HP);//韧性
 		//我放信息
 		vm.myData.ATK = parseInt(vm.myData.ATK);
 		vm.myData.DEF = parseInt(vm.myData.DEF);
+		vm.myData.CRI = parseInt(vm.myData.HP);//暴击率
+		vm.myData.DOD = parseInt(vm.myData.HP);//闪避
+		vm.myData.HIT = parseInt(vm.myData.HP);//命中
+		vm.myData.TOU = parseInt(vm.myData.HP);//韧性
+		/*************************************************************/
+		//战斗开始
 		vm.myData.petATK = parseInt(vm.myData.petATK);
 		vm.myData.HP = parseInt(vm.myData.HP);
 		if(vm.myData.ATK < vm.monster.DEF) {
@@ -749,6 +785,12 @@ myFun.prototype = {
 				location.reload();
 			});
 		} else {
+			
+			
+			
+			
+			
+			
 			var count = 0;
 			var timer = setInterval(function() {
 				++count;
@@ -761,25 +803,48 @@ myFun.prototype = {
 			}, 50);
 			$('.attackEffect').show();
 			$('.attackEffect').fadeOut(300);
-			var myAttack = vm.myData.ATK - vm.monster.DEF;
-			var petAttack = vm.myData.petATK - vm.monster.DEF;
-			petAttack > 0 ? petAttack = petAttack : petAttack = 1;
-			vm.monster.HP -= myAttack + petAttack;
-			var myLosehp = vm.monster.ATK - vm.myData.DEF;
-			myLosehp > 0 ? myLosehp = myLosehp : myLosehp = 1;
-			vm.myData.HP -= myLosehp;
-			myobj.adventInfo(vm.myData.HP, vm.monster.HP, myLosehp, myAttack, petAttack);
+			
+			
+			
+			var myHit = (vm.myData.HIT - vm.monster.DOD)/vm.myData.HIT + HIT_START;//我方是否命中转化成百分比
+			var monHit = (vm.monster.HIT - vm.myData.DOD)/vm.monster.HIT + HIT_START;//敌方是否命中转化成百分比
+			var myCRI = (vm.myData.CRI - vm.monster.TOU)/vm.myData.CRI + CRI_START;//我方是否暴击转化成百分比
+			var monCRI = (vm.monster.HIT - vm.myData.DOD)/vm.monster.HIT + CRI_START;//敌方是否暴击转化成百分比
+			
+			
+			var myAttack = vm.myData.ATK - vm.monster.DEF;//普通扣除血量
+			var petAttack = vm.myData.petATK - vm.monster.DEF;//普通宠物扣除血量
+			var myLosehp = vm.monster.ATK - vm.myData.DEF;//我流失的血量
+			
+			var isMyHit = myobj.oddsCount(myHit)//我方是否命中
+			var isMonHit = myobj.oddsCount(monHit)//敌方是否命中
+			
+			if (isMyHit) {
+				petAttack > 0 ? petAttack = petAttack : petAttack = 1;//宠物伤害
+				vm.monster.HP -= myAttack + petAttack;
+			}
+			if (isMonHit) {
+				myLosehp > 0 ? myLosehp = myLosehp : myLosehp = 1;
+				vm.myData.HP -= myLosehp;	
+			}
+			
+			
+			
+			
+			
+			
+			myobj.adventInfo(myLosehp, myAttack, petAttack,isMyHit,isMonHit);
 		}
 		console.log(vm.monster)
 	},
 	//冒险模式显示信息
-	adventInfo: function(myhp, enenyhp, mylose, myAttack, petAttack) {
-		if(myhp <= 0) {
-			myhp = 0;
+	adventInfo: function(mylose, myAttack, petAttack) {
+		if(vm.myData.HP <= 0) {
+			vm.myData.HP = 0;
 			mui.alert('你死了！', function() {
 				location.reload();
 			})
-		} else if(enenyhp <= 0) {
+		} else if(vm.monster.HP <= 0) {
 			$('.a_attack').attr('disabled', 'disabled');
 
 			$(".winnerBox").slideDown(300);
@@ -828,10 +893,10 @@ myFun.prototype = {
 			for(i in vm.myDrop) {
 				var bagHas = false;
 				if(vm.myDrop[i].type == 'mat') {
-					for(j in vm.myData.mat) {
-						if(vm.myData.mat[j].code == vm.myDrop[i].code) {
-							vm.myData.mat[j].num++;
-							dropData.push(vm.myData.mat[j]);
+					for(j in vm.myData.matCode) {
+						if(vm.myData.matCode[j].code == vm.myDrop[i].code) {
+							vm.myData.matCode[j].num++;
+							dropData.push(vm.myData.matCode[j]);
 							bagHas = true;
 						}
 					}

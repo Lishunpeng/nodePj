@@ -32,8 +32,12 @@
 					<div class="ATK" v-html="'角色攻击力 :<span> '+myData.ATK+'</span>'"></div>
 					<div class="DEF" v-html="'角色防御力 : <span>'+myData.DEF+'</span>'"></div>
 					<div class="HP" v-html="'角色血量 : <span>'+myData.HP+'</span>'"></div>
+					<div class="HP" v-html="'角色命中率 : <span>'+myData.HIT+'</span>'"></div>
+					<div class="HP" v-html="'角色暴击率 : <span>'+myData.CRI+'</span>'"></div>
 				</div>
 				<div class="petInfo">
+					<div class="HP" v-html="'角色闪避率 : <span>'+myData.DOD+'</span>'"></div>
+					<div class="HP" v-html="'角色抗暴率 : <span>'+myData.TOU+'</span>'"></div>
 					<div class="ATK" v-html="'宠物攻击力 :<span> '+myData.petATK+'</span>'"></div>
 					<div class="ATK" v-html="'战斗力评估 : <span>'+power+'</span>'"></div>
 				</div>

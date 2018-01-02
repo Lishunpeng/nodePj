@@ -104,6 +104,7 @@ img{width: 100%;}
 .advenTG li:nth-child(2n+1){margin-left: 0;}
 .fightBoard,.headContainer{z-index: 20;height: 100%;width: 100%;position: fixed;background: rgba(0,0,0,.7);left: 0;top: 0;display: none;}
 .fightBoard>div{overflow: hidden;}
+.fightBoard .monData{height: 40%!important;}
 .fightBoard .monData,.fightBoard .myData,.fightBoard .friend{height: 50%;width: 100%;}
 .fightBoard .adven_myInfo,.fightBoard .adven_petInfo{height:70%;width: 50%;float: left;margin-top: .8rem;}
 .fightBoard div{text-align: center;}
