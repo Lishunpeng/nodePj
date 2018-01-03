@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+
+		<link rel="stylesheet" type="text/css" href="mui.css" />
+		<link rel="stylesheet" type="text/css" href="public.css" />
+		<title>占卜场</title>
+		
+		<style type="text/css">
+			.chooseDiff li{border-radius:.1rem!important ;}
+		</style>
+	</head>
+	<body><div class="loading"><img src="loading.gif"/></div>
+		<div id="info" class="info">
+			<div class="infoTop">
+				<div class="headerimg changeHead">
+					<img :src="myData.headPath" />
+				</div>
+				<div class="nameInfo">
+					<div class="name" v-text="'角色名：'+myData.name"></div>
+					<div class="name money_Box" v-text="'金币：'+myData.money"></div>
+				</div>
+			</div>
+			<ul class="chooseDiff border">
+				
+					<li v-for="(data,index) in divinationData" :data-index='index' data-bool="1" :data-isopen="data.isOpen" :class="data.myclass" :style="[data.isOpen?{backgroundImage:'url('+data.imgPath+')'}:{backgroundImage:'url('+data.unOpenPath+')'}]" onclick="myobj.clickDivination(this)">
+						{{data.name}}
+						<p v-if="!data.isOpen">未开启</p>
+						<p v-else v-text="'$'+data.needMoney"></p>
+					</li>
+					
+				
+				
+			</ul>
+		</div>
+		<div class="mybackLink">
+			<a href="GameTest.html" style="display: block;height: 100%;width: 100%;"></a>
+		</div>
+		
+	</body>
+	<script src="jquery-2.1.0.js"></script>
+	<script src="vue.min.js"></script>
+	<script src="mui.min.js"></script>
+	<script src="myData.js"></script>
+	<script src="common.js"></script>
+	<script src="fontsize.js"></script>
+	<script type="text/javascript">
+			myobj.diviData();
+			myobj.getajax("/getInfo?myacco=" + localStorage.acco);
+	</script>
+
+</html>

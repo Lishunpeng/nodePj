@@ -684,7 +684,7 @@ var intenData = [
 	{code:9,odds:3,failOdds:75,failDown:5,intenAttr:15,needMat:10},
 	{code:10,intenAttr:20,needMat:'--'}
 ]
-
+//宠物强化
 var levelData = [
 	{code:1,odds:100,failOdds:0,failDown:0,levelAttr:1,needMat:1},
 	{code:2,odds:90,failOdds:15,failDown:1,levelAttr:1.3,needMat:2},
@@ -698,6 +698,7 @@ var levelData = [
 	{code:10,odds:3,failOdds:75,failDown:5,levelAttr:15,needMat:10},
 	{code:11,levelAttr:20}
 ]
+//融合概率
 var evolData = [
 	{code:'broke',odds:80,needMoney:10000,loseOdds:20,nextClass:'ordin'},
 	{code:'ordin',odds:60,needMoney:20000,loseOdds:30,nextClass:'green'},
@@ -706,7 +707,7 @@ var evolData = [
 	{code:'pink',odds:20,needMoney:80000,loseOdds:60,nextClass:'red'},
 	{code:'red',odds:10,needMoney:100000,loseOdds:70,nextClass:'purple'}
 ]
-
+//屠杀数据
 var on_hookData = [
 	{imgPath:'monster/006.png',myclass:'broke',if_ATK:'10-30',limit:100,time:6,name:'简单模式',detail:'更多金币材料及低级装备,有几率获得稀有材料',needMoney:20000,drop:20,val:0},
 	{imgPath:'monster/162.png',myclass:'ordin',if_ATK:'30-60',limit:120,time:8,name:'普通模式',detail:'海量金币材料及低阶装备,有几率获得稀有材料',needMoney:40000,drop:40,val:1},
@@ -716,7 +717,7 @@ var on_hookData = [
 	{imgPath:'monster/156.png',myclass:'red',if_ATK:'250-350',limit:230,time:20,name:'地狱模式',detail:'海量金币材料及中阶装备,有几率获得超稀有材料和最高阶装备',needMoney:150000,drop:120,val:5},
 	{imgPath:'monster/142.png',myclass:'purple',if_ATK:'350-？',limit:250,time:24,name:'死亡模式',detail:'海量金币材料及中阶装备,有几率获得超稀有材料和最高阶装备',needMoney:200000,drop:150,val:6}
 ]
-
+//屠杀掉落数据
 var on_hoonDrop = [
 	{equi:10,mat:50,rareEqui:0,rareMat:0,equiClass:'broke,ordin'},
 	{equi:15,mat:60,rareEqui:0,rareMat:0,equiClass:'ordin'},
@@ -725,4 +726,13 @@ var on_hoonDrop = [
 	{equi:30,mat:50,rareEqui:0.5,rareMat:1.2,rareclass:'pink',equiClass:'green'},
 	{equi:30,mat:50,rareEqui:0.2,rareMat:1.5,rareclass:'red',equiClass:'green,blue'},
 	{equi:30,mat:50,rareEqui:0.2,rareMat:1.5,rareclass:'purple',equiClass:'blue'}
+]
+//命格数据
+var divination = [
+	{unOpenPath:'divinationImg/black_ww.jpg',imgPath:'divinationImg/ww.jpg',myclass:'ordin',name:'魏徵',detail:'能获得绿色以下的命格',needMoney:5000,isOpen:true},
+	{unOpenPath:'divinationImg/black_zgl.jpg',imgPath:'divinationImg/zgl.jpg',myclass:'green',name:'诸葛亮',detail:'能获得蓝色以下的命格',needMoney:10000,isOpen:false},
+	{unOpenPath:'divinationImg/black_ls.jpg',imgPath:'divinationImg/ls.jpg',myclass:'blue',name:'李斯',detail:'能获得粉色以下的命格',needMoney:20000,isOpen:false},
+	{unOpenPath:'divinationImg/black_sy.jpg',imgPath:'divinationImg/sy.jpg',myclass:'pink',name:'商鞅',detail:'更高概率能获得粉色以下的命格',needMoney:40000,isOpen:false},
+	{unOpenPath:'divinationImg/black_gz.jpg',imgPath:'divinationImg/gz.jpg',myclass:'red',name:'管仲',detail:'能获得红色以下的命格',needMoney:100000,isOpen:false},
+	{unOpenPath:'divinationImg/black_jzy.jpg',imgPath:'divinationImg/jzy.jpg',myclass:'purple',name:'姜子牙',detail:'能获得紫色以下的命格',needMoney:200000,isOpen:false},
 ]

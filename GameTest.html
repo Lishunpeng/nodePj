@@ -13,26 +13,30 @@
 
 	</style>
 
-	<body><div class="loading"><img src="loading.gif"/></div>
+	<body>
+		<div class="loading"><img src="loading.gif" /></div>
 		<div class="Gamecontant">
 			<ul class="header">
-				<li class="cur"><a href="GameTest.html"><span>主页</span></a>
+				<li class="cur">
+					<a href="GameTest.html"><span>主页</span></a>
 				</li>
-				<li><a href="gameRole.html"><span>角色</span></a>
+				<li>
+					<a href="gameRole.html"><span>角色</span></a>
 				</li>
-				<li><a href="mybag.html"><span>背包</span></a>
+				<li>
+					<a href="mybag.html"><span>背包</span></a>
 				</li>
 			</ul>
 		</div>
 		<div class="info" id="info">
 			<div class="infoTop">
 				<div class="headerimg changeHead" onclick="myobj.changeHead()">
-					<img :src="myData.headPath"/>
+					<img :src="myData.headPath" />
 					<span>点击换头像</span>
 				</div>
 				<div class="nameInfo">
-						<div class="name" v-text="'角色名：'+myData.name"></div>
-						<div class="name money_Box" v-text="'金币：'+myData.money"></div>
+					<div class="name" v-text="'角色名：'+myData.name"></div>
+					<div class="name money_Box" v-text="'金币：'+myData.money"></div>
 				</div>
 			</div>
 			<div class="headContainer">
@@ -44,7 +48,7 @@
 					</ul>
 				</div>
 				<div style="float: left;position: absolute;bottom: 2rem;width: 3rem;height: .8rem;left: calc(50% - 1.5rem);">
-						<input type="button" value="确定" class="mui-btn-grey" style="display: block;width: 3rem;height: .8rem;margin: 0 auto;" onclick="myobj.postHeader()"/>
+					<input type="button" value="确定" class="mui-btn-grey" style="display: block;width: 3rem;height: .8rem;margin: 0 auto;" onclick="myobj.postHeader()" />
 				</div>
 			</div>
 			<div class="infoCent">
@@ -52,44 +56,43 @@
 				<ul>
 					<li>
 						<a href="adventPlan_A.html">
-						<img src="advenIcon.png" />
-						<p>战斗冒险</p>
+							<img src="advenIcon.png" />
+							<p>战斗冒险</p>
 						</a>
 					</li>
 					<li>
 						<a href="shop.html">
-						<img src="shopIcon.png" />
-						<p>商店</p>
+							<img src="shopIcon.png" />
+							<p>商店</p>
 						</a>
 					</li>
 					<li>
 						<a href="intenEqui.html">
-						<img src="interIcon.png" />
-						<p>强化场</p>
+							<img src="up.png" />
+							<p>升级场</p>
 						</a>
 					</li>
 					<li>
-						<a href="petLevel.html">
-						<img src="petIcon.png" />
-						<p>宠物升级</p>
+						<a href="divination.html">
+							<img src="divination.png" />
+							<p>占卜场</p>
 						</a>
 					</li>
 					<li>
 						<a href="myFriend.html">
-						<img src="friendIcon.png" />
-						<p>我的好友</p>
+							<img src="friendIcon.png" />
+							<p>我的好友</p>
 						</a>
 					</li>
 					<li>
 						<a href="adventure.html">
-						<img src="fightIcon.png" />
-						<p>屠宰场</p>
+							<img src="fightIcon.png" />
+							<p>屠宰场</p>
 						</a>
 					</li>
 				</ul>
 			</div>
 
-			
 		</div>
 
 	</body>

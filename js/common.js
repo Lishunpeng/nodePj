@@ -716,6 +716,10 @@ myFun.prototype = {
 		vm.monster.dropMoney = (Math.ceil(Math.random() * attrD) + minMoney) * 100;
 		vm.monster.ATK = Math.ceil(Math.random() * attrD) + minAttr; //攻击力生成随机数
 		vm.monster.DEF = Math.ceil(Math.random() * attrD) + minAttr;
+		vm.monster.HIT = Math.ceil(Math.random() * attrD) + minAttr;//命中
+		vm.monster.DOD = Math.ceil(Math.random() * attrD) + minAttr;//闪避
+		vm.monster.CRI = Math.ceil(Math.random() * attrD) + minAttr;//暴击率
+		vm.monster.TOU = Math.ceil(Math.random() * attrD) + minAttr;//韧性
 		vm.monster.HP = 10 * (Math.ceil(Math.random() * attrD) + minAttr);
 	},
 	//捕捉
@@ -755,6 +759,9 @@ myFun.prototype = {
 		$('.monData .imgbox').remove('span');
 		$('.myData .imgbox').remove('span');
 		//上限命中和暴击及最低命中及暴击及起始闪避和暴击
+		var HIT_RAT = 80;
+		var CRI_RAT = 80;
+		
 		var HIT_START = 60;
 		var HIT_MAX = 100;
 		var HIT_MIN = 20;
@@ -765,17 +772,17 @@ myFun.prototype = {
 		vm.monster.ATK = parseInt(vm.monster.ATK);
 		vm.monster.DEF = parseInt(vm.monster.DEF);
 		vm.monster.HP = parseInt(vm.monster.HP);
-		vm.monster.CRI = parseInt(vm.monster.HP);//暴击率
-		vm.monster.DOD = parseInt(vm.monster.HP);//闪避
-		vm.monster.HIT = parseInt(vm.monster.HP);//命中
-		vm.monster.TOU = parseInt(vm.monster.HP);//韧性
+		vm.monster.CRI = parseInt(vm.monster.CRI);//暴击率
+		vm.monster.DOD = parseInt(vm.monster.DOD);//闪避
+		vm.monster.HIT = parseInt(vm.monster.HIT);//命中
+		vm.monster.TOU = parseInt(vm.monster.TOU);//韧性
 		//我放信息
 		vm.myData.ATK = parseInt(vm.myData.ATK);
 		vm.myData.DEF = parseInt(vm.myData.DEF);
-		vm.myData.CRI = parseInt(vm.myData.HP);//暴击率
-		vm.myData.DOD = parseInt(vm.myData.HP);//闪避
-		vm.myData.HIT = parseInt(vm.myData.HP);//命中
-		vm.myData.TOU = parseInt(vm.myData.HP);//韧性
+		vm.myData.CRI = parseInt(vm.myData.CRI);//暴击率
+		vm.myData.DOD = parseInt(vm.myData.DOD);//闪避
+		vm.myData.HIT = parseInt(vm.myData.HIT);//命中
+		vm.myData.TOU = parseInt(vm.myData.TOU);//韧性
 		/*************************************************************/
 		//战斗开始
 		vm.myData.petATK = parseInt(vm.myData.petATK);
@@ -805,26 +812,37 @@ myFun.prototype = {
 			$('.attackEffect').fadeOut(300);
 			
 			
+			console.log(vm.monster.DOD)
+			var myHit = parseInt((vm.myData.HIT - vm.monster.DOD)/vm.myData.HIT*HIT_RAT + HIT_START);//我方是否命中转化成百分比
+			var monHit = parseInt((vm.monster.HIT - vm.myData.DOD)/vm.monster.HIT*HIT_RAT + HIT_START);//敌方是否命中转化成百分比
+			var myCRI = parseInt((vm.myData.CRI - vm.monster.TOU)/vm.myData.CRI*CRI_RAT + CRI_START);//我方是否暴击转化成百分比
+			var monCRI = parseInt((vm.monster.CRI - vm.myData.TOU)/vm.monster.CRI*CRI_RAT + CRI_START);//敌方是否暴击转化成百分比
 			
-			var myHit = (vm.myData.HIT - vm.monster.DOD)/vm.myData.HIT + HIT_START;//我方是否命中转化成百分比
-			var monHit = (vm.monster.HIT - vm.myData.DOD)/vm.monster.HIT + HIT_START;//敌方是否命中转化成百分比
-			var myCRI = (vm.myData.CRI - vm.monster.TOU)/vm.myData.CRI + CRI_START;//我方是否暴击转化成百分比
-			var monCRI = (vm.monster.HIT - vm.myData.DOD)/vm.monster.HIT + CRI_START;//敌方是否暴击转化成百分比
-			
-			
+			myHit>HIT_MAX?myHit = HIT_MAX:"";myHit<HIT_MIN?myHit = HIT_MIN:"";
+			myCRI>CRI_MAX?myCRI = CRI_MAX:"";myCRI<CRI_MIN?myCRI = CRI_MIN:"";
+			monHit>HIT_MAX?monHit = HIT_MAX:"";monHit<HIT_MIN?monHit = HIT_MIN:"";
+			monCRI>CRI_MAX?monCRI = CRI_MAX:"";monCRI<CRI_MIN?monCRI = CRI_MIN:"";
+			console.log(myHit,myCRI,monHit,monCRI)
 			var myAttack = vm.myData.ATK - vm.monster.DEF;//普通扣除血量
 			var petAttack = vm.myData.petATK - vm.monster.DEF;//普通宠物扣除血量
 			var myLosehp = vm.monster.ATK - vm.myData.DEF;//我流失的血量
 			
 			var isMyHit = myobj.oddsCount(myHit)//我方是否命中
 			var isMonHit = myobj.oddsCount(monHit)//敌方是否命中
-			
+			var isMyCRI = myobj.oddsCount(myCRI)//我方是否暴击
+			var isMonCRI = myobj.oddsCount(monCRI)//敌方是否暴击
+			console.log(isMyCRI,isMonCRI)
 			if (isMyHit) {
 				petAttack > 0 ? petAttack = petAttack : petAttack = 1;//宠物伤害
+				if (isMyCRI) {
+					petAttack = petAttack*2; 
+					myAttack = myAttack*2;
+				}
 				vm.monster.HP -= myAttack + petAttack;
 			}
 			if (isMonHit) {
 				myLosehp > 0 ? myLosehp = myLosehp : myLosehp = 1;
+				isMonCRI?myLosehp=myLosehp*2:"";
 				vm.myData.HP -= myLosehp;	
 			}
 			
@@ -833,12 +851,16 @@ myFun.prototype = {
 			
 			
 			
-			myobj.adventInfo(myLosehp, myAttack, petAttack,isMyHit,isMonHit);
+			myobj.adventInfo(myLosehp, myAttack, petAttack,isMyHit,isMonHit,isMyCRI,isMonCRI);
 		}
 		console.log(vm.monster)
 	},
 	//冒险模式显示信息
-	adventInfo: function(mylose, myAttack, petAttack) {
+	adventInfo: function(mylose, myAttack, petAttack,ismyHit,isMonHit,isMyCRI,isMonCRI) {
+		console.log(isMyCRI,'isMyCRI')
+		console.log(isMonCRI,'isMonCRI')
+		console.log(ismyHit,'ismyHit')
+		console.log(isMonHit,'isMonHit')
 		if(vm.myData.HP <= 0) {
 			vm.myData.HP = 0;
 			mui.alert('你死了！', function() {
@@ -846,8 +868,7 @@ myFun.prototype = {
 			})
 		} else if(vm.monster.HP <= 0) {
 			$('.a_attack').attr('disabled', 'disabled');
-
-			$(".winnerBox").slideDown(300);
+			$(".winnerBox").show();
 			var str = $('.winnerBox .winnerBorder').css('height');
 			str = parseInt(str.replace('px', "")) / 2;
 			$('.winnerBox .winnerBorder').css('top', 'calc(50% - ' + str + 'px)');
@@ -865,9 +886,22 @@ myFun.prototype = {
 			console.log(vm.myDrop, vm.addMoney)
 		} else {
 			$('.monHp').text(vm.monster.HP);
-			$('.monData .imgbox').prepend("<span class='loseHp myattack'>-" + myAttack + "</span> ");
-			$('.monData .imgbox').prepend("<span class='loseHp petattack'>-" + petAttack + "</span> ");
-			$('.myData .imgbox:first').prepend("<span class='loseHp'>-" + mylose + "</span> ");
+			if (ismyHit) {
+				$('.monData .imgbox').prepend("<span class='loseHp myattack'>-" + myAttack + "</span>");
+				$('.monData .imgbox').prepend("<span class='loseHp petattack'>-" + petAttack + "</span>");
+				isMyCRI?$('.monData .imgbox span').addClass('CRI'):"";
+			}else{
+				$('.monData .imgbox').prepend("<span class='loseHp myattack unhit'>MISS</span>");
+				$('.monData .imgbox').prepend("<span class='loseHp petattack unhit'>MISS</span>");
+			}
+			
+			if (isMonHit) {
+				$('.myData .imgbox:first').prepend("<span class='loseHp'>-" + mylose + "</span> ");
+				isMonCRI?$('.myData .imgbox:first').find('span').addClass('CRI'):"";
+			}else{
+				$('.myData .imgbox:first').prepend("<span class='loseHp unhit'>MISS</span> ")
+			}
+			console.log($('.myData .imgbox:first').find('span').attr('class'))
 		}
 	},
 	//概率计算
@@ -1398,6 +1432,29 @@ myFun.prototype = {
 		postData.headPath = headerData;
 		myobj.postajax('/headImg',postData,obj);
 		$(obj).attr('disabled','disabled');
+	},
+	//获取占卜数据
+	diviData:function(){
+		vm.divinationData = divination;
+	},
+	//占卜
+	clickDivination:function(obj){
+		if ($(obj).attr("data-bool")==0) {
+			return;
+		}
+		if (!$(obj).attr("data-isOpen")) {
+			return mui.alert('你还没有遇到该占卜师');
+		}
+		
+		var count = parseInt($(obj).attr("data-index")) + 1;
+		count>vm.divinationData.length - 1?count = 0:"";
+		for (i in vm.divinationData) {
+			vm.divinationData[i].isOpen = false;
+		}
+		vm.divinationData[0].isOpen = true;
+		vm.divinationData[count].isOpen = true;
+		$(obj).attr("data-bool",0);
+		
 	}
 
 }
@@ -1436,7 +1493,8 @@ var vm = new Vue({
 		power: '', //总能力（30%ATK+30%PET+20%DEF+20HP）
 		friendData: [], //好友的数据
 		duelData: [], //决斗数据
-		headerImg: [] //头像
+		headerImg: [], //头像
+		divinationData:[]//占卜数据
 	},
 	methods: {
 		//登录页面
