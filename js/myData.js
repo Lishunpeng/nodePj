@@ -39,6 +39,31 @@ var myEqui =[
 	{type:'amu',code:"200",name:"破损的护符",detail:"一个损坏的护身符。",myclass:"broke",imgPath:"bag_amu_200.png"},
 	{type:'amu',code:"201",name:"普通的护符",detail:"普通家庭的传家符。",myclass:"ordin",imgPath:"bag_amu_200.png"}
 ];
+
+
+//命格物品
+var myDes = [
+	{type:'hit',code:"00",name:"集中",detail:"集中注意力。",myclass:"broke",imgPath:"bag_mat_00.png",getEXP:'10'},
+	{type:'hit',code:"01",name:"天眼",detail:"第三只眼",myclass:"ordin",imgPath:"bag_mat_00.png",getEXP:'30'},
+	{type:'hit',code:"02",name:"见闻色",detail:"第三只眼。",myclass:"green",imgPath:"bag_mat_00.png",getEXP:'100'},
+	{type:'hit',code:"03",name:"耳听八方",detail:"第三只眼。",myclass:"blue",imgPath:"bag_mat_00.png",getEXP:'300'},
+	{type:'hit',code:"04",name:"天衣无缝",detail:"第三只眼。",myclass:"pink",imgPath:"bag_mat_00.png",getEXP:'1000'},
+	{type:'hit',code:"05",name:"百步穿杨",detail:"第三只眼。",myclass:"red",imgPath:"bag_mat_00.png",getEXP:'2500'},
+	{type:'hit',code:"06",name:"真·百步穿杨",detail:"第三只眼。",myclass:"purple",imgPath:"bag_mat_00.png"},
+	{type:'dod',code:"10",name:"灵巧",detail:"第三只眼。",myclass:"broke",imgPath:"bag_mat_00.png"},
+	{type:'dod',code:"11",name:"迅捷",detail:"第三只眼。",myclass:"ordin",imgPath:"bag_mat_00.png"},
+	{type:'dod',code:"12",name:"电光石火",detail:"第三只眼。",myclass:"green",imgPath:"bag_mat_00.png"},
+	{type:'dod',code:"13",name:"星驰电走",detail:"第三只眼。",myclass:"blue",imgPath:"bag_mat_00.png"},
+	{type:'dod',code:"14",name:"雷厉风行",detail:"第三只眼。",myclass:"pink",imgPath:"bag_mat_00.png"},
+	{type:'dod',code:"15",name:"风驰电掣",detail:"第三只眼。",myclass:"red",imgPath:"bag_mat_00.png"},
+	{type:'dod',code:"16",name:"真·风驰电掣",detail:"第三只眼。",myclass:"purple",imgPath:"bag_mat_00.png"}	
+]
+
+
+
+
+
+
 //宠物
 
 var myPet = [
@@ -698,6 +723,23 @@ var levelData = [
 	{code:10,odds:3,failOdds:75,failDown:5,levelAttr:15,needMat:10},
 	{code:11,levelAttr:20}
 ]
+//命格升级
+var levelDes = [
+	{code:1,levelAttr:1,needEXP:1},
+	{code:2,levelAttr:1.3,needEXP:2},
+	{code:3,levelAttr:1.8,needEXP:3},
+	{code:4,levelAttr:2.5,needEXP:4},
+	{code:5,levelAttr:3.4,needEXP:5},
+	{code:6,levelAttr:4.5,needEXP:6},
+	{code:7,levelAttr:5.8,needEXP:7},
+	{code:8,levelAttr:8,needEXP:8},
+	{code:9,levelAttr:11.5,needEXP:9},
+	{code:10,levelAttr:15,needEXP:10},
+	{code:11,levelAttr:20}
+]
+
+
+
 //融合概率
 var evolData = [
 	{code:'broke',odds:80,needMoney:10000,loseOdds:20,nextClass:'ordin'},
@@ -729,10 +771,16 @@ var on_hoonDrop = [
 ]
 //命格数据
 var divination = [
-	{unOpenPath:'divinationImg/black_ww.jpg',imgPath:'divinationImg/ww.jpg',myclass:'ordin',name:'魏徵',detail:'能获得绿色以下的命格',needMoney:5000,isOpen:true},
-	{unOpenPath:'divinationImg/black_zgl.jpg',imgPath:'divinationImg/zgl.jpg',myclass:'green',name:'诸葛亮',detail:'能获得蓝色以下的命格',needMoney:10000,isOpen:false},
-	{unOpenPath:'divinationImg/black_ls.jpg',imgPath:'divinationImg/ls.jpg',myclass:'blue',name:'李斯',detail:'能获得粉色以下的命格',needMoney:20000,isOpen:false},
-	{unOpenPath:'divinationImg/black_sy.jpg',imgPath:'divinationImg/sy.jpg',myclass:'pink',name:'商鞅',detail:'更高概率能获得粉色以下的命格',needMoney:40000,isOpen:false},
-	{unOpenPath:'divinationImg/black_gz.jpg',imgPath:'divinationImg/gz.jpg',myclass:'red',name:'管仲',detail:'能获得红色以下的命格',needMoney:100000,isOpen:false},
-	{unOpenPath:'divinationImg/black_jzy.jpg',imgPath:'divinationImg/jzy.jpg',myclass:'purple',name:'姜子牙',detail:'能获得紫色以下的命格',needMoney:200000,isOpen:false},
+	{unOpenPath:'divinationImg/black_ww.jpg',imgPath:'divinationImg/ww.jpg',myclass:'ordin',name:'魏徵',detail:'能获得绿色以下的命格',
+	needMoney:5000,isOpen:true,dropRareOdds:'0',dropOdds:'100',next:'80',odds:'broke,ordin,green'},
+	{unOpenPath:'divinationImg/black_zgl.jpg',imgPath:'divinationImg/zgl.jpg',myclass:'green',name:'诸葛亮',detail:'能获得蓝色以下的命格',
+	needMoney:10000,isOpen:false,dropRareOdds:'30',dropOdds:'70',rare:'blue',next:'60',odds:'broke,ordin,green'},
+	{unOpenPath:'divinationImg/black_ls.jpg',imgPath:'divinationImg/ls.jpg',myclass:'blue',name:'李斯',detail:'能获得粉色以下的命格',
+	needMoney:20000,isOpen:false,dropRareOdds:'40',dropOdds:'60',rare:'blue',next:'50',odds:'broke,ordin,green'},
+	{unOpenPath:'divinationImg/black_sy.jpg',imgPath:'divinationImg/sy.jpg',myclass:'pink',name:'商鞅',detail:'更高概率能获得粉色以下的命格',
+	needMoney:40000,isOpen:false,dropRareOdds:'20',dropOdds:'80',rare:'pink',next:'40',odds:'broke,ordin,green,blue'},
+	{unOpenPath:'divinationImg/black_gz.jpg',imgPath:'divinationImg/gz.jpg',myclass:'red',name:'管仲',detail:'能获得红色以下的命格',
+	needMoney:100000,isOpen:false,next:'40',dropRareOdds:'30',dropOdds:'70',rare:'pink,red',odds:'broke,ordin,green,blue'},
+	{unOpenPath:'divinationImg/black_jzy.jpg',imgPath:'divinationImg/jzy.jpg',myclass:'purple',name:'姜子牙',detail:'能获得紫色以下的命格',
+	needMoney:200000,isOpen:false,dropRareOdds:'30',dropOdds:'70',rare:'pink,purple,red',next:'0',odds:'broke,ordin,green,blue'}
 ]

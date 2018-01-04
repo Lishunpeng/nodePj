@@ -27,6 +27,7 @@
 				<li class="cur"><span></span>装备</li>
 				<li><span></span>其他</li>
 				<li><span></span>宠物</li>
+				<li><span></span>命格</li>
 			</ul>
 			<ol class="bagDetail" id="bagData">
 				<li class="cur">
@@ -52,7 +53,14 @@
 						</li>
 					</ul>
 				</li>
-				<li>4</li>
+				<li>
+					<ul class="bagCont border mui-table-view">
+						<li :class="data.goods.myclass" v-for="data in desData" onclick="myobj.equiListClick(this)" :data-mydata="JSON.stringify(data)" :style="{backgroundImage:'url('+data.goods.imgPath+')'}">
+							<span class="intensify" v-text="data.level+'级'"></span>
+							<span :class="data.useState==1?'use':'unuse'"></span>
+						</li>
+					</ul>
+				</li>
 			</ol>
 			<div class="clickBox" onclick="myobj.stopClickEqui()">
 				<ul>

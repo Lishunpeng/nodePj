@@ -82,7 +82,9 @@ app.post('/firstlogin',function(req, res){
 						{myacco: myattr.myacco,code:'000',type:'pet',level:1,useState:'0',addAttr:13},
 						{myacco: myattr.myacco,code:'001',type:'pet',level:1,useState:'0',addAttr:15},
 						{myacco: myattr.myacco,code:'002',type:'pet',level:1,useState:'1',addAttr:18},
-						{myacco: myattr.myacco,code:'003',type:'pet',level:1,useState:'0',addAttr:20}
+						{myacco: myattr.myacco,code:'003',type:'pet',level:1,useState:'0',addAttr:20},
+						{myacco: myattr.myacco,code:'00',type:'des',level:1,useState:'1',addAttr:3},
+						{myacco: myattr.myacco,code:'10',type:'des',level:1,useState:'1',addAttr:3}
 						]
 						
 //						var friend = {friendAcco: 'a569133352',friendName:'哈哈哈',myacco: myattr.myacco}

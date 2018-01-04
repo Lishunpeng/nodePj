@@ -25,15 +25,11 @@
 				</div>
 			</div>
 			<ul class="chooseDiff border">
-				
-					<li v-for="(data,index) in divinationData" :data-index='index' data-bool="1" :data-isopen="data.isOpen" :class="data.myclass" :style="[data.isOpen?{backgroundImage:'url('+data.imgPath+')'}:{backgroundImage:'url('+data.unOpenPath+')'}]" onclick="myobj.clickDivination(this)">
-						{{data.name}}
-						<p v-if="!data.isOpen">未开启</p>
-						<p v-else v-text="'$'+data.needMoney"></p>
-					</li>
-					
-				
-				
+				<li v-for="(data,index) in divinationData" :data-data="JSON.stringify(data)" :data-index='index' data-bool="1" :data-isopen="data.isOpen" :class="[data.isOpen?data.myclass:'ordin']" :style="[data.isOpen?{backgroundImage:'url('+data.imgPath+')'}:{backgroundImage:'url('+data.unOpenPath+')'}]" onclick="myobj.clickDivination(this)">
+					{{data.name}}
+					<p v-if="!data.isOpen">未开启</p>
+					<p v-else v-text="'$'+data.needMoney"></p>
+				</li>
 			</ul>
 		</div>
 		<div class="mybackLink">

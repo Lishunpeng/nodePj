@@ -224,6 +224,7 @@ myFun.prototype = {
 					myobj.getGoodsClass();
 					vm.equiData = myobj.getData(myEqui, vm.myData.equiCode);
 					vm.petData = myobj.getData(myPet, vm.myData.petCode);
+					vm.desData = myobj.getData(myDes, vm.myData.desCode);
 					vm.matData = myobj.getData(mymaterial, vm.myData.matCode);
 					if(search == "/intenEqui.html") {
 						vm.myData.intenNum = myobj.getOneData(vm.myData.matCode, '06');
@@ -289,6 +290,7 @@ myFun.prototype = {
 		myobj.getGoodsClass();
 		vm.equiData = myobj.getData(myEqui, vm.myData.equiCode);
 		vm.petData = myobj.getData(myPet, vm.myData.petCode);
+		vm.desData = myobj.getData(myDes, vm.myData.desCode);
 		vm.myData.petATK = vm.petData[0].myAttr;
 		vm.myData.petName = vm.petData[0].goods.name;
 		vm.myData.petimgPath = vm.petData[0].goods.imgPath;
@@ -310,11 +312,14 @@ myFun.prototype = {
 		vm.myData.matCode =[];
 		vm.myData.equiCode =[];
 		vm.myData.petCode =[];
+		vm.myData.desCode =[];
 		for (i in goods) {
 			if (goods[i].type=='mat') {
 				vm.myData.matCode.push(goods[i]);
 			}else if(goods[i].type=='pet'){
 				vm.myData.petCode.push(goods[i]);
+			}else if(goods[i].type=='des'){
+				vm.myData.desCode.push(goods[i]);
 			}else{
 				vm.myData.equiCode.push(goods[i]);
 			}
@@ -422,12 +427,15 @@ myFun.prototype = {
 		obj ? mydata = JSON.parse($(obj).attr('data-data')) : mydata = JSON.parse(localStorage.mydata);
 		if(mydata.type != 'mat') {
 			mydata.type == 'pet' ? str1 = '<br>宠物等级：' + mydata.level : str1 = '<br>强化等级：' + mydata.inten;
+			mydata.type == 'des' ? str1 = '<br>命格等级：' + mydata.level : "";
 			if(mydata.type == 'wea' || mydata.type == 'pet') {
 				mydata.belone = 'ATK';
 			} else if(mydata.type == 'clo') {
 				mydata.belone = 'DEF';
 			} else if(mydata.type == 'amu') {
 				mydata.belone = 'HP';
+			}else if(mydata.type == 'des'){
+				parseInt(mydata.code)>=10?mydata.belone = 'DOD':mydata.belone = 'HIT';
 			}
 		}
 		mydata.myAttr ? str = '物品：<span class=' + mydata.goods.myclass + '>' + mydata.goods.name + '</span>\n' + mydata.belone + ':+' + mydata.myAttr + '<span style="color:#f0ad4e">(初始：' + mydata.addAttr + ')</span>' + '\n阐述：' + mydata.goods.detail :
@@ -1435,7 +1443,9 @@ myFun.prototype = {
 	},
 	//获取占卜数据
 	diviData:function(){
+		localStorage.count = localStorage.count || 0;
 		vm.divinationData = divination;
+		vm.divinationData[localStorage.count].isOpen = true;
 	},
 	//占卜
 	clickDivination:function(obj){
@@ -1445,16 +1455,40 @@ myFun.prototype = {
 		if (!$(obj).attr("data-isOpen")) {
 			return mui.alert('你还没有遇到该占卜师');
 		}
+		var postData = {}
+		var _data =  JSON.parse($(obj).attr('data-data'))
 		
-		var count = parseInt($(obj).attr("data-index")) + 1;
-		count>vm.divinationData.length - 1?count = 0:"";
+		var result = myobj.diviOdds(_data.dropRareOdds,_data.dropOdds);
+		var oddsArray = _data.odds.split(',');
+		result=='isOrdin'?"":oddsArray = _data.rare.split(',');
+		var ramDom = Math.ceil(Math.random() * oddsArray.length);
+		console.log(oddsArray[ramDom-1]);
+		var isNext = myobj.oddsCount(_data.next);
+		var count = 0;
+		isNext?count = parseInt($(obj).attr("data-index")) + 1:"";
+		console.log(isNext)
+		localStorage.count = count;
 		for (i in vm.divinationData) {
 			vm.divinationData[i].isOpen = false;
 		}
 		vm.divinationData[0].isOpen = true;
 		vm.divinationData[count].isOpen = true;
-		$(obj).attr("data-bool",0);
+		postData.myacco = localStorage.acco;
+		postData.money = parseInt(vm.myData.money) - parseInt(_data.needMoney);
+		console.log(postData)
 		
+		
+		
+//		$(obj).attr("data-bool",0);
+		
+	},
+	//占卜概率
+	diviOdds:function(rareOdds,ordinOdds){
+		var ramDom = Math.ceil(Math.random() * 100);
+		var result = "isOrdin"
+		ramDom < rareOdds? result = 'isRare':"";
+		console.log(ramDom)
+		return result;
 	}
 
 }
@@ -1480,6 +1514,7 @@ var vm = new Vue({
 		equiData: [], //背包装备数组
 		matData: [], //背包材料数据数组
 		petData: [], //背包宠物数组
+		desData:[],//背包中命格数组
 		useWea: {}, //使用武器对象
 		useClo: {}, //使用衣服对象
 		useAmu: {}, //使用护符对象
