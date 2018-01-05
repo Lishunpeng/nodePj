@@ -68,23 +68,35 @@ app.post('/firstlogin',function(req, res){
 							HIT:'10',//命中力
 							CRI:'10',//暴击率
 							TOU:'10',//韧性
+							CRH:'10',//暴击伤害
 							money:'100000000'
 						};
 						//初始化背包数据
 						var goods = [
-						{myacco: myattr.myacco,code:'000',type:'wea',useState:'1',inten:0,addAttr:3,getMoney:300},
-						{myacco: myattr.myacco,code:'100',type:'clo',useState:'1',inten:0,addAttr:3,getMoney:400},
-						{myacco: myattr.myacco,code:'200',type:'amu',useState:'1',inten:0,addAttr:30,getMoney:500},
-						{myacco: myattr.myacco,code:'00',type:'mat',num:5},
-						{myacco: myattr.myacco,code:'01',type:'mat',num:3},
-						{myacco: myattr.myacco,code:'02',type:'mat',num:2},
-						{myacco: myattr.myacco,code:'05',type:'mat',num:1},
-						{myacco: myattr.myacco,code:'000',type:'pet',level:1,useState:'0',addAttr:13},
-						{myacco: myattr.myacco,code:'001',type:'pet',level:1,useState:'0',addAttr:15},
-						{myacco: myattr.myacco,code:'002',type:'pet',level:1,useState:'1',addAttr:18},
-						{myacco: myattr.myacco,code:'003',type:'pet',level:1,useState:'0',addAttr:20},
-						{myacco: myattr.myacco,code:'00',type:'des',level:1,useState:'1',addAttr:3},
-						{myacco: myattr.myacco,code:'10',type:'des',level:1,useState:'1',addAttr:3}
+							{myacco: myattr.myacco,code:'000',type:'wea',useState:'1',inten:0,addAttr:3,getMoney:300},
+							{myacco: myattr.myacco,code:'100',type:'clo',useState:'1',inten:0,addAttr:3,getMoney:400},
+							{myacco: myattr.myacco,code:'200',type:'amu',useState:'1',inten:0,addAttr:30,getMoney:500},
+							{myacco: myattr.myacco,code:'300',type:'cri',useState:'1',inten:0,addAttr:3,getMoney:300},
+							{myacco: myattr.myacco,code:'400',type:'tou',useState:'1',inten:0,addAttr:3,getMoney:400},
+							{myacco: myattr.myacco,code:'500',type:'hit',useState:'1',inten:0,addAttr:3,getMoney:500},
+							{myacco: myattr.myacco,code:'600',type:'dod',useState:'1',inten:0,addAttr:3,getMoney:500},
+							{myacco: myattr.myacco,code:'700',type:'crh',useState:'1',inten:0,addAttr:3,getMoney:500},
+							{myacco: myattr.myacco,code:'00',type:'mat',num:5},
+							{myacco: myattr.myacco,code:'01',type:'mat',num:3},
+							{myacco: myattr.myacco,code:'02',type:'mat',num:2},
+							{myacco: myattr.myacco,code:'05',type:'mat',num:1},
+							{myacco: myattr.myacco,code:'000',type:'pet',level:1,useState:'0',addAttr:13},
+							{myacco: myattr.myacco,code:'001',type:'pet',level:1,useState:'0',addAttr:15},
+							{myacco: myattr.myacco,code:'002',type:'pet',level:1,useState:'1',addAttr:18},
+							{myacco: myattr.myacco,code:'003',type:'pet',level:1,useState:'0',addAttr:20},
+							{myacco: myattr.myacco,code:'00',type:'des',level:1,useState:'1',addAttr:3,dis:'hit'},
+							{myacco: myattr.myacco,code:'10',type:'des',level:1,useState:'1',addAttr:3,dis:'dod'},
+							{myacco: myattr.myacco,code:'20',type:'des',level:1,useState:'1',addAttr:3,dis:'wea'},
+							{myacco: myattr.myacco,code:'30',type:'des',level:1,useState:'1',addAttr:3,dis:'clo'},
+							{myacco: myattr.myacco,code:'40',type:'des',level:1,useState:'1',addAttr:3,dis:'amu'},
+							{myacco: myattr.myacco,code:'50',type:'des',level:1,useState:'1',addAttr:3,dis:'cri'},
+							{myacco: myattr.myacco,code:'60',type:'des',level:1,useState:'1',addAttr:3,dis:'tou'},
+							{myacco: myattr.myacco,code:'70',type:'des',level:1,useState:'1',addAttr:3,dis:'crh'},
 						]
 						
 //						var friend = {friendAcco: 'a569133352',friendName:'哈哈哈',myacco: myattr.myacco}

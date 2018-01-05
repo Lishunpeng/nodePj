@@ -11,6 +11,7 @@
 	</head>
 	<style>
 		.ATK span,.DEF span,.HP span{color: #EC971F;}
+		.info{padding:.2rem 0;width: 7rem;margin: 0 auto;}
 	</style>
 
 	<body><div class="loading"><img src="loading.gif"/></div>
@@ -38,6 +39,7 @@
 				<div class="petInfo">
 					<div class="HP" v-html="'角色闪避率 : <span>'+myData.DOD+'</span>'"></div>
 					<div class="HP" v-html="'角色抗暴率 : <span>'+myData.TOU+'</span>'"></div>
+					<div class="HP" v-html="'角色暴击伤害 : <span>'+myData.CRH+'</span>'"></div>
 					<div class="ATK" v-html="'宠物攻击力 :<span> '+myData.petATK+'</span>'"></div>
 					<div class="ATK" v-html="'战斗力评估 : <span>'+power+'</span>'"></div>
 				</div>
@@ -46,13 +48,20 @@
 					
 					<div v-for="data in equiData">
 						<p :class="data.goods.myclass" :style="{backgroundImage:'url('+data.goods.imgPath+')'}" :data-data="JSON.stringify(data)" onclick="myobj.clickBox_detail(this)">
-						<span class="intensify" v-text="'+'+data.inten"></span>
-					</p>
+							<span class="intensify" v-text="'+'+data.inten"></span>
+						</p>
 					</div>
 					<div v-for="data in petData" style="float: left;">
 						<p :class="data.goods.myclass" :style="{backgroundImage:'url('+data.goods.imgPath+')'}" :data-data="JSON.stringify(data)" onclick="myobj.clickBox_detail(this)">
 							<span class="intensify" v-text="data.level+'级'"></span>
 						</p>
+					</div>
+					<div class="role_desBox">
+						<div class="scollX">
+							<p v-for="data in desData"  :class="data.goods.myclass" :style="{backgroundImage:'url('+data.goods.imgPath+')'}" :data-data="JSON.stringify(data)" onclick="myobj.clickBox_detail(this)">
+								<span class="intensify" v-text="data.level+'级'"></span>
+							</p>
+						</div>
 					</div>
 					<!--
 					<div><p :class="useClo.myclass" :style="{backgroundImage:'url('+useClo.imgPath+')'}" :data-data="JSON.stringify(useClo)">

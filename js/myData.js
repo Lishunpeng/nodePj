@@ -37,12 +37,23 @@ var myEqui =[
 	{type:'clo',code:"100",name:"破损的布衣",detail:"一个穷逼穿的衣服。",myclass:"broke",imgPath:"bag_clo_100.png"},
 	{type:'clo',code:"101",name:"普通的布衣",detail:"普通草民衣服。",myclass:"ordin",imgPath:"bag_clo_100.png"},
 	{type:'amu',code:"200",name:"破损的护符",detail:"一个损坏的护身符。",myclass:"broke",imgPath:"bag_amu_200.png"},
-	{type:'amu',code:"201",name:"普通的护符",detail:"普通家庭的传家符。",myclass:"ordin",imgPath:"bag_amu_200.png"}
+	{type:'amu',code:"201",name:"普通的护符",detail:"普通家庭的传家符。",myclass:"ordin",imgPath:"bag_amu_200.png"},
+	{type:'cri',code:"300",name:"破损的手套",detail:"一个穷逼穿的衣服。",myclass:"broke",imgPath:"bag_cri_300.png"},
+	{type:'cri',code:"301",name:"普通的手套",detail:"普通草民衣服。",myclass:"ordin",imgPath:"bag_cri_300.png"},
+	{type:'tou',code:"400",name:"破损的裤子",detail:"一个损坏的护身符。",myclass:"broke",imgPath:"bag_tou_400.png"},
+	{type:'tou',code:"401",name:"普通的裤子",detail:"普通家庭的传家符。",myclass:"ordin",imgPath:"bag_tou_400.png"},
+	{type:'hit',code:"500",name:"破损的头盔",detail:"一个穷逼穿的衣服。",myclass:"broke",imgPath:"bag_hit_500.png"},
+	{type:'hit',code:"501",name:"普通的头盔",detail:"普通草民衣服。",myclass:"ordin",imgPath:"bag_hit_500.png"},
+	{type:'dod',code:"600",name:"破损的鞋子",detail:"一个损坏的护身符。",myclass:"broke",imgPath:"bag_dod_600.png"},
+	{type:'dod',code:"601",name:"普通的鞋子",detail:"普通家庭的传家符。",myclass:"ordin",imgPath:"bag_dod_600.png"},
+	{type:'crh',code:"700",name:"破损的布衣",detail:"一个穷逼穿的衣服。",myclass:"broke",imgPath:"bag_crh_700.png"},
+	{type:'crh',code:"701",name:"普通的布衣",detail:"普通草民衣服。",myclass:"ordin",imgPath:"bag_crh_700.png"},
 ];
 
 
 //命格物品
 var myDes = [
+//命中命格
 	{type:'hit',code:"00",name:"集中",detail:"集中注意力。",myclass:"broke",imgPath:"bag_mat_00.png",getEXP:'10'},
 	{type:'hit',code:"01",name:"天眼",detail:"第三只眼",myclass:"ordin",imgPath:"bag_mat_00.png",getEXP:'30'},
 	{type:'hit',code:"02",name:"见闻色",detail:"第三只眼。",myclass:"green",imgPath:"bag_mat_00.png",getEXP:'100'},
@@ -50,13 +61,62 @@ var myDes = [
 	{type:'hit',code:"04",name:"天衣无缝",detail:"第三只眼。",myclass:"pink",imgPath:"bag_mat_00.png",getEXP:'1000'},
 	{type:'hit',code:"05",name:"百步穿杨",detail:"第三只眼。",myclass:"red",imgPath:"bag_mat_00.png",getEXP:'2500'},
 	{type:'hit',code:"06",name:"真·百步穿杨",detail:"第三只眼。",myclass:"purple",imgPath:"bag_mat_00.png"},
+//闪避命格
 	{type:'dod',code:"10",name:"灵巧",detail:"第三只眼。",myclass:"broke",imgPath:"bag_mat_00.png"},
 	{type:'dod',code:"11",name:"迅捷",detail:"第三只眼。",myclass:"ordin",imgPath:"bag_mat_00.png"},
 	{type:'dod',code:"12",name:"电光石火",detail:"第三只眼。",myclass:"green",imgPath:"bag_mat_00.png"},
 	{type:'dod',code:"13",name:"星驰电走",detail:"第三只眼。",myclass:"blue",imgPath:"bag_mat_00.png"},
 	{type:'dod',code:"14",name:"雷厉风行",detail:"第三只眼。",myclass:"pink",imgPath:"bag_mat_00.png"},
 	{type:'dod',code:"15",name:"风驰电掣",detail:"第三只眼。",myclass:"red",imgPath:"bag_mat_00.png"},
-	{type:'dod',code:"16",name:"真·风驰电掣",detail:"第三只眼。",myclass:"purple",imgPath:"bag_mat_00.png"}	
+	{type:'dod',code:"16",name:"真·风驰电掣",detail:"第三只眼。",myclass:"purple",imgPath:"bag_mat_00.png"},
+//攻击命格
+	{type:'wea',code:"20",name:"狂暴",detail:"集中注意力。",myclass:"broke",imgPath:"bag_mat_00.png",getEXP:'10'},
+	{type:'wea',code:"21",name:"神力",detail:"第三只眼",myclass:"ordin",imgPath:"bag_mat_00.png",getEXP:'30'},
+	{type:'wea',code:"22",name:"武装色",detail:"第三只眼。",myclass:"green",imgPath:"bag_mat_00.png",getEXP:'100'},
+	{type:'wea',code:"23",name:"拔山举鼎",detail:"第三只眼。",myclass:"blue",imgPath:"bag_mat_00.png",getEXP:'300'},
+	{type:'wea',code:"24",name:"排山倒海",detail:"第三只眼。",myclass:"pink",imgPath:"bag_mat_00.png",getEXP:'1000'},
+	{type:'wea',code:"25",name:"雷霆万钧",detail:"第三只眼。",myclass:"red",imgPath:"bag_mat_00.png",getEXP:'2500'},
+	{type:'wea',code:"26",name:"真·雷霆万钧",detail:"第三只眼。",myclass:"purple",imgPath:"bag_mat_00.png"},
+//防御命格
+	{type:'clo',code:"30",name:"勇猛",detail:"第三只眼。",myclass:"broke",imgPath:"bag_mat_00.png"},
+	{type:'clo',code:"31",name:"铁布衫",detail:"第三只眼。",myclass:"ordin",imgPath:"bag_mat_00.png"},
+	{type:'clo',code:"32",name:"铜筋铁骨",detail:"第三只眼。",myclass:"green",imgPath:"bag_mat_00.png"},
+	{type:'clo',code:"33",name:"虎背熊腰",detail:"第三只眼。",myclass:"blue",imgPath:"bag_mat_00.png"},
+	{type:'clo',code:"34",name:"魁梧奇伟",detail:"第三只眼。",myclass:"pink",imgPath:"bag_mat_00.png"},
+	{type:'clo',code:"35",name:"神龙马壮",detail:"第三只眼。",myclass:"red",imgPath:"bag_mat_00.png"},
+	{type:'clo',code:"36",name:"真·神龙马壮",detail:"第三只眼。",myclass:"purple",imgPath:"bag_mat_00.png"},
+//血量命格
+	{type:'amu',code:"40",name:"充沛",detail:"集中注意力。",myclass:"broke",imgPath:"bag_mat_00.png",getEXP:'10'},
+	{type:'amu',code:"41",name:"蓬勃",detail:"第三只眼",myclass:"ordin",imgPath:"bag_mat_00.png",getEXP:'30'},
+	{type:'amu',code:"42",name:"不死鸟",detail:"第三只眼。",myclass:"green",imgPath:"bag_mat_00.png",getEXP:'100'},
+	{type:'amu',code:"43",name:"生龙活虎",detail:"第三只眼。",myclass:"blue",imgPath:"bag_mat_00.png",getEXP:'300'},
+	{type:'amu',code:"44",name:"涅磐重生",detail:"第三只眼。",myclass:"pink",imgPath:"bag_mat_00.png",getEXP:'1000'},
+	{type:'amu',code:"45",name:"万寿无疆",detail:"第三只眼。",myclass:"red",imgPath:"bag_mat_00.png",getEXP:'2500'},
+	{type:'amu',code:"46",name:"真·万寿无疆",detail:"第三只眼。",myclass:"purple",imgPath:"bag_mat_00.png"},
+//暴击命格
+	{type:'cri',code:"50",name:"重伤",detail:"第三只眼。",myclass:"broke",imgPath:"bag_mat_00.png"},
+	{type:'cri',code:"51",name:"斩钉",detail:"第三只眼。",myclass:"ordin",imgPath:"bag_mat_00.png"},
+	{type:'cri',code:"52",name:"致命一击",detail:"第三只眼。",myclass:"green",imgPath:"bag_mat_00.png"},
+	{type:'cri',code:"53",name:"股肱之力",detail:"第三只眼。",myclass:"blue",imgPath:"bag_mat_00.png"},
+	{type:'cri',code:"54",name:"斗转星移",detail:"第三只眼。",myclass:"pink",imgPath:"bag_mat_00.png"},
+	{type:'cri',code:"55",name:"霸者横栏",detail:"第三只眼。",myclass:"red",imgPath:"bag_mat_00.png"},
+	{type:'cri',code:"56",name:"真·霸者横栏",detail:"第三只眼。",myclass:"purple",imgPath:"bag_mat_00.png"},
+//抗暴命格
+	{type:'tou',code:"60",name:"抗打",detail:"集中注意力。",myclass:"broke",imgPath:"bag_mat_00.png",getEXP:'10'},
+	{type:'tou',code:"61",name:"天体",detail:"第三只眼",myclass:"ordin",imgPath:"bag_mat_00.png",getEXP:'30'},
+	{type:'tou',code:"62",name:"破釜沉舟",detail:"第三只眼。",myclass:"green",imgPath:"bag_mat_00.png",getEXP:'100'},
+	{type:'tou',code:"63",name:"亘古不灭",detail:"第三只眼。",myclass:"blue",imgPath:"bag_mat_00.png",getEXP:'300'},
+	{type:'tou',code:"64",name:"浴血奋战",detail:"第三只眼。",myclass:"pink",imgPath:"bag_mat_00.png",getEXP:'1000'},
+	{type:'tou',code:"65",name:"冰魂雪魄",detail:"第三只眼。",myclass:"red",imgPath:"bag_mat_00.png",getEXP:'2500'},
+	{type:'tou',code:"66",name:"真·冰魂雪魄",detail:"第三只眼。",myclass:"purple",imgPath:"bag_mat_00.png"},
+//暴击伤害命格	
+	{type:'crh',code:"70",name:"夜叉",detail:"第三只眼。",myclass:"broke",imgPath:"bag_mat_00.png"},
+	{type:'crh',code:"71",name:"虎贲",detail:"第三只眼。",myclass:"ordin",imgPath:"bag_mat_00.png"},
+	{type:'crh',code:"72",name:"龙咆哮",detail:"第三只眼。",myclass:"green",imgPath:"bag_mat_00.png"},
+	{type:'crh',code:"73",name:"扛鼎抃牛",detail:"第三只眼。",myclass:"blue",imgPath:"bag_mat_00.png"},
+	{type:'crh',code:"74",name:"孤注一掷",detail:"第三只眼。",myclass:"pink",imgPath:"bag_mat_00.png"},
+	{type:'crh',code:"75",name:"轩辕剑体",detail:"第三只眼。",myclass:"red",imgPath:"bag_mat_00.png"},
+	{type:'crh',code:"76",name:"真·轩辕剑体",detail:"第三只眼。",myclass:"purple",imgPath:"bag_mat_00.png"}
 ]
 
 
