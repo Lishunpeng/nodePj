@@ -6,6 +6,7 @@ var hash = window.location.hash.replace("#", "");
 var headCount = 23; //现有头像数量
 var myFun = function() {}
 var mytimer = null;
+var effectTimer = null;
 var headerData = "";
 myFun.prototype = {
 	//post 提交ajax
@@ -42,16 +43,15 @@ myFun.prototype = {
 						return mui.alert(data.msg);
 					}
 
-				}else if(search == "/GameTest.html") {
-					$(obj).attr('disabled',false);
-					$('.headerimg img').attr('src',headerData);
-					return mui.alert(data.msg,function(){
+				} else if(search == "/GameTest.html") {
+					$(obj).attr('disabled', false);
+					$('.headerimg img').attr('src', headerData);
+					return mui.alert(data.msg, function() {
 						$('.headerBox').hide(300, function() {
 							$('.headContainer').hide();
 						});
 					});
-				} 
-				else if(search == "/mybag.html") {
+				} else if(search == "/mybag.html") {
 					$('.clickBox').hide();
 					console.log(data)
 					if(path == "/putdonwPet") {
@@ -114,12 +114,19 @@ myFun.prototype = {
 				} else if(search == "/adventTG.html") {
 					if(path == '/catchPet') {
 						mui.alert(data.msg, function() {
-							data.bool != 0 ? location.reload() : $('.a_catch').attr('disabled', false);
+							if (data.bool != 0) {
+								return	myobj.getajax("/getRole?myacco=" + localStorage.acco)
+							}
+							
 						})
 					} else {
-						location.reload();
+						myobj.getajax("/getRole?myacco=" + localStorage.acco);
 					}
-
+					$('.winnerBox').hide();
+					$('.fightBoard').hide();
+					$('.imgbox span').hide();
+					$('.a_catch').attr('disabled', false);
+					$('.a_attack').attr('disabled', false);
 				} else if(search == "/myFriend.html") {
 					$(obj).attr('disabled', false);
 					mui.alert(data.msg, function() {
@@ -298,54 +305,61 @@ myFun.prototype = {
 		myobj.dataAttrSum(vm.desData);
 		vm.power = myobj.powerCreate(vm.myData);
 	},
-	
+
 	//战斗力计算
-	powerCreate:function(data){
-		console.log(data.ATK,data.DEF,data.HP,data.HIT,data.DOD,data.CRI,data.TOU,data.CRH);
-		var result =  (parseInt(data.ATK) * 0.2 + parseInt(data.petATK) * 0.2 + parseInt(data.DEF) * 0.1 + parseInt(data.HP) * 0.01
-			+ parseInt(data.HIT) * 0.1 + parseInt(data.DOD) * 0.07 + parseInt(data.CRI) * 0.1 + parseInt(data.TOU) * 0.07 + parseInt(data.CRH) * 0.07).toFixed(1);
-			console.log(result)
+	powerCreate: function(data) {
+		console.log(data.ATK, data.DEF, data.HP, data.HIT, data.DOD, data.CRI, data.TOU, data.CRH);
+		var result = (parseInt(data.ATK) * 0.2 + parseInt(data.petATK) * 0.2 + parseInt(data.DEF) * 0.1 + parseInt(data.HP) * 0.01 +
+			parseInt(data.HIT) * 0.1 + parseInt(data.DOD) * 0.07 + parseInt(data.CRI) * 0.1 + parseInt(data.TOU) * 0.07 + parseInt(data.CRH) * 0.07).toFixed(1);
+		console.log(result)
 		return result;
 	},
-	
+	//怪物战斗力计算
+	mon_powerCreate: function(data) {
+		var result = (parseInt(data.ATK) * 0.2 + parseInt(data.DEF) * 0.2 + parseInt(data.HP) * 0.01 +
+			parseInt(data.HIT) * 0.1 + parseInt(data.DOD) * 0.1 + parseInt(data.CRI) * 0.1 + parseInt(data.TOU) * 0.1 + parseInt(data.CRH) * 0.1).toFixed(1);
+		console.log(result)
+		return result;
+	},
+
 	//求属性和
-	dataAttrSum:function(data){
+	dataAttrSum: function(data) {
 		for(i in data) {
 			if(data[i].type == 'wea' || data[i].dis == 'wea') {
 				vm.myData.ATK = parseInt(data[i].myAttr) + parseInt(vm.myData.ATK);
 			} else if(data[i].type == 'clo' || data[i].dis == 'clo') {
 				vm.myData.DEF = parseInt(data[i].myAttr) + parseInt(vm.myData.DEF);
-			} else if(data[i].type == 'amu'|| data[i].dis == 'amu') {
+			} else if(data[i].type == 'amu' || data[i].dis == 'amu') {
 				vm.myData.HP = parseInt(data[i].myAttr) + parseInt(vm.myData.HP);
 			} else if(data[i].type == 'hit' || data[i].dis == 'hit') {
 				vm.myData.HIT = parseInt(data[i].myAttr) + parseInt(vm.myData.HIT);
-			} else if(data[i].type == 'dod'|| data[i].dis == 'dod') {
+			} else if(data[i].type == 'dod' || data[i].dis == 'dod') {
 				vm.myData.DOD = parseInt(data[i].myAttr) + parseInt(vm.myData.DOD);
 			} else if(data[i].type == 'cri' || data[i].dis == 'cri') {
 				vm.myData.CRI = parseInt(data[i].myAttr) + parseInt(vm.myData.CRI);
-			} else if(data[i].type == 'tou'|| data[i].dis == 'tou') {
+			} else if(data[i].type == 'tou' || data[i].dis == 'tou') {
 				vm.myData.TOU = parseInt(data[i].myAttr) + parseInt(vm.myData.TOU);
-			} else if(data[i].type == 'crh'|| data[i].dis == 'crh') {
+			} else if(data[i].type == 'crh' || data[i].dis == 'crh') {
 				vm.myData.CRH = parseInt(data[i].myAttr) + parseInt(vm.myData.CRH);
 			}
 		}
 	},
-	
+
 	//分类物品
-	getGoodsClass:function(){
+	getGoodsClass: function() {
 		var goods = vm.myData.goods;
-		vm.myData.matCode =[];
-		vm.myData.equiCode =[];
-		vm.myData.petCode =[];
-		vm.myData.desCode =[];
-		for (i in goods) {
-			if (goods[i].type=='mat') {
+		vm.myData.matCode = [];
+		vm.myData.equiCode = [];
+		vm.myData.petCode = [];
+		vm.myData.desCode = [];
+		for(i in goods) {
+			if(goods[i].type == 'mat') {
 				vm.myData.matCode.push(goods[i]);
-			}else if(goods[i].type=='pet'){
+			} else if(goods[i].type == 'pet') {
 				vm.myData.petCode.push(goods[i]);
-			}else if(goods[i].type=='des'){
+			} else if(goods[i].type == 'des') {
 				vm.myData.desCode.push(goods[i]);
-			}else{
+			} else {
 				vm.myData.equiCode.push(goods[i]);
 			}
 		}
@@ -451,30 +465,30 @@ myFun.prototype = {
 		var str = "";
 		obj ? mydata = JSON.parse($(obj).attr('data-data')) : mydata = JSON.parse(localStorage.mydata);
 		if(mydata.type != 'mat') {
-			mydata.type == 'pet' ? str1 = '<br>宠物等级：<span class="fontRed">' + mydata.level +'</span>': str1 = '<br>强化等级：<span class="fontRed">' + mydata.inten+'</span>';
-			mydata.type == 'des' ? str1 = '<br>命格等级：<span class="fontRed">' + mydata.level +'</span>': "";
+			mydata.type == 'pet' ? str1 = '<br>宠物等级：<span class="fontRed">' + mydata.level + '</span>' : str1 = '<br>强化等级：<span class="fontRed">' + mydata.inten + '</span>';
+			mydata.type == 'des' ? str1 = '<br>命格等级：<span class="fontRed">' + mydata.level + '</span>' : "";
 			if(mydata.type == 'wea' || mydata.type == 'pet' || mydata.dis == 'wea') {
 				mydata.belone = '攻击力';
 			} else if(mydata.type == 'clo' || mydata.dis == 'clo') {
 				mydata.belone = '防御力';
 			} else if(mydata.type == 'amu' || mydata.dis == 'amu') {
 				mydata.belone = '血量';
-			}else if(mydata.type == 'hit' || mydata.dis == 'hit'){
+			} else if(mydata.type == 'hit' || mydata.dis == 'hit') {
 				mydata.belone = '命中';
-			}else if(mydata.type == 'dod' || mydata.dis == 'dod'){
+			} else if(mydata.type == 'dod' || mydata.dis == 'dod') {
 				mydata.belone = '闪避';
-			}else if(mydata.type == 'cri' || mydata.dis == 'cri'){
+			} else if(mydata.type == 'cri' || mydata.dis == 'cri') {
 				mydata.belone = '暴击';
-			}else if(mydata.type == 'tou' || mydata.dis == 'tou'){
+			} else if(mydata.type == 'tou' || mydata.dis == 'tou') {
 				mydata.belone = '抗暴';
-			}else if(mydata.type == 'crh' || mydata.dis == 'crh'){
+			} else if(mydata.type == 'crh' || mydata.dis == 'crh') {
 				mydata.belone = '暴伤';
 			}
 		}
 		console.log(mydata.goods.detail)
-		mydata.myAttr ? str = '物品：<span class=' + mydata.goods.myclass + '>' + mydata.goods.name + '</span>\n' + 
-		mydata.belone + ':+' + mydata.myAttr + '<span class="gold">(初始：' + mydata.addAttr + ')</span>' + '\n阐述：<span class="gold">' + mydata.goods.detail +'</span>':
-			str = '物品：<span class=' + mydata.goods.myclass + '>' + mydata.goods.name + '</span>\n阐述：<span class="gold">'+mydata.goods.detail+'</span>';
+		mydata.myAttr ? str = '物品：<span class=' + mydata.goods.myclass + '>' + mydata.goods.name + '</span>\n' +
+			mydata.belone + ':+' + mydata.myAttr + '<span class="gold">(初始：' + mydata.addAttr + ')</span>' + '\n阐述：<span class="gold">' + mydata.goods.detail + '</span>' :
+			str = '物品：<span class=' + mydata.goods.myclass + '>' + mydata.goods.name + '</span>\n阐述：<span class="gold">' + mydata.goods.detail + '</span>';
 		mui.alert(str + str1);
 		$('.mui-popup-text').addClass("mui-popup-left");
 	},
@@ -759,22 +773,23 @@ myFun.prototype = {
 		vm.monster.dropMoney = (Math.ceil(Math.random() * attrD) + minMoney) * 100;
 		vm.monster.ATK = Math.ceil(Math.random() * attrD) + minAttr; //攻击力生成随机数
 		vm.monster.DEF = Math.ceil(Math.random() * attrD) + minAttr;
-		vm.monster.HIT = Math.ceil(Math.random() * attrD) + minAttr;//命中
-		vm.monster.DOD = Math.ceil(Math.random() * attrD) + minAttr;//闪避
-		vm.monster.CRI = Math.ceil(Math.random() * attrD) + minAttr;//暴击率
-		vm.monster.TOU = Math.ceil(Math.random() * attrD) + minAttr;//韧性
-		vm.monster.CRH = Math.ceil(Math.random() * attrD) + minAttr;//暴伤
+		vm.monster.HIT = Math.ceil(Math.random() * attrD) + minAttr; //命中
+		vm.monster.DOD = Math.ceil(Math.random() * attrD) + minAttr; //闪避
+		vm.monster.CRI = Math.ceil(Math.random() * attrD) + minAttr; //暴击率
+		vm.monster.TOU = Math.ceil(Math.random() * attrD) + minAttr; //韧性
+		vm.monster.CRH = Math.ceil(Math.random() * attrD) + minAttr; //暴伤
 		vm.monster.HP = 10 * (Math.ceil(Math.random() * attrD) + minAttr);
-		
+		vm.monster.power = myobj.mon_powerCreate(vm.monster);
 	},
 	//捕捉
 	catchMon: function(obj) {
 		//		$(obj).attr('disabled', 'disabled');
 		console.log(vm.myData.ballNum);
 		if(parseInt(vm.myData.ballNum) > 0 && vm.myData.ballNum != undefined) {
-			vm.monster.power =	myobj.powerCreate(vm.monster);
-			
-			myobj.attack('catch');
+			var judey = myobj.attack('catch');
+			if(judey == 0) {
+				return;
+			}
 			var isCatch = 0;
 			vm.myData.ballNum--;
 			vm.monster.HP = parseInt(vm.monster.HP);
@@ -795,6 +810,20 @@ myFun.prototype = {
 			mui.alert('你没有多余的精灵球');
 		}
 	},
+	//一键攻击
+	allAttack: function(obj) {
+		$(obj).attr('disabled', 'disabled');
+		while(parseInt(vm.monster.HP) != 0 && parseInt(vm.myData.HP) != 0) {
+			var data = myobj.attack();
+			if(data == 0) {
+				return;
+			}
+			if(parseInt(vm.myData.HP) <= 0) {
+				return;
+			}
+
+		}
+	},
 	//攻击
 	attack: function(val) {
 		$('.monData .imgbox').remove('span');
@@ -802,7 +831,7 @@ myFun.prototype = {
 		//上限命中和暴击及最低命中及暴击及起始闪避和暴击
 		var HIT_RAT = 80;
 		var CRI_RAT = 80;
-		
+
 		var HIT_START = 60;
 		var HIT_MAX = 100;
 		var HIT_MIN = 20;
@@ -813,98 +842,102 @@ myFun.prototype = {
 		vm.monster.ATK = parseInt(vm.monster.ATK);
 		vm.monster.DEF = parseInt(vm.monster.DEF);
 		vm.monster.HP = parseInt(vm.monster.HP);
-		vm.monster.CRI = parseInt(vm.monster.CRI);//暴击率
-		vm.monster.DOD = parseInt(vm.monster.DOD);//闪避
-		vm.monster.HIT = parseInt(vm.monster.HIT);//命中
-		vm.monster.TOU = parseInt(vm.monster.TOU);//韧性
+		vm.monster.CRI = parseInt(vm.monster.CRI); //暴击率
+		vm.monster.DOD = parseInt(vm.monster.DOD); //闪避
+		vm.monster.HIT = parseInt(vm.monster.HIT); //命中
+		vm.monster.TOU = parseInt(vm.monster.TOU); //韧性
+		vm.monster.CRH = parseInt(vm.monster.CRH); //暴伤
 		//我放信息
 		vm.myData.ATK = parseInt(vm.myData.ATK);
 		vm.myData.DEF = parseInt(vm.myData.DEF);
-		vm.myData.CRI = parseInt(vm.myData.CRI);//暴击率
-		vm.myData.DOD = parseInt(vm.myData.DOD);//闪避
-		vm.myData.HIT = parseInt(vm.myData.HIT);//命中
-		vm.myData.TOU = parseInt(vm.myData.TOU);//韧性
-		vm.myData.petATK = parseInt(vm.myData.petATK);//宠物
-		vm.myData.HP = parseInt(vm.myData.HP);//血量
+		vm.myData.CRI = parseInt(vm.myData.CRI); //暴击率
+		vm.myData.DOD = parseInt(vm.myData.DOD); //闪避
+		vm.myData.HIT = parseInt(vm.myData.HIT); //命中
+		vm.myData.TOU = parseInt(vm.myData.TOU); //韧性
+		vm.myData.HP = parseInt(vm.myData.HP); //血量
+		vm.myData.CRH = parseInt(vm.myData.CRH); //暴伤
 		/*************************************************************/
 		//战斗开始
-		if(vm.myData.ATK < vm.monster.DEF) {
-			return	mui.alert('你打不动', function() {
-				location.reload();
+		if(parseInt(vm.power) < parseInt(vm.monster.power)) {
+			mui.alert('你打不动', function() {
+				$('.fightBoard').hide();
+				$('.a_attack').attr('disabled',false);
 			});
+			return 0;
 		} else {
-			
-			
-			
-			
-			
-			
-			var count = 0;
-			var timer = setInterval(function() {
-				++count;
-				$('.attackEffect').css({
-					'background-position-x': -count + "00px"
-				});
-				if(count > 5) {
-					clearInterval(timer);
-				}
-			}, 50);
-			$('.attackEffect').show();
-			$('.attackEffect').fadeOut(300);
-			
-			var myHit = parseInt((vm.myData.HIT - vm.monster.DOD)/vm.myData.HIT*HIT_RAT + HIT_START);//我方是否命中转化成百分比
-			var monHit = parseInt((vm.monster.HIT - vm.myData.DOD)/vm.monster.HIT*HIT_RAT + HIT_START);//敌方是否命中转化成百分比
-			var myCRI = parseInt((vm.myData.CRI - vm.monster.TOU)/vm.myData.CRI*CRI_RAT + CRI_START);//我方是否暴击转化成百分比
-			var monCRI = parseInt((vm.monster.CRI - vm.myData.TOU)/vm.monster.CRI*CRI_RAT + CRI_START);//敌方是否暴击转化成百分比
-			
-			myHit>HIT_MAX?myHit = HIT_MAX:"";myHit<HIT_MIN?myHit = HIT_MIN:"";
-			myCRI>CRI_MAX?myCRI = CRI_MAX:"";myCRI<CRI_MIN?myCRI = CRI_MIN:"";
-			monHit>HIT_MAX?monHit = HIT_MAX:"";monHit<HIT_MIN?monHit = HIT_MIN:"";
-			monCRI>CRI_MAX?monCRI = CRI_MAX:"";monCRI<CRI_MIN?monCRI = CRI_MIN:"";
-			console.log(myHit,myCRI,monHit,monCRI)
-			var myAttack = vm.myData.ATK - vm.monster.DEF;//普通扣除血量
-			var petAttack = vm.myData.petATK - vm.monster.DEF;//普通宠物扣除血量
-			var myLosehp = vm.monster.ATK - vm.myData.DEF;//我流失的血量
-			
-			var isMyHit = myobj.oddsCount(myHit)//我方是否命中
-			var isMonHit = myobj.oddsCount(monHit)//敌方是否命中
-			var isMyCRI = myobj.oddsCount(myCRI)//我方是否暴击
-			var isMonCRI = myobj.oddsCount(monCRI)//敌方是否暴击
-			console.log(isMyCRI,isMonCRI)
-			val=='catch'?isMyHit = false:"";
-			if (isMyHit) {
-				petAttack > 0 ? petAttack = petAttack : petAttack = 1;//宠物伤害
-				if (isMyCRI) {
-					petAttack = petAttack*2; 
-					myAttack = myAttack*2;
+			if(val) {
+				var count = 0;
+				effectTimer = setInterval(function() {
+					++count;
+					$('.attackEffect').css({
+						'background-position-x': -count + "00px"
+					});
+					if(count > 5) {
+						clearInterval(effectTimer);
+					}
+				}, 50);
+				$('.attackEffect').show();
+				$('.attackEffect').fadeOut(300);
+			}
+
+			var myHit = parseInt((vm.myData.HIT - vm.monster.DOD) / vm.myData.HIT * HIT_RAT + HIT_START); //我方是否命中转化成百分比
+			var monHit = parseInt((vm.monster.HIT - vm.myData.DOD) / vm.monster.HIT * HIT_RAT + HIT_START); //敌方是否命中转化成百分比
+			var myCRI = parseInt((vm.myData.CRI - vm.monster.TOU) / vm.myData.CRI * CRI_RAT + CRI_START); //我方是否暴击转化成百分比
+			var monCRI = parseInt((vm.monster.CRI - vm.myData.TOU) / vm.monster.CRI * CRI_RAT + CRI_START); //敌方是否暴击转化成百分比
+
+			myHit > HIT_MAX ? myHit = HIT_MAX : "";
+			myHit < HIT_MIN ? myHit = HIT_MIN : "";
+			myCRI > CRI_MAX ? myCRI = CRI_MAX : "";
+			myCRI < CRI_MIN ? myCRI = CRI_MIN : "";
+			monHit > HIT_MAX ? monHit = HIT_MAX : "";
+			monHit < HIT_MIN ? monHit = HIT_MIN : "";
+			monCRI > CRI_MAX ? monCRI = CRI_MAX : "";
+			monCRI < CRI_MIN ? monCRI = CRI_MIN : "";
+			console.log(myHit, myCRI, monHit, monCRI)
+			var myAttack = vm.myData.ATK - vm.monster.DEF; //普通扣除血量
+			var petAttack = vm.myData.petATK - vm.monster.DEF; //普通宠物扣除血量
+			var myLosehp = vm.monster.ATK - vm.myData.DEF; //我流失的血量
+
+			var isMyHit = myobj.oddsCount(myHit) //我方是否命中
+			var isMonHit = myobj.oddsCount(monHit) //敌方是否命中
+			var isMyCRI = myobj.oddsCount(myCRI) //我方是否暴击
+			var isMonCRI = myobj.oddsCount(monCRI) //敌方是否暴击
+			console.log(isMyCRI, isMonCRI)
+			val == 'catch' ? isMyHit = false : "";
+			if(isMyHit) {
+				petAttack > 0 ? petAttack = petAttack : petAttack = 1; //宠物伤害
+				myAttack > 0 ? myAttack = myAttack : myAttack = 1; //宠物伤害
+				if(isMyCRI) {
+					console.log(myAttack)
+					petAttack = parseInt(petAttack * 2 * (vm.myData.CRH / 1000 + 1));
+					myAttack = parseInt(myAttack * 2 * (vm.myData.CRH / 1000 + 1));
+					console.log(myAttack)
+
 				}
 				vm.monster.HP -= myAttack + petAttack;
 			}
-			if (isMonHit) {
+			if(isMonHit) {
 				myLosehp > 0 ? myLosehp = myLosehp : myLosehp = 1;
-				isMonCRI?myLosehp=myLosehp*2:"";
-				vm.myData.HP -= myLosehp;	
+				isMonCRI ? myLosehp = parseInt(myLosehp * 2 * (vm.monster.CRH / 10)) : "";
+				vm.myData.HP -= myLosehp;
+				vm.myData.HP <= 0 ? vm.myData.HP = 0 : "";
 			}
-			
-			
-			
-			
-			
-			
-			myobj.adventInfo(myLosehp, myAttack, petAttack,isMyHit,isMonHit,isMyCRI,isMonCRI);
+
+			myobj.adventInfo(myLosehp, myAttack, petAttack, isMyHit, isMonHit, isMyCRI, isMonCRI);
 		}
 	},
 	//冒险模式显示信息
-	adventInfo: function(mylose, myAttack, petAttack,ismyHit,isMonHit,isMyCRI,isMonCRI) {
-		console.log(isMyCRI,'isMyCRI')
-		console.log(isMonCRI,'isMonCRI')
-		console.log(ismyHit,'ismyHit')
-		console.log(isMonHit,'isMonHit')
-		if(vm.myData.HP <= 0) {
-			vm.myData.HP = 0;
+	adventInfo: function(mylose, myAttack, petAttack, ismyHit, isMonHit, isMyCRI, isMonCRI) {
+		console.log(isMyCRI, 'isMyCRI')
+		console.log(isMonCRI, 'isMonCRI')
+		console.log(ismyHit, 'ismyHit')
+		console.log(isMonHit, 'isMonHit')
+		if(vm.myData.HP == 0) {
+
 			mui.alert('你死了！', function() {
-				location.reload();
+				$('.fightBoard').hide();
 			})
+			return 1;
 		} else if(vm.monster.HP <= 0) {
 			$('.a_attack').attr('disabled', 'disabled');
 			$(".winnerBox").show();
@@ -925,19 +958,19 @@ myFun.prototype = {
 			console.log(vm.myDrop, vm.addMoney)
 		} else {
 			$('.monHp').text(vm.monster.HP);
-			if (ismyHit) {
+			if(ismyHit) {
 				$('.monData .imgbox').prepend("<span class='loseHp myattack'>-" + myAttack + "</span>");
 				$('.monData .imgbox').prepend("<span class='loseHp petattack'>-" + petAttack + "</span>");
-				isMyCRI?$('.monData .imgbox span').addClass('CRI'):"";
-			}else{
+				isMyCRI ? $('.monData .imgbox span').addClass('CRI') : "";
+			} else {
 				$('.monData .imgbox').prepend("<span class='loseHp myattack unhit'>MISS</span>");
 				$('.monData .imgbox').prepend("<span class='loseHp petattack unhit'>MISS</span>");
 			}
-			
-			if (isMonHit) {
+
+			if(isMonHit) {
 				$('.myData .imgbox:first').prepend("<span class='loseHp'>-" + mylose + "</span> ");
-				isMonCRI?$('.myData .imgbox:first').find('span').addClass('CRI'):"";
-			}else{
+				isMonCRI ? $('.myData .imgbox:first').find('span').addClass('CRI') : "";
+			} else {
 				$('.myData .imgbox:first').prepend("<span class='loseHp unhit'>MISS</span> ")
 			}
 			console.log($('.myData .imgbox:first').find('span').attr('class'))
@@ -1442,7 +1475,7 @@ myFun.prototype = {
 		}
 		$('.headContainer').show();
 		$('.headerBox').show(300);
-		
+
 	},
 	//隐藏盒子
 	headBoxHide: function() {
@@ -1457,49 +1490,49 @@ myFun.prototype = {
 
 	},
 	//头像选中
-	headerListClick:function(obj){
+	headerListClick: function(obj) {
 		headerData = $(obj).attr('data-data');
 		$(obj).siblings('li').children('span').removeClass('true');
 		$(obj).children('span').addClass('true');
 	},
-	postHeader:function(obj){
-		if (headerData=="") {
+	postHeader: function(obj) {
+		if(headerData == "") {
 			return mui.alert('请选择一个头像');
 		}
 		var postData = {}
 		postData.myacco = localStorage.acco;
 		postData.headPath = headerData;
-		myobj.postajax('/headImg',postData,obj);
-		$(obj).attr('disabled','disabled');
+		myobj.postajax('/headImg', postData, obj);
+		$(obj).attr('disabled', 'disabled');
 	},
 	//获取占卜数据
-	diviData:function(){
+	diviData: function() {
 		localStorage.count = localStorage.count || 0;
 		vm.divinationData = divination;
 		vm.divinationData[localStorage.count].isOpen = true;
 	},
 	//占卜
-	clickDivination:function(obj){
-		if ($(obj).attr("data-bool")==0) {
+	clickDivination: function(obj) {
+		if($(obj).attr("data-bool") == 0) {
 			return;
 		}
-		if (!$(obj).attr("data-isOpen")) {
+		if(!$(obj).attr("data-isOpen")) {
 			return mui.alert('你还没有遇到该占卜师');
 		}
 		var postData = {}
-		var _data =  JSON.parse($(obj).attr('data-data'))
-		
-		var result = myobj.diviOdds(_data.dropRareOdds,_data.dropOdds);
+		var _data = JSON.parse($(obj).attr('data-data'))
+
+		var result = myobj.diviOdds(_data.dropRareOdds, _data.dropOdds);
 		var oddsArray = _data.odds.split(',');
-		result=='isOrdin'?"":oddsArray = _data.rare.split(',');
+		result == 'isOrdin' ? "" : oddsArray = _data.rare.split(',');
 		var ramDom = Math.ceil(Math.random() * oddsArray.length);
-		console.log(oddsArray[ramDom-1]);
+		console.log(oddsArray[ramDom - 1]);
 		var isNext = myobj.oddsCount(_data.next);
 		var count = 0;
-		isNext?count = parseInt($(obj).attr("data-index")) + 1:"";
+		isNext ? count = parseInt($(obj).attr("data-index")) + 1 : "";
 		console.log(isNext)
 		localStorage.count = count;
-		for (i in vm.divinationData) {
+		for(i in vm.divinationData) {
 			vm.divinationData[i].isOpen = false;
 		}
 		vm.divinationData[0].isOpen = true;
@@ -1507,17 +1540,15 @@ myFun.prototype = {
 		postData.myacco = localStorage.acco;
 		postData.money = parseInt(vm.myData.money) - parseInt(_data.needMoney);
 		console.log(postData)
-		
-		
-		
-//		$(obj).attr("data-bool",0);
-		
+
+		//		$(obj).attr("data-bool",0);
+
 	},
 	//占卜概率
-	diviOdds:function(rareOdds,ordinOdds){
+	diviOdds: function(rareOdds, ordinOdds) {
 		var ramDom = Math.ceil(Math.random() * 100);
 		var result = "isOrdin"
-		ramDom < rareOdds? result = 'isRare':"";
+		ramDom < rareOdds ? result = 'isRare' : "";
 		console.log(ramDom)
 		return result;
 	}
@@ -1545,7 +1576,7 @@ var vm = new Vue({
 		equiData: [], //背包装备数组
 		matData: [], //背包材料数据数组
 		petData: [], //背包宠物数组
-		desData:[],//背包中命格数组
+		desData: [], //背包中命格数组
 		useWea: {}, //使用武器对象
 		useClo: {}, //使用衣服对象
 		useAmu: {}, //使用护符对象
@@ -1560,7 +1591,7 @@ var vm = new Vue({
 		friendData: [], //好友的数据
 		duelData: [], //决斗数据
 		headerImg: [], //头像
-		divinationData:[]//占卜数据
+		divinationData: [] //占卜数据
 	},
 	methods: {
 		//登录页面

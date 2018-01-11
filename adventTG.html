@@ -54,7 +54,8 @@
 						<div>ATK&nbsp;:&nbsp;<span v-text="myData.petATK"></span></div>
 					</div>
 					<div class="btnBox">
-						<input type="button" value="攻击" onclick="myobj.attack()" class="a_attack" />
+						<input type="button" value="一键攻击" onclick="myobj.allAttack(this)" class="a_attack" />
+						<input type="button" value="攻击" onclick="myobj.attack('attack')" class="a_attack" />
 						<input type="button" value="捕捉" onclick="myobj.catchMon(this)" class="a_catch"/>
 						<input type="button" value="逃跑" class="runAway"/>
 					</div>

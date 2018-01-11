@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<body>
+   <p></p>
+</body>
+	<script src="js/js.js"></script>
+	<script src="js/jquery-1.11.0.js"></script>
+	<script type="text/javascript">
+//		monster = JSON.stringify(monster);
+		
+//		$('p').html(monster);
+		
+		myPet = JSON.stringify(myPet);
+		
+		myPet = myPet.replace(/\"belone".*?\"name"/g,'name');
+		myPet = myPet.replace(/\"getMoney".*?\"imgPath"/g,'imgPath');
+		console.log(myPet)
+		myPet = myPet.replace(/"},/g,'"},<br>');
+		$('p').html(myPet);
+	</script>
+</html>
