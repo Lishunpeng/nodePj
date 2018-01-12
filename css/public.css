@@ -48,9 +48,9 @@ img{width: 100%;}
 .cent_nav{background-image: url(nameBorder.jpg);height: .6rem;background-size:100% 100%;line-height: .6rem;width: 3rem;text-align: center;margin: .3rem auto;}
 .infoCent ul{width: 7rem;height: 1rem;margin: 0 auto;}
 .infoCent ul li img{width: 80%;margin: 10%;}
-.infoCent ul li{width: 2.2rem;height: 2.9rem;border-radius:.1rem ;border: .1rem solid #777777;margin-left: .2rem;float: left;margin-top: .2rem;background: #333333;}
+.infoCent ul li{width: 1.6rem;height: 2.2rem;border-radius:.1rem ;border: .1rem solid #777777;margin-left: .18rem;float: left;margin-top: .2rem;background: #333333;}
 .infoCent ul li:active{background: #666666;}
-.infoCent ul li:nth-child(3n+1){margin-left: 0;}
+.infoCent ul li:nth-child(4n+1){margin-left: 0;}
 .infoCent ul li p{text-align: center;}
 .headerBox{height: 6rem!important;bottom: 0;top: 2.5rem;display: none;}
 .headerBox .headerBtn{height: .6rem;width: 2rem;margin: 0 auto;display: block;margin-top: .1rem;}
