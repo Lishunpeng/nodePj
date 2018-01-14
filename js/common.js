@@ -1349,7 +1349,6 @@ myFun.prototype = {
 		}
 		mui.confirm('确定要选择该地区进行屠杀吗？', function(e) {
 			if(e.index == 1) {
-
 				var atkRange = mydata.if_ATK.split('-');
 				if(vm.power < parseInt(atkRange[0])) {
 					return mui.toast('您的战斗力不够');
@@ -1487,7 +1486,6 @@ myFun.prototype = {
 				});
 			}
 		})
-
 	},
 	//头像选中
 	headerListClick: function(obj) {

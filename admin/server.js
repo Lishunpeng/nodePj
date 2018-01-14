@@ -1,4 +1,4 @@
-var fs = require('fs');
+﻿var fs = require('fs');
 var url = require('url');
 var qs = require('querystring');
 var MongoClient = require('mongodb').MongoClient;
@@ -21,6 +21,7 @@ app.post('/mylogin', function (req, res) {
 		if(result.length) {
 			if(result[0].mypassword == myattr.mypassword) {
 				backData.msg="登录成功";
+				console.log(11111)
 				backData.myacco=result[0].myacco;
 				backData.name=result[0].name;
 				res.send(JSON.stringify(backData));
