@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html manifest="cache.appcache">
-
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-
-		<link rel="stylesheet" type="text/css" href="mui.css" />
-		<link rel="stylesheet" type="text/css" href="public.css" />
+		<link rel="stylesheet" href="/style.css">
+		<link rel="stylesheet" type="text/css" href="/mui.css" />
+		<link rel="stylesheet" type="text/css" href="/public.css" />
 		<title></title>
 	</head>
-	<body><div class="loading"><img src="loading.gif"/></div>
+	<body>
+		<div class="loading"><div id="ajaxloader3"><div class="outer"></div><div class="inner"></div></div></div>
 		<div id="advenTG">
 			<div v-text="'你的总战斗力：'+power" class="advenTop"></div>
 			<div v-text="'你的总金币：'+myData.money+'元'" class="advenTop"></div>
@@ -29,12 +29,12 @@
 				</ul>
 			</div>
 	</body>
-	<script src="jquery-2.1.0.js"></script>
-	<script src="vue.min.js"></script>
-	<script src="mui.min.js"></script>
-	<script src="myData.js"></script>
-	<script src="common.js"></script>
-	<script src="fontsize.js"></script>
+	<script src="/fontsize.js"></script>
+	<script src="/jquery-2.1.0.js"></script>
+	<script src="/vue.min.js"></script>
+	<script src="/mui.min.js"></script>
+	<script src="/myData.js"></script>
+	<script src="/common.js"></script>
 	<script type="text/javascript">
 			myobj.on_hoon();
 			myobj.clickBoxhide();

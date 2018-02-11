@@ -9,7 +9,7 @@ var myShop = {
 		{code:'101',useMoney:3000,type:'clo',inten:0},
 		{code:'201',useMoney:3000,type:'amu',inten:0}
 	]
-	}
+}
 
 //装备,布甲，护符，宠物：1-5(*2)，bro  .5-15(*2.5),ordin,15-25(*3),green,25-35(*3.5),blue,35-45(*4),pink.45-47(3)*6.red.48-50(3purple)*9
 //怪物:ATK,DEF,HP/10(10-20),bro,(20-50),ordin,(50-90)green,(90-150),blue,(150-200),pink,(300-350).red,(400-500),purple.
@@ -698,7 +698,7 @@ var monster = [
 "drop":[{type:"wea",code:"001",odds:"10"},{type:"clo",code:"100",odds:"10"},{type:"mat",code:"03",odds:"50"},{type:"mat",code:"01",odds:"30"}]},
 {code:"188",name:"哥布林大法师",myclass:"pink",imgPath:"monster/188.png",
 "drop":[{type:"mat",code:"00",odds:"30"},{type:"mat",code:"05",odds:"30"}]}
-]
+];
 //一些npc内容
 var NPC =[
 	{name:'黄大仙',myclass:'broke',detail:"1111"},{name:'黄大仙1',myclass:'ordin',detail:"2222"},{name:'黄大仙2',myclass:'broke',detail:"333"},
@@ -768,7 +768,7 @@ var intenData = [
 	{code:8,odds:5,failOdds:70,failDown:4,intenAttr:11.5,needMat:9},
 	{code:9,odds:3,failOdds:75,failDown:5,intenAttr:15,needMat:10},
 	{code:10,intenAttr:20,needMat:'--'}
-]
+];
 //宠物强化
 var levelData = [
 	{code:1,odds:100,failOdds:0,failDown:0,levelAttr:1,needMat:1},
@@ -782,7 +782,7 @@ var levelData = [
 	{code:9,odds:5,failOdds:70,failDown:4,levelAttr:11.5,needMat:9},
 	{code:10,odds:3,failOdds:75,failDown:5,levelAttr:15,needMat:10},
 	{code:11,levelAttr:20}
-]
+];
 //命格升级
 var levelDes = [
 	{code:1,levelAttr:1,needEXP:1},
@@ -796,7 +796,7 @@ var levelDes = [
 	{code:9,levelAttr:11.5,needEXP:9},
 	{code:10,levelAttr:15,needEXP:10},
 	{code:11,levelAttr:20}
-]
+];
 
 
 
@@ -808,7 +808,7 @@ var evolData = [
 	{code:'blue',odds:30,needMoney:50000,loseOdds:50,nextClass:'pink'},
 	{code:'pink',odds:20,needMoney:80000,loseOdds:60,nextClass:'red'},
 	{code:'red',odds:10,needMoney:100000,loseOdds:70,nextClass:'purple'}
-]
+];
 //屠杀数据
 var on_hookData = [
 	{imgPath:'monster/006.png',myclass:'broke',if_ATK:'10-30',limit:100,time:6,name:'简单模式',detail:'更多金币材料及低级装备,有几率获得稀有材料',needMoney:20000,drop:20,val:0},
@@ -818,7 +818,7 @@ var on_hookData = [
 	{imgPath:'monster/144.png',myclass:'pink',if_ATK:'150-250',limit:200,time:16,name:'恐怖模式',detail:'海量金币材料及中阶装备,有几率获得稀有材料和高阶装备',needMoney:100000,drop:100,val:4},
 	{imgPath:'monster/156.png',myclass:'red',if_ATK:'250-350',limit:230,time:20,name:'地狱模式',detail:'海量金币材料及中阶装备,有几率获得超稀有材料和最高阶装备',needMoney:150000,drop:120,val:5},
 	{imgPath:'monster/142.png',myclass:'purple',if_ATK:'350-？',limit:250,time:24,name:'死亡模式',detail:'海量金币材料及中阶装备,有几率获得超稀有材料和最高阶装备',needMoney:200000,drop:150,val:6}
-]
+];
 //屠杀掉落数据
 var on_hoonDrop = [
 	{equi:10,mat:50,rareEqui:0,rareMat:0,equiClass:'broke,ordin'},
@@ -828,7 +828,7 @@ var on_hoonDrop = [
 	{equi:30,mat:50,rareEqui:0.5,rareMat:1.2,rareclass:'pink',equiClass:'green'},
 	{equi:30,mat:50,rareEqui:0.2,rareMat:1.5,rareclass:'red',equiClass:'green,blue'},
 	{equi:30,mat:50,rareEqui:0.2,rareMat:1.5,rareclass:'purple',equiClass:'blue'}
-]
+];
 //命格数据
 var divination = [
 	{unOpenPath:'divinationImg/black_ww.jpg',imgPath:'divinationImg/ww.jpg',myclass:'ordin',name:'魏徵',detail:'能获得绿色以下的命格',
@@ -843,4 +843,4 @@ var divination = [
 	needMoney:100000,isOpen:false,next:'40',dropRareOdds:'30',dropOdds:'70',rare:'pink,red',odds:'broke,ordin,green,blue'},
 	{unOpenPath:'divinationImg/black_jzy.jpg',imgPath:'divinationImg/jzy.jpg',myclass:'purple',name:'姜子牙',detail:'能获得紫色以下的命格',
 	needMoney:200000,isOpen:false,dropRareOdds:'30',dropOdds:'70',rare:'pink,purple,red',next:'0',odds:'broke,ordin,green,blue'}
-]
+];

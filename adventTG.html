@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html manifest="cache.appcache">
-
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-
-		<link rel="stylesheet" type="text/css" href="mui.css" />
-		<link rel="stylesheet" type="text/css" href="public.css" />
+		<link rel="stylesheet" href="/style.css">
+		<link rel="stylesheet" type="text/css" href="/mui.css" />
+		<link rel="stylesheet" type="text/css" href="/public.css" />
 		<title>冒险</title>
 	</head>
 
-	<body><div class="loading"><img src="loading.gif"/></div>
+	<body>
+		<div class="loading"><div id="ajaxloader3"><div class="outer"></div><div class="inner"></div></div></div>
 		<div id="advenTG">
 			<ul class="advenTG">
 				<li v-for="data in tgData" :style="{backgroundImage:'url('+data.imgPath+')'}" @click="myobj.fightBoard(data.monsterCode)">
@@ -88,17 +88,18 @@
 			<a href="GameTest.html" style="display: block;height: 100%;width: 100%;"></a>
 		</div>
 	</body>
-	<script src="jquery-2.1.0.js"></script>
-	<script src="vue.min.js"></script>
-	<script src="mui.min.js"></script>
-	<script src="myData.js"></script>
-	<script src="common.js"></script>
-	<script src="fontsize.js"></script>
+	<script src="/fontsize.js"></script>
+	<script src="/jquery-2.1.0.js"></script>
+	<script src="/vue.min.js"></script>
+	<script src="/mui.min.js"></script>
+	<script src="/myData.js"></script>
+	<script src="/common.js"></script>
 	<script type="text/javascript">
 		myobj.getAdvenCont();
 		myobj.getajax("/getRole?myacco=" + localStorage.acco);
 		$('.runAway').on('click',function(){
-			return mui.alert('你逃跑了',function(){location.reload()});
+				myobj.fightEnd();
+				return mui.alert('你逃跑了');
 		})
 	</script>
 

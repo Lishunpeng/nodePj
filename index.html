@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html manifest="cache.appcache">
 
+<html manifest="cache.appcache">
 	<head>
 		<title>登录</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 	</head>
-	<link rel="stylesheet" type="text/css" href="mui.css" />
-	<link rel="stylesheet" type="text/css" href="public.css" />
-
+	<link rel="stylesheet" href="/style.css">
+	<link rel="stylesheet" type="text/css" href="/mui.css" />
+	<link rel="stylesheet" type="text/css" href="/public.css" />
 	<body>
+		
+		<div class="loading"><div id="ajaxloader3"><div class="outer"></div><div class="inner"></div></div></div>
 		<h1 class="loginhead">登录</h1> 
 		<div id="login" class="login">
 			账号：<input type="text"  placeholder="请输入账号" v-model="acco" /><br/> 
@@ -17,13 +19,10 @@
 			<input type="button" class="loginSubm smbtn" value="登录" @click="loginSmb('1')"/>
 			<a href="/login.html" class="smbtn" style="margin-top: .2rem;">去注册</a>
 		</div>
-		<script src="jquery-2.1.0.js"></script>
-		<script src="vue.min.js"></script>
-		<script src="mui.min.js"></script>
-		<script src="common.js"></script>
-		<script src="fontsize.js"></script>
-		<script>
-		</script>
-
+		<script src="/jquery-2.1.0.js"></script>
+		<script src="/vue.min.js"></script>
+		<script src="/mui.min.js"></script>
+		<script src="/fontsize.js"></script>
+		<script src="/common.js"></script>
 	</body>
 </html>

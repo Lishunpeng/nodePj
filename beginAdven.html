@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html manifest="cache.appcache">
-
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 
-		<link rel="stylesheet" type="text/css" href="mui.css" />
-		<link rel="stylesheet" type="text/css" href="public.css" />
+		<link rel="stylesheet" href="/style.css">
+		<link rel="stylesheet" type="text/css" href="/mui.css" />
+		<link rel="stylesheet" type="text/css" href="/public.css" />
 		<title></title>
 	</head>
 	<style type="text/css">
@@ -15,7 +15,8 @@
 		}
 	</style>
 
-	<body><div class="loading"><img src="loading.gif"/></div>
+	<body>
+		<div class="loading"><div id="ajaxloader3"><div class="outer"></div><div class="inner"></div></div></div>
 		<div id="advenContent">
 			<p class="searchMap" onclick="myobj.searchMap()">查看路线</p>
 			<div class="showAdven" id="showAdven">
@@ -43,12 +44,12 @@
 			<p class="backIndex" onclick="myobj.back()">返回首页</p>
 		</div>
 	</body>
-	<script src="jquery-2.1.0.js"></script>
-	<script src="vue.min.js"></script>
-	<script src="mui.min.js"></script>
-	<script src="myData.js"></script>
-	<script src="common.js"></script>
-	<script src="fontsize.js"></script>
+	<script src="/fontsize.js"></script>
+	<script src="/jquery-2.1.0.js"></script>
+	<script src="/vue.min.js"></script>
+	<script src="/mui.min.js"></script>
+	<script src="/myData.js"></script>
+	<script src="/common.js"></script>
 	<script>
 		myobj.getMonster();
 		myobj.getajax("/getInfo?myacco=" + localStorage.acco);

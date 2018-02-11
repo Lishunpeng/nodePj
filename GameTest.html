@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html manifest="cache.appcache">
-
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-
-		<link rel="stylesheet" type="text/css" href="mui.css" />
-		<link rel="stylesheet" type="text/css" href="public.css" />
+		<link rel="stylesheet" href="/style.css">
+		<link rel="stylesheet" type="text/css" href="/mui.css" />
+		<link rel="stylesheet" type="text/css" href="/public.css" />
 		<title>我的游戏</title>
 	</head>
 	<style>
@@ -14,7 +13,13 @@
 	</style>
 
 	<body>
-		<div class="loading"><img src="loading.gif" /></div>
+		
+		<div class="loading"><div id="ajaxloader3"><div class="outer"></div><div class="inner"></div></div></div>
+		<div class="info" id="publicDom">
+			<v-top :data="publicData" :bool="isChangeHead"></v-top>
+		</div>
+		
+		
 		<div class="Gamecontant">
 			<ul class="header">
 				<li class="cur">
@@ -29,22 +34,13 @@
 			</ul>
 		</div>
 		<div class="info" id="info">
-			<div class="infoTop">
-				<div class="headerimg changeHead" onclick="myobj.changeHead()">
-					<img :src="myData.headPath" />
-					<span>点击换头像</span>
-				</div>
-				<div class="nameInfo">
-					<div class="name" v-text="'角色名：'+myData.name"></div>
-					<div class="name money_Box" v-text="'金币：'+myData.money"></div>
-				</div>
-			</div>
 			<div class="headContainer">
 				<div class="myBag headerBox">
 					<ul class="mybagCont">
 						<li v-for="data in headerImg" :data-data="data" :style="{backgroundImage:'url('+data+')'}" class="headerList" onclick="myobj.headerListClick(this)">
 							<span></span>
 						</li>
+						<li>自定义<span></span></li>
 					</ul>
 				</div>
 				<div style="float: left;position: absolute;bottom: 2rem;width: 3rem;height: .8rem;left: calc(50% - 1.5rem);">
@@ -56,44 +52,50 @@
 				<ul>
 					<li>
 						<a href="adventPlan_A.html">
-							<img src="advenIcon.png" />
+							<img src="/advenIcon.png" />
 							<p>战斗冒险</p>
 						</a>
 					</li>
 					<li>
 						<a href="shop.html">
-							<img src="shopIcon.png" />
+							<img src="/shopIcon.png" />
 							<p>商店</p>
 						</a>
 					</li>
 					<li>
 						<a href="intenEqui.html">
-							<img src="up.png" />
+							<img src="/up.png" />
 							<p>升级场</p>
 						</a>
 					</li>
 					<li>
 						<a href="divination.html">
-							<img src="divination.png" />
+							<img src="/divination.png" />
 							<p>占卜场</p>
 						</a>
 					</li>
 					<li>
 						<a href="myFriend.html">
-							<img src="friendIcon.png" />
+							<img src="/friendIcon.png" />
 							<p>我的好友</p>
 						</a>
 					</li>
 					<li>
 						<a href="adventure.html">
-							<img src="fightIcon.png" />
+							<img src="/fightIcon.png" />
 							<p>屠宰场</p>
 						</a>
 					</li>
 					<li>
 						<a href="ranking.html">
-							<img src="ranking.png" />
+							<img src="/ranking.png" />
 							<p>世界排名</p>
+						</a>
+					</li>
+					<li>
+						<a href="myGift.html">
+							<img src="/myGift.png" />
+							<p>我的技能</p>
 						</a>
 					</li>
 				</ul>
@@ -102,12 +104,13 @@
 		</div>
 
 	</body>
-	<script src="jquery-2.1.0.js"></script>
-	<script src="vue.min.js"></script>
-	<script src="mui.min.js"></script>
-	<script src="myData.js"></script>
-	<script src="common.js"></script>
-	<script src="fontsize.js"></script>
+	<script src="/fontsize.js"></script>
+	<script src="/jquery-2.1.0.js"></script>
+	<script src="/vue.min.js"></script>
+	<script src="/mui.min.js"></script>
+	<script src="/myData.js"></script>
+	<script src="/myHead.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/common.js"></script>
 	<script type="text/javascript">
 		localStorage.removeItem('cur');
 		myobj.headBoxHide();

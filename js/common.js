@@ -4,25 +4,20 @@ var equiTypecount = 1; //定义装备判断数字位置
 var search = window.location.pathname;
 var hash = window.location.hash.replace("#", "");
 var headCount = 23; //现有头像数量
-var myFun = function() {}
+var myFun = function() {};
 var mytimer = null;
 var effectTimer = null;
 var headerData = "";
 myFun.prototype = {
 	//post 提交ajax
 	postajax: function(path, mydata, obj) {
-		$('.loading').css({
-			'display': 'block',
-			'background': "transparent"
-		});
+		$('.loading').show();
 		mui.ajax({
 			type: "post",
 			url: path,
 			data: mydata,
 			success: function(data) {
-				$('.loading').css({
-					'display': 'none'
-				});
+				$('.loading').hide();
 				var data = JSON.parse(data)
 				if(search == "/login.html") {
 					if(data.msg == "注册成功") {
@@ -44,6 +39,16 @@ myFun.prototype = {
 					}
 
 				} else if(search == "/GameTest.html") {
+					if(path == '/upLevel') {
+						console.log(data);
+						vm.myData.EXP = data.EXP;
+						vm.myData.level = data.level;
+						$('.infoTop .top').text('LV.' + vm.myData.level);
+						$('.infoTop .expBox i').text('当前经验：' + vm.myData.EXP);
+
+						return mui.alert(data.msg);
+					}
+
 					$(obj).attr('disabled', false);
 					$('.headerimg img').attr('src', headerData);
 					return mui.alert(data.msg, function() {
@@ -114,19 +119,20 @@ myFun.prototype = {
 				} else if(search == "/adventTG.html") {
 					if(path == '/catchPet') {
 						mui.alert(data.msg, function() {
-							if (data.bool != 0) {
-								return	myobj.getajax("/getRole?myacco=" + localStorage.acco)
+							if(data.bool != 0) {
+								return myobj.fightEnd();
 							}
-							
+
 						})
 					} else {
-						myobj.getajax("/getRole?myacco=" + localStorage.acco);
+						//						myobj.getajax("/getRole?myacco=" + localStorage.acco);
+						myobj.fightEnd();
 					}
-					$('.winnerBox').hide();
-					$('.fightBoard').hide();
-					$('.imgbox span').hide();
-					$('.a_catch').attr('disabled', false);
-					$('.a_attack').attr('disabled', false);
+					//					$('.winnerBox').hide();
+					//					$('.fightBoard').hide();
+					//					$('.imgbox span').hide();
+					//					$('.a_catch').attr('disabled', false);
+					//					$('.a_attack').attr('disabled', false);
 				} else if(search == "/myFriend.html") {
 					$(obj).attr('disabled', false);
 					mui.alert(data.msg, function() {
@@ -213,20 +219,17 @@ myFun.prototype = {
 	//get 提交ajax
 	getajax: function(path) {
 		console.log(path);
-		$('.loading').css({
-			'display': 'block',
-			'background': "transparent"
-		});
+		$('.loading').show();
 		mui.ajax({
 			type: "get",
 			url: path,
 			success: function(data) {
-				$('.loading').css('display', 'none');
+				$('.loading').hide();
 				path = path.split('?')[0];
 				vm.myData = JSON.parse(data);
 				console.log(vm.myData)
 				if(search == "/GameTest.html" || search == "/beginAdven.html") {
-					console.log(vm.myData)
+					console.log(vm.myData);
 				} else if(search == "/mybag.html" || search == "/intenEqui.html" || search == '/petLevel.html') {
 					myobj.getGoodsClass();
 					vm.equiData = myobj.getData(myEqui, vm.myData.equiCode);
@@ -771,6 +774,7 @@ myFun.prototype = {
 		vm.monster.dropGoods = dropGoods;
 		vm.monster.catchOdds = catchOdds;
 		vm.monster.dropMoney = (Math.ceil(Math.random() * attrD) + minMoney) * 100;
+		vm.monster.getEXP = Math.ceil(Math.random() * attrD) + minAttr;
 		vm.monster.ATK = Math.ceil(Math.random() * attrD) + minAttr; //攻击力生成随机数
 		vm.monster.DEF = Math.ceil(Math.random() * attrD) + minAttr;
 		vm.monster.HIT = Math.ceil(Math.random() * attrD) + minAttr; //命中
@@ -861,7 +865,7 @@ myFun.prototype = {
 		if(parseInt(vm.power) < parseInt(vm.monster.power)) {
 			mui.alert('你打不动', function() {
 				$('.fightBoard').hide();
-				$('.a_attack').attr('disabled',false);
+				$('.a_attack').attr('disabled', false);
 			});
 			return 0;
 		} else {
@@ -926,17 +930,20 @@ myFun.prototype = {
 			myobj.adventInfo(myLosehp, myAttack, petAttack, isMyHit, isMonHit, isMyCRI, isMonCRI);
 		}
 	},
+	//战斗结束数据重新渲染
+	fightEnd: function() {
+		myobj.getajax("/getRole?myacco=" + localStorage.acco);
+		$('.fightBoard').hide();
+		$('.imgbox span').hide();
+		$(".winnerBox").hide();
+		$('.a_attack').attr('disabled', false);
+		$('.a_catch').attr('disabled', false);
+	},
 	//冒险模式显示信息
 	adventInfo: function(mylose, myAttack, petAttack, ismyHit, isMonHit, isMyCRI, isMonCRI) {
-		console.log(isMyCRI, 'isMyCRI')
-		console.log(isMonCRI, 'isMonCRI')
-		console.log(ismyHit, 'ismyHit')
-		console.log(isMonHit, 'isMonHit')
 		if(vm.myData.HP == 0) {
-
-			mui.alert('你死了！', function() {
-				$('.fightBoard').hide();
-			})
+			myobj.fightEnd();
+			mui.alert('你死了！');
 			return 1;
 		} else if(vm.monster.HP <= 0) {
 			$('.a_attack').attr('disabled', 'disabled');
@@ -945,7 +952,12 @@ myFun.prototype = {
 			str = parseInt(str.replace('px', "")) / 2;
 			$('.winnerBox .winnerBorder').css('top', 'calc(50% - ' + str + 'px)');
 			vm.monster.HP = 0;
-			vm.addMoney += parseInt(vm.monster.dropMoney);
+			//初始化数据
+			vm.addMoney = 0;
+			vm.addEXP = 0;
+			vm.myDrop = [];
+			vm.addMoney = parseInt(vm.monster.dropMoney);
+			vm.addEXP = parseInt(vm.monster.getEXP);
 			for(var i = 0; i < parseInt(vm.monster.dropGoods); i++) {
 				var myEqui = null;
 				var ramDom = Math.ceil(Math.random() * vm.monster.drop.length);
@@ -955,7 +967,7 @@ myFun.prototype = {
 					vm.myDrop.push(myEqui);
 				}
 			}
-			console.log(vm.myDrop, vm.addMoney)
+			console.log(vm.myDrop, vm.addMoney);
 		} else {
 			$('.monHp').text(vm.monster.HP);
 			if(ismyHit) {
@@ -1031,7 +1043,8 @@ myFun.prototype = {
 		}
 
 		search == "/adventure.html" ? postData.saveState = 1 : "";
-		postData.money = parseInt(vm.myData.money) + parseInt(vm.addMoney)
+		postData.money = parseInt(vm.myData.money) + parseInt(vm.addMoney);
+		postData.EXP = parseInt(vm.myData.EXP) + parseInt(vm.addEXP);
 		postData.myacco = vm.myData.myacco;
 		postData.dropData = JSON.stringify(myobj.combineEqui(dropData));
 		console.log(postData);
@@ -1549,6 +1562,37 @@ myFun.prototype = {
 		ramDom < rareOdds ? result = 'isRare' : "";
 		console.log(ramDom)
 		return result;
+	},
+	//升级
+	upLevel: function(obj) {
+		var nowEXP = vm.myData.EXP;
+		var nowLevel = parseInt(vm.myData.level);
+		var needEXp = myobj.needExp(vm.myData.level);
+		mui.confirm('确定要升级么？当前等级升级' + needEXp + '需点EXP', function(e) {
+			if(e.index == 1) {
+				var needEXp = myobj.needExp(vm.myData.level);
+				if(nowEXP < needEXp) {
+					return mui.alert('你当前的经验值不足所升级的需求，请在去升级刷经验');
+				}
+				var postData = {
+					myacco: localStorage.acco,
+					level: nowLevel + 1,
+					EXP: nowEXP - needEXp
+				}
+				myobj.postajax('/upLevel', postData);
+			} else {
+				mui.alert('你取消了升级');
+			}
+		});
+		console.log(vm.myData.EXP);
+	},
+	//计算升级需要的经验值
+	needExp: function(val) {
+		//经验系数
+		var increaseCount = 1.5 * val;
+		var expCount = Math.ceil(val / 10) * increaseCount * 1000;
+		console.log(expCount)
+		return expCount;
 	}
 
 }
@@ -1589,7 +1633,8 @@ var vm = new Vue({
 		friendData: [], //好友的数据
 		duelData: [], //决斗数据
 		headerImg: [], //头像
-		divinationData: [] //占卜数据
+		divinationData: [], //占卜数据
+		addEXP: 0 //获得的经验
 	},
 	methods: {
 		//登录页面
@@ -1621,5 +1666,10 @@ var vm = new Vue({
 		},
 	}
 });
-
-$('.loading').css('background', "transparent");
+$(document).ready(function() {
+	if(search == '/' || search == '/index.html' || search == '/login.html' || search == '/adventPlan_A.html') {
+		$('.loading').hide();
+	} else {
+		$('.loading').css('background', 'rgba(0,0,0,.5)');
+	}
+});

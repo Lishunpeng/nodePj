@@ -62,6 +62,8 @@ app.post('/firstlogin',function(req, res){
 							myacco: myattr.myacco,
 							name: myattr.name,
 							headPath:'headImg/000.jpg',
+							level:1,//等级
+							EXP:0,//当前经验
 							ATK: "10",//攻击力
 							DEF: "10",//防御力
 							HP: "100",//血量
@@ -213,7 +215,7 @@ app.post('/saveData',function(req, res){
 	myattr.dropData = JSON.parse(myattr.dropData);
 	MongoClient.connect(DB_CONN_STR, function(err, db) {
 		var whereData = {myacco: myattr.myacco}
-		var udBag = {$set:{money: myattr.money}}
+		var udBag = {$set:{money: myattr.money,EXP:myattr.EXP}}
 		backData.msg = '闯关成功';
 		if (myattr.saveState) {
 			backData.data = myattr.dropData;
@@ -485,8 +487,31 @@ app.post('/delFriend', function (req, res) {
 			res.send(JSON.stringify(backData));
 			db.close();
 		},'myFriend');
+	});
+})
+
+/*升级*/
+app.post('/upLevel', function (req, res) {
+	var myattr = req.body;
+	MongoClient.connect(DB_CONN_STR,function(err,db){
+		var whereData = {myacco: myattr.myacco};
+		var levelAttr = myattr.level * 10;
+		var udData = {$set:{EXP:myattr.EXP,level:myattr.level,ATK:levelAttr,DEF:levelAttr,HP: levelAttr*10,DOD:levelAttr,HIT:levelAttr,CRI:levelAttr,TOU:levelAttr,CRH:levelAttr}};
+		updateData(db,whereData,udData,function(result){
+			var	myBack = {
+				msg:'升级成功',
+				level:myattr.level,
+				EXP:myattr.EXP
+			};
+			console.log(myBack);
+			res.send(JSON.stringify(myBack));
+			db.close();
+		},'personInfo');
 	})
 })
+
+
+
 /*决斗*/
 app.get('/getDeul', function (req, res) {
 	var params = req.query;
@@ -625,7 +650,7 @@ app.get('/*.gif', function (req, res) {
 				"Content-type": "image/jpeg"
 			})
 			res.write(data, 'binary')
-			res.send()
+			res.send();
 			return;
 	});
 })
@@ -729,6 +754,8 @@ var creatRodom = function(min,max){
 	var attrD = max - min;
 	var rd = Math.ceil(Math.random() * attrD) + min;
 	return rd;
-}
+};
+
+
 // 控制台会输出以下信息
 console.log('Server running at http://127.0.0.1:3000/');
